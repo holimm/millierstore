@@ -1,24 +1,17 @@
 import React, { useState } from "react";
 import { Space, Flex, Typography, Button, Row, Col, Drawer } from "antd";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import NavDrawer from "../drawer";
 const { Title } = Typography;
 
 const HeaderNavigation: React.FC = () => {
-  const [showSearchTab, setShowSearchTab] = useState<boolean>(false);
-  const handleShowSearchTab = () => {
-    setShowSearchTab(!showSearchTab);
+  const [showSearchDrawer, setShowSearchDrawer] = useState<boolean>(false);
+  const handleShowSearchDrawer = () => {
+    setShowSearchDrawer(!showSearchDrawer);
   };
   return (
     <>
-      <Drawer
-        height={"4rem"}
-        placement="top"
-        open={showSearchTab}
-        onClose={handleShowSearchTab}
-        closable={false}
-      >
-        <Space></Space>
-      </Drawer>
+      <NavDrawer placement="top" showDrawer={showSearchDrawer} handleShowDrawer={handleShowSearchDrawer}/>
       <div className="h-16 w-full fixed top-0 z-50 bg-white shadow-md">
         <div className="h-full w-10/12 mx-auto">
           <Row className="h-full w-full">
@@ -46,7 +39,7 @@ const HeaderNavigation: React.FC = () => {
                   type="text"
                   size="large"
                   icon={<SearchOutlined />}
-                  onClick={handleShowSearchTab}
+                  onClick={handleShowSearchDrawer}
                 ></Button>
                 <Button
                   type="text"
