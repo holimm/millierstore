@@ -10,6 +10,7 @@ const lobster = Lobster({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-lobster",
+  display: 'swap'
 });
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
