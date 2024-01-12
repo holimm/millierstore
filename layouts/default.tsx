@@ -1,4 +1,4 @@
-import HeaderNavigation from "@/components/const/header";
+import HeaderNavigation from "@/components/headerComponents/header";
 import PageFooter from "@/components/const/footer";
 import { ReactElement } from "react";
 
