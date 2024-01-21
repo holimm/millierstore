@@ -57,8 +57,8 @@ const HeaderNavigation: React.FC = () => {
         onClose={handleShowSignInDrawer}
       />
 
-      <div className="h-16 w-full fixed top-0 z-50 bg-white shadow-md">
-        <div className="h-full w-10/12 mx-auto">
+      <div className="h-16 w-full fixed top-0 z-50 bg-white/50 backdrop-blur-2xl shadow-md">
+        <div className="h-full w-3/4 mx-auto">
           <Row className="h-full w-full">
             <Col span={12}>
               <Flex
@@ -70,11 +70,21 @@ const HeaderNavigation: React.FC = () => {
                 <h1 className="text-4xl font-lobster text-black pr-8">
                   Raijin Limited
                 </h1>
-                <Button type="text">Home</Button>
-                <Button type="text">Shop</Button>
-                <Button type="text">Blog</Button>
-                <Button type="text">About</Button>
-                <Button type="text">Contact</Button>
+                <Button type="text" className="!font-sf_pro">
+                  Home
+                </Button>
+                <Button type="text" className="!font-sf_pro">
+                  Shop
+                </Button>
+                <Button type="text" className="!font-sf_pro">
+                  Blog
+                </Button>
+                <Button type="text" className="!font-sf_pro">
+                  About
+                </Button>
+                <Button type="text" className="!font-sf_pro">
+                  Contact
+                </Button>
               </Flex>
             </Col>
             <Col span={12}>

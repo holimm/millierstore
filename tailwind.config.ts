@@ -15,6 +15,11 @@ const config: Config = {
       },
       fontFamily: {
         lobster: ["var(--font-lobster)"],
+        sf_pro: ["SF-Pro", "sans-serif"],
+        sf_pro_rounded: ["SF-Pro-Rounded-Black", "sans-serif"],
+        sf_pro_text: ["SF-Pro-Text-Black", "sans-serif"],
+        sf_pro_text_light: ["SF-Pro-Text-Light", "sans-serif"],
+        sf_pro_display: ["SF-Pro-Display-Black", "sans-serif"],
       },
     },
   },

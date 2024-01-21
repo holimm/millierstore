@@ -16,9 +16,9 @@ const PageFooter = () => {
     );
   }
   return (
-    <div className="h-fit w-full text-black bg-gradient-to-r from-white to-slate-100 inline-block">
+    <div className="h-fit w-full text-black bg-gradient-to-r from-neutral-100 to-neutral-200 inline-block">
       {/* from-zinc-800 via-stone-900 to-neutral-900 */}
-      <div className="h-full w-11/12 lg:w-10/12 mx-auto mt-10 grid grid-cols-2 md:mt-20 md:grid-cols-3">
+      <div className="h-full w-11/12 lg:w-3/4 mx-auto mt-10 grid grid-cols-2 md:mt-20 md:grid-cols-3">
         <div className="h-full w-full">
           <Title name="About Us" />
           <ul>
