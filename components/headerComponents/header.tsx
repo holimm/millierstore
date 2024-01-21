@@ -68,7 +68,7 @@ const HeaderNavigation: React.FC = () => {
                 align="center"
               >
                 <h1 className="text-4xl font-lobster text-black pr-8">
-                  Raijin Limited
+                  Millier
                 </h1>
                 <Button type="text" className="!font-sf_pro">
                   Home

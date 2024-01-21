@@ -5,7 +5,7 @@ import ReactPlayer from "react-player";
 import CategoryIphone from "../assets/img/homepage/category_iphone.jpg";
 import CategoryMac from "../assets/img/homepage/category_mac.jpg";
 import CategoryAccessories from "../assets/img/homepage/category_accessories.jpg";
-import { omit } from "lodash";
+import { isEmpty, omit } from "lodash";
 import {
   CategoryCard,
   CustomButton,
@@ -14,13 +14,25 @@ import {
 import { CiCreditCard1 } from "react-icons/ci";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { BsShop } from "react-icons/bs";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import iPhone14 from "../assets/img/products/iphone14/iphone14.webp";
 import iPhone15 from "../assets/img/products/iphone15/iphone15.webp";
 import iPhone15Pro from "../assets/img/products/iphone15/iphone15_pro.webp";
 import iPhone15ProMax from "../assets/img/products/iphone15/iphone15_pro_max.webp";
+import NumberToDollarFormat from "@/helpers/commonHelpers";
 
 export default function Home() {
+  const [productData, setProductData] = useState<any[]>();
+  useEffect(() => {
+    (async () => {
+      const resultData = await fetch("http://localhost:3030/products");
+      const body = await resultData.json();
+      setProductData(body);
+      console.log(body);
+    })();
+  }, []);
+  console.log(productData);
+
   const renderPickUsItem = (objectText: {
     icon: ReactNode;
     title: string;
@@ -100,10 +112,10 @@ export default function Home() {
             <div className="h-fit w-fit">
               <CustomText
                 type="paragraph"
-                extraClass="!text-5xl !font-lobster"
-                topClass="text-center"
+                extraClass="!text-5xl"
+                topClass="text-center !font-lobster"
               >
-                Raijin Limited
+                Milliler
               </CustomText>
               <CustomText
                 type="paragraph"
@@ -163,30 +175,17 @@ export default function Home() {
             </span>
           </Typography.Paragraph>
           <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-            {renderProductCard({
-              name: "iPhone 15 Pro Max",
-              description: "The ultimate iPhone.",
-              price: "From $1199",
-              srcImage: iPhone15ProMax.src,
-            })}
-            {renderProductCard({
-              name: "iPhone 15 Pro",
-              description: "The ultimate iPhone.",
-              price: "From $999",
-              srcImage: iPhone15Pro.src,
-            })}
-            {renderProductCard({
-              name: "iPhone 15",
-              description: "A total powerhouse.",
-              price: "From $799",
-              srcImage: iPhone15.src,
-            })}
-            {renderProductCard({
-              name: "iPhone 14",
-              description: "As amazing as ever.",
-              price: "From $699",
-              srcImage: iPhone14.src,
-            })}
+            {!isEmpty(productData) &&
+              productData.map((item: any, index: number) => (
+                <div key={index}>
+                  {renderProductCard({
+                    name: item.name,
+                    description: item.description,
+                    price: `From ${NumberToDollarFormat(item.lowest_price)}`,
+                    srcImage: item.image,
+                  })}
+                </div>
+              ))}
           </div>
         </div>
         <div className="h-[20em] w-full relative">

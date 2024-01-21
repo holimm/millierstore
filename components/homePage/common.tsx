@@ -76,7 +76,7 @@ export const CategoryCard = ({
       whileHover={{ backgroundSize: "105%" }}
       transition={{ ease: "easeInOut" }}
     >
-      <div className="h-full w-full group hover:bg-black/40 transition-all duration-500 rounded-xl">
+      <div className="h-full w-full group hover:bg-black/40 hover:backdrop-blur-sm transition-all duration-500 rounded-xl">
         <div className="h-full w-full opacity-0 group-hover:opacity-100 transition-all duration-700">
           <div className="h-full w-full flex justify-center items-center">
             <CustomText type="paragraph" extraClass="!text-4xl">
