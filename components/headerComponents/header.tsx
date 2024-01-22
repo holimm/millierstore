@@ -30,6 +30,7 @@ import {
   HeaderSearchDrawer,
   HeaderSigninDrawer,
 } from "./headerDrawer";
+import Link from "next/link";
 
 const HeaderNavigation: React.FC = () => {
   const [showSearchDrawer, setShowSearchDrawer] = useState<boolean>(false);
@@ -57,7 +58,7 @@ const HeaderNavigation: React.FC = () => {
         onClose={handleShowSignInDrawer}
       />
 
-      <div className="h-16 w-full fixed top-0 z-50 bg-white/50 backdrop-blur-2xl shadow-md">
+      <div className="h-16 w-full sticky top-0 z-50 bg-white shadow-md">
         <div className="h-full w-3/4 mx-auto">
           <Row className="h-full w-full">
             <Col span={12}>
@@ -70,9 +71,11 @@ const HeaderNavigation: React.FC = () => {
                 <h1 className="text-4xl font-lobster text-black pr-8">
                   Millier
                 </h1>
-                <Button type="text" className="!font-sf_pro">
-                  Home
-                </Button>
+                <Link href="/">
+                  <Button type="text" className="!font-sf_pro">
+                    Home
+                  </Button>
+                </Link>
                 <Button type="text" className="!font-sf_pro">
                   Shop
                 </Button>

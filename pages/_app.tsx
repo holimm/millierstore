@@ -5,12 +5,14 @@ import type { AppProps } from "next/app";
 import DefaultLayout from "@/layouts/default";
 
 import { Lobster } from "next/font/google";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
 const lobster = Lobster({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-lobster",
-  display: 'swap'
+  display: "swap",
 });
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -29,7 +31,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <main className={`${lobster.variable} font-sans`}>
-      {MyLayout(<Component {...pageProps} />)}
+      <Provider store={store}>
+        {MyLayout(<Component {...pageProps} />)}
+      </Provider>
     </main>
   );
 }

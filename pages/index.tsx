@@ -20,18 +20,17 @@ import iPhone15 from "../assets/img/products/iphone15/iphone15.webp";
 import iPhone15Pro from "../assets/img/products/iphone15/iphone15_pro.webp";
 import iPhone15ProMax from "../assets/img/products/iphone15/iphone15_pro_max.webp";
 import NumberToDollarFormat from "@/helpers/commonHelpers";
+import Link from "next/link";
 
 export default function Home() {
   const [productData, setProductData] = useState<any[]>();
   useEffect(() => {
     (async () => {
-      const resultData = await fetch("http://localhost:3030/products");
+      const resultData = await fetch("http://localhost:3030/api/products");
       const body = await resultData.json();
       setProductData(body);
-      console.log(body);
     })();
   }, []);
-  console.log(productData);
 
   const renderPickUsItem = (objectText: {
     icon: ReactNode;
@@ -53,6 +52,7 @@ export default function Home() {
     );
   };
   const renderProductCard = (objectProduct: {
+    code: string;
     name: string;
     description: string;
     price: string;
@@ -60,7 +60,7 @@ export default function Home() {
   }) => {
     return (
       <Card
-        className="bg-white !p-0 !border-none"
+        className="bg-white !p-0 !border-none cursor-pointer"
         cover={
           <div className="pl-3 pr-3 pt-5">
             <Image src={objectProduct.srcImage} preview={false} />
@@ -89,8 +89,10 @@ export default function Home() {
           >
             {objectProduct.price}
           </CustomText>
-          <div className="h-full w-full flex justify-start items-center mt-4">
-            <Button className="mx-auto">Order now</Button>
+          <div className="h-full w-full flex justify-center items-center mt-4">
+            <Link href={`/products/${objectProduct.code}`}>
+              <Button>Order now</Button>
+            </Link>
           </div>
         </div>
       </Card>
@@ -179,6 +181,7 @@ export default function Home() {
               productData.map((item: any, index: number) => (
                 <div key={index}>
                   {renderProductCard({
+                    code: item._id,
                     name: item.name,
                     description: item.description,
                     price: `From ${NumberToDollarFormat(item.lowest_price)}`,
@@ -229,24 +232,28 @@ export default function Home() {
           </Typography.Paragraph>
           <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
             {renderProductCard({
+              code: "t",
               name: "iPhone 15 Pro Max",
               description: "The ultimate iPhone.",
               price: "From $1199",
               srcImage: iPhone15ProMax.src,
             })}
             {renderProductCard({
+              code: "t",
               name: "iPhone 15 Pro",
               description: "The ultimate iPhone.",
               price: "From $999",
               srcImage: iPhone15Pro.src,
             })}
             {renderProductCard({
+              code: "t",
               name: "iPhone 15",
               description: "A total powerhouse.",
               price: "From $799",
               srcImage: iPhone15.src,
             })}
             {renderProductCard({
+              code: "t",
               name: "iPhone 14",
               description: "As amazing as ever.",
               price: "From $699",
