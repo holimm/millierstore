@@ -52,3 +52,6 @@ export default productsDetailSlice.reducer;
 export const getProductsDetailSlice = (
   state: any
 ): { [key: string]: ProductDetailType } => state[storeName].ids;
+
+export const getProductsDetailLoading = (state: boolean) =>
+  state[storeName].loading;

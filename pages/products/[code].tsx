@@ -1,138 +1,109 @@
-import { Carousel, Col, Flex, Image, Row } from "antd";
-import productDetailService from "@/services/productDetailService";
+import { Radio, RadioChangeEvent, Spin } from "antd";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { fetchProductDetailById } from "@/redux/entities/productsDetail";
 import { useRouter } from "next/router";
-import { getProductDetail } from "@/redux/selectors/products";
+import {
+  getProductDetail,
+  getProductDetailLoading,
+} from "@/redux/selectors/products";
 import { isEmpty, toString } from "lodash";
-import { CustomText } from "@/components/homePage/common";
-import { ProductDetailType } from "@/models/productDetailModel";
-import NumberToDollarFormat from "@/helpers/commonHelpers";
-
-interface PhoneColorType {
-  label?: string;
-  lowercase?: string;
-}
+import { ProductColorType } from "@/models/productDetailModel";
+import DescriptionTabItem from "@/components/productDetailComponents/descriptionTab";
+import SpecificationTab from "@/components/productDetailComponents/specificationTab";
+import ProductMain from "@/components/productDetailComponents/productMain";
 
 export default function ProductDetailsPage() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const productCode: string = toString(router.query.code);
-  const dispatch = useAppDispatch();
-  const [phoneColor, setPhoneColor] = useState<PhoneColorType>({});
+  const [productColor, setProductColor] = useState<ProductColorType>({});
+  const [descriptionTab, setDescriptionTab] = useState<string>("overview");
+
   useEffect(() => {
     if (!isEmpty(productCode)) dispatch(fetchProductDetailById(productCode));
   }, [productCode]);
+
   const productDetail = useAppSelector(getProductDetail);
+  const productDetailLoading = useAppSelector(getProductDetailLoading);
+
   useEffect(() => {
     if (!isEmpty(productDetail[productCode]))
-      setPhoneColor(productDetail[productCode].colors[0]);
+      setProductColor(productDetail[productCode].colors[0]);
   }, [productDetail]);
 
   console.log("Product Detail: ", productDetail, !isEmpty(productDetail));
 
-  const onChangePhoneColor = (color: PhoneColorType) => {
-    setPhoneColor(color);
+  const checkProductExist = useMemo(() => {
+    setProductColor(
+      !isEmpty(productDetail[productCode]) &&
+        productDetail[productCode].colors[0]
+    );
+    return !isEmpty(productDetail[productCode]);
+  }, [productDetail]);
+
+  const checkColorExist = useMemo(() => {
+    return !isEmpty(productColor);
+  }, [productColor]);
+
+  const onChangeProductColor = (color: ProductColorType) => {
+    setProductColor(color);
   };
+
+  const onChangeDescriptionTab = (e: RadioChangeEvent) => {
+    setDescriptionTab(e.target.value);
+  };
+
   return (
     <main className={`h-fit w-full`}>
       <div className="h-full w-full flex justify-center items-center">
-        <div className="h-full w-3/4 py-16">
-          <Row gutter={30}>
-            <Col span={18}>
-              <div className="!sticky top-20">
-                <Carousel autoplay infinite>
-                  <Image
-                    src="http://localhost:3030/images/iphone15promax/details/naturaltitanium/front.jpg"
-                    preview={false}
-                  ></Image>
-                  <Image
-                    src="http://localhost:3030/images/iphone15promax/details/naturaltitanium/back.jpg"
-                    preview={false}
-                  ></Image>
-                  <Image
-                    src="http://localhost:3030/images/iphone15promax/details/naturaltitanium/side.jpg"
-                    preview={false}
-                  ></Image>
-                  <Image
-                    src="http://localhost:3030/images/iphone15promax/details/naturaltitanium/camera.jpg"
-                    preview={false}
-                  ></Image>
-                </Carousel>
-              </div>
-            </Col>
-            <Col span={6}>
-              <Flex className="h-full w-full" justify="center" align="center">
-                <div className="h-fit w-fit">
-                  <div>
-                    <CustomText
-                      type="paragraph"
-                      extraClass="!text-black !text-3xl font-semibold"
-                    >
-                      Finish.{" "}
-                      <span className="text-neutral-500">
-                        Pick your favorite
-                      </span>
-                    </CustomText>
-                    <CustomText
-                      type="paragraph"
-                      extraClass="!text-black !text-2xl"
-                    >
-                      Color - {phoneColor.label}
-                    </CustomText>
-                    <div className="h-fit w-full flex justify-start gap-10">
-                      {!isEmpty(productDetail[productCode]) &&
-                        productDetail[productCode].colors.map((item: any) => (
-                          <div
-                            className="h-8 w-8 bg-neutral-500 rounded-full cursor-pointer"
-                            onClick={() => onChangePhoneColor(item)}
-                          >
-                            {item.label}
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                  <div className="my-20">
-                    <CustomText
-                      type="paragraph"
-                      extraClass="!text-black !text-3xl font-semibold"
-                    >
-                      Storage.{" "}
-                      <span className="text-neutral-500">
-                        How much space do you need?
-                      </span>
-                    </CustomText>
-                    <div className="h-fit w-full flex-rows justify-start gap-10">
-                      {!isEmpty(productDetail[productCode]) &&
-                        productDetail[productCode].storage.map((item: any) => (
-                          <div className="h-fit w-full py-5 my-5 grid grid-cols-2 border-2 rounded-xl cursor-pointer">
-                            <div className="h-full w-full flex items-center px-5">
-                              <CustomText
-                                type="paragraph"
-                                extraClass="!text-black !text-lg font-semibold"
-                              >
-                                {item.capacity}
-                                <span className="!text-md">{item.unit}</span>
-                              </CustomText>
-                            </div>
-                            <div className="h-full w-full flex items-center px-5">
-                              <CustomText
-                                type="paragraph"
-                                extraClass="!text-black !text-md"
-                              >
-                                From {NumberToDollarFormat(item.price)}
-                                or {NumberToDollarFormat(item.price / 24)}/month
-                                for 24 mo.
-                              </CustomText>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-              </Flex>
-            </Col>
-          </Row>
+        <div className="h-fit w-3/4 py-16">
+          <ProductMain
+            productDetail={productDetail}
+            checkProductExist={checkProductExist}
+            checkColorExist={checkColorExist}
+            productDetailLoading={productDetailLoading}
+            productCode={productCode}
+            productColor={productColor}
+            onChangeProductColor={onChangeProductColor}
+          />
+          <div className="h-fit w-3/4 mx-auto my-20">
+            <Radio.Group
+              className="flex justify-center"
+              size="large"
+              value={descriptionTab}
+              onChange={onChangeDescriptionTab}
+              style={{ marginBottom: 16 }}
+            >
+              <Radio.Button value="overview">Overview</Radio.Button>
+              <Radio.Button value="specifications">Specifications</Radio.Button>
+            </Radio.Group>
+            <div className="h-fit w-full mx-auto my-10">
+              {descriptionTab === "overview" && (
+                <Spin spinning={productDetailLoading}>
+                  {checkProductExist &&
+                    productDetail[productCode].description.map((item) => (
+                      <>
+                        <DescriptionTabItem
+                          type={item.type}
+                          title={item.label}
+                          content={item.content}
+                        />
+                      </>
+                    ))}
+                </Spin>
+              )}
+              {descriptionTab === "specifications" && (
+                <Spin spinning={productDetailLoading}>
+                  <SpecificationTab
+                    checkProductExist={checkProductExist}
+                    productDetail={productDetail}
+                    productCode={productCode}
+                  />
+                </Spin>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </main>
