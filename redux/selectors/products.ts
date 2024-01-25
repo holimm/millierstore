@@ -4,6 +4,39 @@ import {
   getProductsDetailSlice,
 } from "../entities/productsDetail";
 import { createSelector } from "@reduxjs/toolkit";
+import {
+  getCategoryEntityLoading,
+  getCategorySlice,
+  getProductsSlice,
+} from "../entities/products";
+import { CategoryType } from "@/models/productModel";
+import { getProductsEntityLoading } from "../entities/products";
+
+export const getProducts = createSelector([getProductsSlice], (entities) => {
+  const result: ProductDetailType = entities;
+  return result;
+});
+
+export const getProductsLoading = createSelector(
+  [getProductsEntityLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return result;
+  }
+);
+
+export const getCategory = createSelector([getCategorySlice], (entities) => {
+  const result: CategoryType[] = entities;
+  return result;
+});
+
+export const getCategoryLoading = createSelector(
+  [getCategoryEntityLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return result;
+  }
+);
 
 export const getProductDetail = createSelector(
   [getProductsDetailSlice],

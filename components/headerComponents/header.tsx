@@ -76,9 +76,11 @@ const HeaderNavigation: React.FC = () => {
                     Home
                   </Button>
                 </Link>
-                <Button type="text" className="!font-sf_pro">
-                  Shop
-                </Button>
+                <Link href="/products">
+                  <Button type="text" className="!font-sf_pro">
+                    Shop
+                  </Button>
+                </Link>
                 <Button type="text" className="!font-sf_pro">
                   Blog
                 </Button>

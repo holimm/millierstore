@@ -1,10 +1,12 @@
 import { ThunkAction, configureStore, combineReducers } from "@reduxjs/toolkit";
 import { AnyAction } from "redux";
 import { productsDetailSlice } from "./entities/productsDetail";
+import { productsSlice } from "./entities/products";
 
 export const store = configureStore({
   reducer: combineReducers({
     [productsDetailSlice.name]: productsDetailSlice.reducer,
+    [productsSlice.name]: productsSlice.reducer,
   }),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

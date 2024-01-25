@@ -1,6 +1,6 @@
 import { VideoPlayer } from "@/components/videoPlayer";
 import { motion } from "framer-motion";
-import { Button, Card, Image, Typography } from "antd";
+import { Button, Card, Image, Spin, Typography } from "antd";
 import ReactPlayer from "react-player";
 import CategoryIphone from "../assets/img/homepage/category_iphone.jpg";
 import CategoryMac from "../assets/img/homepage/category_mac.jpg";
@@ -21,16 +21,29 @@ import iPhone15Pro from "../assets/img/products/iphone15/iphone15_pro.webp";
 import iPhone15ProMax from "../assets/img/products/iphone15/iphone15_pro_max.webp";
 import NumberToDollarFormat from "@/helpers/commonHelpers";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  getCategory,
+  getCategoryLoading,
+  getProductsLoading,
+  getProducts,
+} from "@/redux/selectors/products";
+import { fetchCategory, fetchProducts } from "@/redux/entities/products";
+import { CategoryType } from "@/models/productModel";
 
 export default function Home() {
-  const [productData, setProductData] = useState<any[]>();
+  const dispatch = useAppDispatch();
+  const productList = useAppSelector(getProducts);
+  const loadingProductList = useAppSelector(getProductsLoading);
+  const categoryList = useAppSelector(getCategory);
+  const loadingCategoryList = useAppSelector(getCategoryLoading);
+
   useEffect(() => {
-    (async () => {
-      const resultData = await fetch("http://localhost:3030/api/products");
-      const body = await resultData.json();
-      setProductData(body);
-    })();
+    dispatch(fetchProducts());
+    dispatch(fetchCategory());
   }, []);
+
+  console.log(categoryList);
 
   const renderPickUsItem = (objectText: {
     icon: ReactNode;
@@ -161,11 +174,16 @@ export default function Home() {
               Discover diverse categories for a personalized shopping experience
             </span>
           </Typography.Paragraph>
-          <div className="h-fit w-full mx-auto mt-10 grid grid-cols-3 gap-20">
-            <CategoryCard label="iPhone" src={CategoryIphone.src} />
-            <CategoryCard label="Mac" src={CategoryMac.src} />
-            <CategoryCard label="Accessories" src={CategoryAccessories.src} />
-          </div>
+          <Spin spinning={loadingCategoryList}>
+            <div className="h-fit w-full mx-auto mt-10 grid grid-cols-3 gap-20">
+              {categoryList.map((item: CategoryType) => (
+                <CategoryCard
+                  label={item.name}
+                  src={`${process.env.MONGO_BE_URL}${item.image}`}
+                />
+              ))}
+            </div>
+          </Spin>
         </div>
         <div className="h-fit w-3/4 mx-auto py-20">
           <Typography.Title className="text-center">
@@ -176,20 +194,22 @@ export default function Home() {
               Discover our latest collection of high-quality products
             </span>
           </Typography.Paragraph>
-          <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-            {!isEmpty(productData) &&
-              productData.map((item: any, index: number) => (
-                <div key={index}>
-                  {renderProductCard({
-                    code: item._id,
-                    name: item.name,
-                    description: item.description,
-                    price: `From ${NumberToDollarFormat(item.lowest_price)}`,
-                    srcImage: item.image,
-                  })}
-                </div>
-              ))}
-          </div>
+          <Spin spinning={loadingProductList}>
+            <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
+              {!isEmpty(productList) &&
+                productList["iPhone"].map((item: any, index: number) => (
+                  <div key={index}>
+                    {renderProductCard({
+                      code: item._id,
+                      name: item.name,
+                      description: item.description,
+                      price: `From ${NumberToDollarFormat(item.lowest_price)}`,
+                      srcImage: item.image,
+                    })}
+                  </div>
+                ))}
+            </div>
+          </Spin>
         </div>
         <div className="h-[20em] w-full relative">
           <div className="h-full w-full absolute">
