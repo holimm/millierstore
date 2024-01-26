@@ -1,4 +1,5 @@
-import { Radio, RadioChangeEvent, Spin } from "antd";
+import { Button, Collapse, Radio, RadioChangeEvent, Spin } from "antd";
+import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect, useMemo, useState } from "react";
 import { fetchProductDetailById } from "@/redux/entities/productsDetail";
@@ -8,7 +9,10 @@ import {
   getProductDetailLoading,
 } from "@/redux/selectors/products";
 import { isEmpty, toString } from "lodash";
-import { ProductColorType } from "@/models/productDetailModel";
+import {
+  ProductColorType,
+  ProductStorageType,
+} from "@/models/productDetailModel";
 import DescriptionTabItem from "@/components/productDetailComponents/descriptionTab";
 import SpecificationTab from "@/components/productDetailComponents/specificationTab";
 import ProductMain from "@/components/productDetailComponents/productMain";
@@ -18,7 +22,9 @@ export default function ProductDetailsPage() {
   const router = useRouter();
   const productCode: string = toString(router.query.code);
   const [productColor, setProductColor] = useState<ProductColorType>({});
+  const [productStorage, setProductStorage] = useState<ProductStorageType>({});
   const [descriptionTab, setDescriptionTab] = useState<string>("overview");
+  const [openAddToCart, setOpenAddToCart] = useState<string[] | []>([]);
 
   useEffect(() => {
     if (!isEmpty(productCode)) dispatch(fetchProductDetailById(productCode));
@@ -32,7 +38,11 @@ export default function ProductDetailsPage() {
       setProductColor(productDetail[productCode].colors[0]);
   }, [productDetail]);
 
-  console.log("Product Detail: ", productDetail, !isEmpty(productDetail));
+  useEffect(() => {
+    if (!isEmpty(productColor) && !isEmpty(productStorage))
+      setOpenAddToCart(["1"]);
+    else setOpenAddToCart([]);
+  }, [productColor, productStorage]);
 
   const checkProductExist = useMemo(() => {
     setProductColor(
@@ -50,9 +60,17 @@ export default function ProductDetailsPage() {
     setProductColor(color);
   };
 
+  const onChangeProductStorage = (storage: ProductStorageType) => {
+    setProductStorage(storage);
+  };
+
   const onChangeDescriptionTab = (e: RadioChangeEvent) => {
     setDescriptionTab(e.target.value);
   };
+
+  // console.log("Product List: ", productDetail);
+  // console.log("Product Color: ", productColor);
+  // console.log("Product Storage: ", productStorage);
 
   return (
     <main className={`h-fit w-full`}>
@@ -65,8 +83,12 @@ export default function ProductDetailsPage() {
             productDetailLoading={productDetailLoading}
             productCode={productCode}
             productColor={productColor}
+            productStorage={productStorage}
+            openAddToCart={openAddToCart}
             onChangeProductColor={onChangeProductColor}
+            onChangeProductStorage={onChangeProductStorage}
           />
+
           <div className="h-fit w-3/4 mx-auto my-20">
             <Radio.Group
               className="flex justify-center"

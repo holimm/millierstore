@@ -1,6 +1,7 @@
 export interface ProductsType {
   _id?: string;
   name?: string;
+  key?: string;
   description?: string;
   lowest_price?: number;
   image?: string;

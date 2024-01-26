@@ -33,8 +33,16 @@ export interface ProductDetailType {
 }
 
 export interface ProductColorType {
+  color?: string;
   label?: string;
+  image?: string;
   lowercase?: string;
+}
+
+export interface ProductStorageType {
+  capacity?: number;
+  unit?: string;
+  price?: number;
 }
 
 export const productDescriptionImageVariants: Variants = {

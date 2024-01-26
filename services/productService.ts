@@ -4,13 +4,20 @@ import { CategoryType } from "@/models/productModel";
 import axiosMongo from "@/network/axiosMongo";
 
 const productService = {
-  async getAll(): Promise<ResponseBEType<ProductDetailType>> {
-    const result = await axiosMongo.get(`/api/products`);
+  async getAll(args: {
+    params?: { name: string };
+  }): Promise<ResponseBEType<ProductDetailType>> {
+    const result = await axiosMongo.get(`/api/products`, args);
+    return result as any;
+  },
+  async getAllSearch(args: {
+    params?: { name: string };
+  }): Promise<ResponseBEType<ProductDetailType>> {
+    const result = await axiosMongo.get(`/api/products`, args);
     return result as any;
   },
   async getAllCategory(): Promise<ResponseBEType<CategoryType>> {
     const result = await axiosMongo.get(`/api/category`);
-    console.log(result);
     return result as any;
   },
 };

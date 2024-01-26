@@ -25,11 +25,22 @@ import {
   NavigationDrawerProps,
 } from "@/models/navModel";
 import NumberToDollarFormat from "@/helpers/commonHelpers";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { dataCart } from "@/data/cartData";
 import { SigninButton } from "../common";
+import { useRouter } from "next/router";
+import { useAppSelector } from "@/redux/hooks";
+import { getCart } from "@/redux/selectors/cart";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
+  const router = useRouter();
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const onChangeSearchKeyword = (e) => {
+    setSearchKeyword(e.target.value);
+  };
+  const onSubmit = () => {
+    router.push({ pathname: `/search/${searchKeyword}` });
+  };
   return (
     <NavigationDrawer
       height={"4.5em"}
@@ -44,14 +55,22 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
           size="large"
           bordered={false}
           placeholder="Enter a product's name ..."
+          onChange={onChangeSearchKeyword}
+          allowClear
         />
-        <Button type="text" size="large" icon={<SearchOutlined />}></Button>
+        <Button
+          type="text"
+          size="large"
+          onClick={onSubmit}
+          icon={<SearchOutlined />}
+        ></Button>
       </div>
     </NavigationDrawer>
   );
 };
 
 export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
+  const cartList = useAppSelector(getCart);
   const DescriptionItem = ({
     title,
     content,
@@ -71,10 +90,12 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
       </p>
     </div>
   );
+  console.log(cartList);
   const calculateCartTotal = useMemo(() => {
     let total = 0;
     return total;
   }, [dataCart]);
+
   return (
     <NavigationDrawer
       width={"25vw"}
@@ -88,15 +109,16 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
         <div className="h-[70%] overflow-y-auto">
           <List
             itemLayout="horizontal"
-            dataSource={dataCart}
+            dataSource={cartList}
             renderItem={(item, index) => (
               <List.Item>
                 <Row>
                   <Col span={8}>
                     <Flex justify="center" align="center">
                       <Image
-                        height={"10em"}
-                        src={"./assets/products/seiren_x/main.png"}
+                        height={"100%"}
+                        width={"100%"}
+                        src={`${process.env.MONGO_BE_URL}${item.color.image}`}
                         preview={false}
                       />
                     </Flex>
@@ -114,14 +136,14 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
                         <DescriptionItem
                           type={"description"}
                           title="Color"
-                          content={item.color}
+                          content={item.color.label}
                         />
                       </Col>
                       <Col span={24}>
                         <DescriptionItem
-                          type={"item_total"}
-                          quantity={item.quantity}
-                          price={item.price}
+                          type={"description"}
+                          title="Price"
+                          content={NumberToDollarFormat(item.storage.price)}
                         />
                       </Col>
                       <Col span={24}>

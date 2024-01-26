@@ -1,30 +1,10 @@
 import React, { useState } from "react";
+import { Button, Row, Col, Flex } from "antd";
 import {
-  Drawer,
-  Input,
-  Space,
-  Button,
-  Row,
-  Col,
-  Image,
-  Flex,
-  List,
-  Divider,
-  Form,
-  Checkbox,
-  Typography,
-  DrawerProps,
-} from "antd";
-import {
-  FacebookOutlined,
-  GoogleOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { CartDrawer, NavigationDrawer } from "../drawer";
-import { FieldType } from "@/models/navModel";
-import { SigninButton } from "../common";
 import {
   HeaderCartDrawer,
   HeaderSearchDrawer,
