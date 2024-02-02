@@ -24,3 +24,20 @@ export const VideoPlayer = ({
     </>
   );
 };
+
+export const VideoPlayerYoutube = ({
+  urlVideo,
+  extraClass,
+}: {
+  urlVideo: string;
+  extraClass?: string;
+}) => {
+  return (
+    <iframe
+      className={`aspect-video ${!isEmpty(extraClass) && extraClass}`}
+      width="100%"
+      height="100%"
+      src={urlVideo}
+    ></iframe>
+  );
+};

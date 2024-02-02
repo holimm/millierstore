@@ -10,7 +10,7 @@ import { CiCreditCard1 } from "react-icons/ci";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { BsShop } from "react-icons/bs";
 import { ReactNode, useEffect, useState } from "react";
-import NumberToDollarFormat from "@/helpers/commonHelpers";
+import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   getCategory,

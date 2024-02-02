@@ -4,4 +4,5 @@ export interface CartType {
   name?: string;
   storage?: ProductStorageType;
   color?: ProductColorType;
+  quantity?: number;
 }

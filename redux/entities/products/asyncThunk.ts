@@ -6,7 +6,7 @@ export const storeName = "productsSlice";
 
 export const fetchProducts = createAsyncThunk(
   `${storeName}/fetchProducts`,
-  async (args: { params?: { name: string } }) => {
+  async (args: { params?: { name?: string; category?: string } }) => {
     const resp = await productService.getAll(args);
     return resp;
   }

@@ -8,6 +8,7 @@ import {
   Form,
   Image,
   Input,
+  InputNumber,
   List,
   Row,
   Typography,
@@ -24,13 +25,14 @@ import {
   FieldType,
   NavigationDrawerProps,
 } from "@/models/navModel";
-import NumberToDollarFormat from "@/helpers/commonHelpers";
-import { useMemo, useState } from "react";
-import { dataCart } from "@/data/cartData";
+import { NumberToDollarFormat } from "@/helpers/commonHelpers";
+import { useCallback, useMemo, useState } from "react";
 import { SigninButton } from "../common";
 import { useRouter } from "next/router";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getCart } from "@/redux/selectors/cart";
+import { removeFromCart, updateQuantity } from "@/redux/entities/cart";
+import { CartType } from "@/models/cartModel";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const router = useRouter();
@@ -70,6 +72,7 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
 };
 
 export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
+  const dispatch = useAppDispatch();
   const cartList = useAppSelector(getCart);
   const DescriptionItem = ({
     title,
@@ -91,10 +94,34 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
     </div>
   );
   console.log(cartList);
+
+  const handleRemoveFromCart = useCallback(
+    (item: CartType) => {
+      dispatch(removeFromCart(item));
+    },
+    [cartList]
+  );
+
+  const handleQuantity = useCallback(
+    (item: CartType, quantity: number) => {
+      const data = {
+        name: item.name,
+        storage: item.storage,
+        color: item.color,
+        quantity: quantity,
+      };
+      dispatch(updateQuantity(data));
+    },
+    [cartList]
+  );
+
   const calculateCartTotal = useMemo(() => {
     let total = 0;
+    cartList.map((item: CartType) => {
+      total += item.storage.price * item.quantity;
+    });
     return total;
-  }, [dataCart]);
+  }, [cartList]);
 
   return (
     <NavigationDrawer
@@ -147,10 +174,19 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
                         />
                       </Col>
                       <Col span={24}>
+                        <div className="site-description-item-profile-wrapper mt-2">
+                          <InputNumber
+                            defaultValue={item.quantity}
+                            onChange={(value) => handleQuantity(item, value)}
+                          />
+                        </div>
+                      </Col>
+                      <Col span={24}>
                         <Button
                           type="default"
-                          className="mt-2"
+                          className="mt-3"
                           icon={<DeleteOutlined />}
+                          onClick={() => handleRemoveFromCart(item)}
                           danger
                         >
                           Remove

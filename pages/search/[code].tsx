@@ -1,7 +1,7 @@
 import { Empty, Spin, Typography } from "antd";
 import { isEmpty } from "lodash";
 import { useEffect } from "react";
-import NumberToDollarFormat from "@/helpers/commonHelpers";
+import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchProductsSearch } from "@/redux/entities/products";
 import {

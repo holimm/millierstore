@@ -5,7 +5,7 @@ import axiosMongo from "@/network/axiosMongo";
 
 const productService = {
   async getAll(args: {
-    params?: { name: string };
+    params?: { name?: string; category?: string };
   }): Promise<ResponseBEType<ProductDetailType>> {
     const result = await axiosMongo.get(`/api/products`, args);
     return result as any;

@@ -4,29 +4,20 @@ import {
   productDescriptionImageVariants,
   productDescriptionVariants,
 } from "@/models/productDetailModel";
-
-const renderTitle = (title: string) => {
-  return (
-    <>
-      {title !== "null" && (
-        <CustomText
-          type="paragraph"
-          extraClass="!text-black !text-3xl font-semibold"
-          topClass="!text-center mt-10"
-        >
-          {title}
-        </CustomText>
-      )}
-    </>
-  );
-};
+import { renderTitle } from "../common";
 
 export default function DescriptionTabItem({
   type,
   title,
   content,
 }: {
-  type: string;
+  type:
+    | "text"
+    | "dual-images"
+    | "contain-image"
+    | "dual-contain-image"
+    | "contain-image-grey"
+    | "dual-contain-image-grey";
   title: string;
   content: {
     text: string;
@@ -42,7 +33,7 @@ export default function DescriptionTabItem({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {renderTitle(title)}
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           {content.map((item: any) => (
             <>
               {item.image === "null" && (
@@ -70,7 +61,7 @@ export default function DescriptionTabItem({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {renderTitle(title)}
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           <div className="grid grid-cols-2 gap-5">
             {content.map((item: any) => {
               return (
@@ -110,7 +101,7 @@ export default function DescriptionTabItem({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {renderTitle(title)}
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           {content.map((item: any) => {
             return (
               <div className="h-fit w-full">
@@ -148,7 +139,7 @@ export default function DescriptionTabItem({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {renderTitle(title)}
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           <div className="grid grid-cols-2 gap-5">
             {content.map((item: any) => {
               return (
@@ -188,7 +179,7 @@ export default function DescriptionTabItem({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {renderTitle(title)}
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           {content.map((item: any) => {
             return (
               <div className="h-fit w-full">
@@ -226,7 +217,7 @@ export default function DescriptionTabItem({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {renderTitle(title)}
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           <div className="grid grid-cols-2 gap-5">
             {content.map((item: any) => {
               return (

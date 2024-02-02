@@ -16,7 +16,7 @@ import {
   ProductDetailType,
   ProductStorageType,
 } from "@/models/productDetailModel";
-import NumberToDollarFormat from "@/helpers/commonHelpers";
+import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { saveCart } from "@/redux/entities/cart";
 import { CartType } from "@/models/cartModel";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -205,6 +205,7 @@ export default function ProductMain({
                               name: productDetail[productCode].name,
                               storage: productStorage,
                               color: productColor,
+                              quantity: 1,
                             });
                           }}
                         >
