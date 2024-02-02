@@ -118,8 +118,9 @@ export default function Home() {
           </Typography.Paragraph>
           <Spin spinning={loadingCategoryList}>
             <div className="h-fit w-full mx-auto mt-10 grid grid-cols-3 gap-20">
-              {categoryList.map((item: CategoryType) => (
+              {categoryList.map((item: CategoryType, index) => (
                 <CategoryCard
+                  key={index}
                   label={item.name}
                   src={`${process.env.MONGO_BE_URL}${item.image}`}
                 />

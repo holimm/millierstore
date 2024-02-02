@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Row, Col, Flex } from "antd";
+import { Button, Row, Col, Flex, Dropdown, Space, MenuProps } from "antd";
 import {
   SearchOutlined,
   ShoppingCartOutlined,
@@ -7,12 +7,15 @@ import {
 } from "@ant-design/icons";
 import {
   HeaderCartDrawer,
+  HeaderProfileDropdown,
   HeaderSearchDrawer,
   HeaderSigninDrawer,
 } from "./headerDrawer";
 import Link from "next/link";
+import { useAuthen } from "@/hooks/useAuthen";
 
 const HeaderNavigation: React.FC = () => {
+  const authentication = useAuthen();
   const [showSearchDrawer, setShowSearchDrawer] = useState<boolean>(false);
   const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
   const [showSignInDrawer, setShowSignInDrawer] = useState<boolean>(false);
@@ -33,10 +36,12 @@ const HeaderNavigation: React.FC = () => {
         onClose={handleShowSearchDrawer}
       />
       <HeaderCartDrawer open={showCartDrawer} onClose={handleShowCartDrawer} />
-      <HeaderSigninDrawer
-        open={showSignInDrawer}
-        onClose={handleShowSignInDrawer}
-      />
+      {!authentication && (
+        <HeaderSigninDrawer
+          open={showSignInDrawer}
+          onClose={handleShowSignInDrawer}
+        />
+      )}
 
       <div className="h-16 w-full sticky top-0 z-50 bg-white shadow-md">
         <div className="h-full w-3/4 mx-auto">
@@ -91,12 +96,16 @@ const HeaderNavigation: React.FC = () => {
                   icon={<ShoppingCartOutlined />}
                   onClick={handleShowCartDrawer}
                 ></Button>
-                <Button
-                  type="text"
-                  size="large"
-                  icon={<UserOutlined />}
-                  onClick={handleShowSignInDrawer}
-                ></Button>
+                {authentication ? (
+                  <HeaderProfileDropdown authenData={authentication} />
+                ) : (
+                  <Button
+                    type="text"
+                    size="large"
+                    icon={<UserOutlined />}
+                    onClick={handleShowSignInDrawer}
+                  ></Button>
+                )}
               </Flex>
             </Col>
           </Row>

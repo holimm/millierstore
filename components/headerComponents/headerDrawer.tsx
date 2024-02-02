@@ -4,13 +4,16 @@ import {
   Col,
   Divider,
   DrawerProps,
+  Dropdown,
   Flex,
   Form,
   Image,
   Input,
   InputNumber,
   List,
+  MenuProps,
   Row,
+  Spin,
   Typography,
 } from "antd";
 import { NavigationDrawer } from "../drawer";
@@ -19,13 +22,17 @@ import {
   FacebookOutlined,
   GoogleOutlined,
   SearchOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import {
   DescriptionItemModel,
   FieldType,
   NavigationDrawerProps,
 } from "@/models/navModel";
-import { NumberToDollarFormat } from "@/helpers/commonHelpers";
+import {
+  NumberToDollarFormat,
+  notificationMessage,
+} from "@/helpers/commonHelpers";
 import { useCallback, useMemo, useState } from "react";
 import { SigninButton } from "../common";
 import { useRouter } from "next/router";
@@ -33,6 +40,11 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getCart } from "@/redux/selectors/cart";
 import { removeFromCart, updateQuantity } from "@/redux/entities/cart";
 import { CartType } from "@/models/cartModel";
+import { UserType } from "@/models/userModel";
+import { fetchUserSignIn } from "@/redux/entities/users/asyncThunk";
+import { getUserSigninLoading } from "@/redux/selectors/user";
+import { saveUser } from "@/redux/entities/users";
+import Link from "next/link";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const router = useRouter();
@@ -93,7 +105,6 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
       </p>
     </div>
   );
-  console.log(cartList);
 
   const handleRemoveFromCart = useCallback(
     (item: CartType) => {
@@ -211,97 +222,139 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
 };
 
 export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+  const dispatch = useAppDispatch();
+  const userSigningIn = useAppSelector(getUserSigninLoading);
+  const onFinish = async (values: UserType) => {
+    dispatch(fetchUserSignIn(values));
   };
   return (
     <NavigationDrawer
-      width={"20vw"}
+      width={"30%"}
       placement="right"
       open={props.open}
       onClose={props.onClose}
       closable={false}
     >
-      <Flex className="h-full w-full" justify="center" align="center">
-        <Form
-          name="basic"
-          layout="vertical"
-          className="w-full mb-10"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 24 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Typography.Title level={4}>Sign In</Typography.Title>
-          <Divider />
-          <Form.Item<FieldType>
-            name="username"
-            label="Email"
-            className="mt-2"
-            rules={[{ required: true, message: "Please input your username!" }]}
+      <Spin spinning={userSigningIn}>
+        <Flex className="h-full w-full" justify="center" align="center">
+          <Form
+            name="basic"
+            layout="vertical"
+            className="w-full mb-10"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            autoComplete="off"
           >
-            <Input className="py-3" placeholder="Email" size="middle" />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            name="password"
-            label="Password"
-            className="mt-8"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password
-              className="py-3"
-              placeholder="Password"
-              size="middle"
-            />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            name="remember"
-            className="mt-8"
-            valuePropName="checked"
-          >
-            <Checkbox>Remember me</Checkbox>
-            <Typography.Link className="float-right cursor-pointer">
-              Forget Password?
-            </Typography.Link>
-          </Form.Item>
-
-          <Form.Item>
-            <SigninButton
-              type="primary"
-              htmlType="submit"
-              extraClass="bg-blue-500"
+            <Typography.Title level={4}>Sign In</Typography.Title>
+            <Divider />
+            <Form.Item<FieldType>
+              name="username"
+              label="Email"
+              className="mt-2"
+              rules={[
+                { required: true, message: "Please input your username!" },
+              ]}
             >
-              Login
-            </SigninButton>
-          </Form.Item>
-          <Divider plain>OR</Divider>
-          <Form.Item>
-            <SigninButton
-              type="text"
-              extraClass="bg-[#3a5997] text-white"
-              icon={<FacebookOutlined />}
+              <Input className="py-3" placeholder="Email" size="middle" />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              name="password"
+              label="Password"
+              className="mt-8"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
             >
-              Login with Facebook
-            </SigninButton>
-          </Form.Item>
-          <Form.Item>
-            <SigninButton
-              type="text"
-              extraClass="bg-[#ea4236] text-white"
-              icon={<GoogleOutlined />}
+              <Input.Password
+                className="py-3"
+                placeholder="Password"
+                size="middle"
+              />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              name="remember"
+              className="mt-8"
+              valuePropName="checked"
             >
-              Login with Google
-            </SigninButton>
-          </Form.Item>
-        </Form>
-      </Flex>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            <Form.Item<FieldType>>
+              <Typography.Link className="cursor-pointer">
+                Forget Password?
+              </Typography.Link>
+            </Form.Item>
+            <Form.Item>
+              <SigninButton
+                type="primary"
+                htmlType="submit"
+                extraClass="bg-blue-500"
+              >
+                Login
+              </SigninButton>
+            </Form.Item>
+            <Divider plain>OR</Divider>
+            <Form.Item>
+              <SigninButton
+                type="text"
+                extraClass="bg-[#3a5997] text-white"
+                icon={<FacebookOutlined />}
+              >
+                Login with Facebook
+              </SigninButton>
+            </Form.Item>
+            <Form.Item>
+              <SigninButton
+                type="text"
+                extraClass="bg-[#ea4236] text-white"
+                icon={<GoogleOutlined />}
+              >
+                Login with Google
+              </SigninButton>
+            </Form.Item>
+          </Form>
+        </Flex>
+      </Spin>
     </NavigationDrawer>
+  );
+};
+
+export const HeaderProfileDropdown = ({
+  authenData,
+}: {
+  authenData: UserType;
+}) => {
+  const dispatch = useAppDispatch();
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <span>Hello, {authenData.username}</span>,
+    },
+    {
+      key: "2",
+      label: <Link href="/profile">Profile</Link>,
+    },
+    {
+      key: "3",
+      label: (
+        <span
+          onClick={() => {
+            dispatch(saveUser({}));
+            sessionStorage.removeItem("signin_token");
+            notificationMessage({ type: "success", content: "Logged out" });
+          }}
+        >
+          Logout
+        </span>
+      ),
+    },
+  ];
+  return (
+    <Dropdown menu={{ items }} placement="bottomLeft">
+      <Button type="text" size="large" icon={<UserOutlined />}></Button>
+    </Dropdown>
   );
 };
