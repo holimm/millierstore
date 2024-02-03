@@ -10,7 +10,7 @@ import {
   productDescriptionVariants,
 } from "@/models/productDetailModel";
 
-export const SigninButton: React.FC<SigninButtonProps> = ({
+export const CustomButton: React.FC<SigninButtonProps> = ({
   children,
   ...props
 }) => {

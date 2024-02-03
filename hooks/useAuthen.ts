@@ -17,8 +17,6 @@ export const useAuthen = () => {
       setToken(sessionStorage.getItem("signin_token"));
   }, []);
 
-  console.log(token);
-
   useEffect(() => {
     if (!isEmpty(token)) {
       dispatch(fetchUserSession(token));

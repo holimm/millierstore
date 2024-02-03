@@ -1,5 +1,9 @@
-import { ResponseBEType } from "@/models/common";
-import { UserType } from "@/models/userModel";
+import {
+  FieldProfilePasswordType,
+  FieldProfileInformationType,
+  ResponseBEType,
+} from "@/models/common";
+import { UserType, UserAddressType } from "@/models/userModel";
 import axiosMongo from "@/network/axiosMongo";
 
 const userService = {
@@ -19,6 +23,47 @@ const userService = {
           Authorization: `Bearer ${token}`,
         },
       });
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async updateInformation(
+    values: FieldProfileInformationType
+  ): Promise<ResponseBEType<string>> {
+    try {
+      const { _id, ...information } = values;
+      const result = await axiosMongo.put(
+        `/api/users/updateInformation/${values._id}`,
+        information
+      );
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async updatePassword(
+    values: FieldProfilePasswordType
+  ): Promise<ResponseBEType<string>> {
+    try {
+      const result = await axiosMongo.put(
+        `/api/users/updatePassword/${values._id}`,
+        values
+      );
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async updateAddress(
+    values: UserAddressType
+  ): Promise<ResponseBEType<string>> {
+    try {
+      const { _id, ...address } = values;
+      const result = await axiosMongo.put(
+        `/api/users/updateAddress/${values._id}`,
+        address
+      );
       return result.data as any;
     } catch (err) {
       return err as any;

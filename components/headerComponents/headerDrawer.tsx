@@ -34,7 +34,7 @@ import {
   notificationMessage,
 } from "@/helpers/commonHelpers";
 import { useCallback, useMemo, useState } from "react";
-import { SigninButton } from "../common";
+import { CustomButton } from "../common";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getCart } from "@/redux/selectors/cart";
@@ -288,32 +288,32 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
               </Typography.Link>
             </Form.Item>
             <Form.Item>
-              <SigninButton
+              <CustomButton
                 type="primary"
                 htmlType="submit"
                 extraClass="bg-blue-500"
               >
                 Login
-              </SigninButton>
+              </CustomButton>
             </Form.Item>
             <Divider plain>OR</Divider>
             <Form.Item>
-              <SigninButton
+              <CustomButton
                 type="text"
                 extraClass="bg-[#3a5997] text-white"
                 icon={<FacebookOutlined />}
               >
                 Login with Facebook
-              </SigninButton>
+              </CustomButton>
             </Form.Item>
             <Form.Item>
-              <SigninButton
+              <CustomButton
                 type="text"
                 extraClass="bg-[#ea4236] text-white"
                 icon={<GoogleOutlined />}
               >
                 Login with Google
-              </SigninButton>
+              </CustomButton>
             </Form.Item>
           </Form>
         </Flex>
