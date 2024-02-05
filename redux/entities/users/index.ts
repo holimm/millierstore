@@ -10,6 +10,8 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { isEmpty } from "lodash";
 import {
+  createUserAddress,
+  deleteUserAddress,
   fetchUserSession,
   fetchUserSignIn,
   updateUserAddress,
@@ -27,7 +29,9 @@ export const userSlice = createSlice({
     loading: false,
     loadingChangingInformation: false,
     loadingChangingPassword: false,
+    loadingCreateAddress: false,
     loadingUpdateAddress: false,
+    loadingDeleteAddress: false,
   },
   reducers: {
     saveUser(state, action: PayloadAction<UserType | {}>) {
@@ -42,8 +46,14 @@ export const userSlice = createSlice({
     setUserLoadingChangingPassword(state, action: PayloadAction<boolean>) {
       state.loadingChangingPassword = action.payload;
     },
+    setUserLoadingCreateAddress(state, action: PayloadAction<boolean>) {
+      state.loadingCreateAddress = action.payload;
+    },
     setUserLoadingUpdateAddress(state, action: PayloadAction<boolean>) {
       state.loadingUpdateAddress = action.payload;
+    },
+    setUserLoadingDeleteAddress(state, action: PayloadAction<boolean>) {
+      state.loadingDeleteAddress = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -146,6 +156,28 @@ export const userSlice = createSlice({
       });
       notificationMessage({ type: "error", content: error.message });
     });
+    //USER CREATING ADDRESS
+    builder.addCase(createUserAddress.pending, (state, { payload }) => {
+      userSlice.caseReducers.setUserLoadingCreateAddress(state, {
+        payload: true,
+        type: `${storeName}/setUserLoadingCreateAddress`,
+      });
+    });
+    builder.addCase(createUserAddress.fulfilled, (state, { payload }) => {
+      const { data } = payload as ResponseBEType<string>;
+      notificationMessage({ type: "success", content: data });
+      userSlice.caseReducers.setUserLoadingCreateAddress(state, {
+        payload: false,
+        type: `${storeName}/setUserLoadingCreateAddress`,
+      });
+    });
+    builder.addCase(createUserAddress.rejected, (state, { error }) => {
+      userSlice.caseReducers.setUserLoadingCreateAddress(state, {
+        payload: false,
+        type: `${storeName}/setUserLoadingCreateAddress`,
+      });
+      notificationMessage({ type: "error", content: error.message });
+    });
     //USER UPDATING ADDRESS
     builder.addCase(updateUserAddress.pending, (state, { payload }) => {
       userSlice.caseReducers.setUserLoadingUpdateAddress(state, {
@@ -168,6 +200,28 @@ export const userSlice = createSlice({
       });
       notificationMessage({ type: "error", content: error.message });
     });
+    //USER DELETING ADDRESS
+    builder.addCase(deleteUserAddress.pending, (state, { payload }) => {
+      userSlice.caseReducers.setUserLoadingDeleteAddress(state, {
+        payload: true,
+        type: `${storeName}/setUserLoadingDeleteAddress`,
+      });
+    });
+    builder.addCase(deleteUserAddress.fulfilled, (state, { payload }) => {
+      const { data } = payload as ResponseBEType<string>;
+      notificationMessage({ type: "success", content: data });
+      userSlice.caseReducers.setUserLoadingDeleteAddress(state, {
+        payload: false,
+        type: `${storeName}/setUserLoadingDeleteAddress`,
+      });
+    });
+    builder.addCase(deleteUserAddress.rejected, (state, { error }) => {
+      userSlice.caseReducers.setUserLoadingDeleteAddress(state, {
+        payload: false,
+        type: `${storeName}/setUserLoadingDeleteAddress`,
+      });
+      notificationMessage({ type: "error", content: error.message });
+    });
   },
 });
 
@@ -175,7 +229,9 @@ export const {
   saveUser,
   setUserLoading,
   setUserLoadingChangingPassword,
+  setUserLoadingCreateAddress,
   setUserLoadingUpdateAddress,
+  setUserLoadingDeleteAddress,
 } = userSlice.actions;
 export default userSlice.reducer;
 
@@ -185,5 +241,9 @@ export const getUserDataChangingInformationLoading = (state: boolean) =>
   state[storeName].loadingChangingInformation;
 export const getUserDataChangingPasswordLoading = (state: boolean) =>
   state[storeName].loadingChangingPassword;
+export const getUserDataCreateAddressLoading = (state: boolean) =>
+  state[storeName].loadingCreateAddress;
 export const getUserDataUpdateAddressLoading = (state: boolean) =>
   state[storeName].loadingUpdateAddress;
+export const getUserDataDeleteAddressLoading = (state: boolean) =>
+  state[storeName].loadingDeleteAddress;

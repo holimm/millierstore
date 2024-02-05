@@ -40,10 +40,26 @@ export const updateUserPassword = createAsyncThunk(
     return resp;
   }
 );
+export const createUserAddress = createAsyncThunk(
+  `${storeName}/createUserAddress`,
+  async (values: UserAddressType) => {
+    const resp = await userService.createAddress(values);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
 export const updateUserAddress = createAsyncThunk(
   `${storeName}/updateUserAddress`,
   async (values: UserAddressType) => {
     const resp = await userService.updateAddress(values);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
+export const deleteUserAddress = createAsyncThunk(
+  `${storeName}/deleteUserAddress`,
+  async (values: UserAddressType) => {
+    const resp = await userService.deleteAddress(values);
     if (resp.status === "error") throw resp.data;
     return resp;
   }

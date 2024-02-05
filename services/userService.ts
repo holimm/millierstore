@@ -55,6 +55,20 @@ const userService = {
       return err as any;
     }
   },
+  async createAddress(
+    values: UserAddressType
+  ): Promise<ResponseBEType<string>> {
+    try {
+      const { _id, ...address } = values;
+      const result = await axiosMongo.post(
+        `/api/users/createAddress/${values._id}`,
+        address
+      );
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
   async updateAddress(
     values: UserAddressType
   ): Promise<ResponseBEType<string>> {
@@ -62,6 +76,20 @@ const userService = {
       const { _id, ...address } = values;
       const result = await axiosMongo.put(
         `/api/users/updateAddress/${values._id}`,
+        address
+      );
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async deleteAddress(
+    values: UserAddressType
+  ): Promise<ResponseBEType<string>> {
+    try {
+      const { _id, ...address } = values;
+      const result = await axiosMongo.put(
+        `/api/users/deleteAddress/${values._id}`,
         address
       );
       return result.data as any;

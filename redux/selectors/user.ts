@@ -5,6 +5,8 @@ import {
   getUserData,
   getUserDataChangingInformationLoading,
   getUserDataChangingPasswordLoading,
+  getUserDataCreateAddressLoading,
+  getUserDataDeleteAddressLoading,
   getUserDataLoading,
   getUserDataUpdateAddressLoading,
 } from "../entities/users";
@@ -39,8 +41,24 @@ export const getUserChangingPasswordLoading = createSelector(
   }
 );
 
+export const getUserCreateAddressLoading = createSelector(
+  [getUserDataCreateAddressLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return result;
+  }
+);
+
 export const getUserUpdateAddressLoading = createSelector(
   [getUserDataUpdateAddressLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return result;
+  }
+);
+
+export const getUserDeleteAddressLoading = createSelector(
+  [getUserDataDeleteAddressLoading],
   (entities) => {
     const result: boolean = entities;
     return result;
