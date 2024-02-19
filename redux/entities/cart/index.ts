@@ -40,7 +40,12 @@ export const cartSlice = createSlice({
           type: "success",
           content: "Product added to cart",
         });
+        window.localStorage.setItem("cart_session", JSON.stringify(state.cart));
+        window.dispatchEvent(new Event("storage"));
       }
+    },
+    saveCartSession(state, action: PayloadAction<CartType[]>) {
+      state.cart = action.payload;
     },
     removeFromCart(state, action: PayloadAction<CartType>) {
       state.cart = state.cart.filter((item: CartType) => {
@@ -51,6 +56,8 @@ export const cartSlice = createSlice({
         if (item.storage.unit !== action.payload.storage.unit) return true;
         return false;
       });
+      window.localStorage.setItem("cart_session", JSON.stringify(state.cart));
+      window.dispatchEvent(new Event("cart_localStorage"));
     },
     updateQuantity(state, action: PayloadAction<CartType>) {
       state.cart.map((item: CartType, index) => {
@@ -67,7 +74,8 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { saveCart, removeFromCart, updateQuantity } = cartSlice.actions;
+export const { saveCart, saveCartSession, removeFromCart, updateQuantity } =
+  cartSlice.actions;
 export default cartSlice.reducer;
 
 export const getCartList = (state: CartType[]) => state[storeName].cart;

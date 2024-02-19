@@ -1,17 +1,25 @@
 import { Variants } from "framer-motion";
 
+export interface ProductDetailDescription {
+  label: string;
+  type:
+    | "text"
+    | "dual-images"
+    | "contain-image"
+    | "dual-contain-image"
+    | "contain-image-grey"
+    | "dual-contain-image-grey";
+  content: {
+    text: string;
+    image: string;
+  }[];
+}
+
 export interface ProductDetailType {
   _id?: string;
   name?: string;
   name_lower?: string;
-  description?: {
-    label: string;
-    type: string;
-    content: {
-      text: string;
-      image: string;
-    }[];
-  }[];
+  description?: ProductDetailDescription[];
   specs?: {
     label: string;
     key: string;

@@ -1,3 +1,4 @@
+import { CartType } from "@/models/cartModel";
 import { message, notification } from "antd";
 import { NotificationPlacement } from "antd/es/notification/interface";
 
@@ -16,6 +17,7 @@ interface dataMessageNotificationType {
   content: string;
   onClose?: Function;
 }
+
 export function notificationMessage(data: dataMessageNotificationType) {
   switch (data.type) {
     case "success":
@@ -35,3 +37,11 @@ export function notificationMessage(data: dataMessageNotificationType) {
       break;
   }
 }
+
+export const calculateCartTotal = (cartList: CartType[]) => {
+  let total = 0;
+  cartList.map((item: CartType) => {
+    total += item.storage.price * item.quantity;
+  });
+  return total;
+};

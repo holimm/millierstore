@@ -31,10 +31,11 @@ import {
 } from "@/models/navModel";
 import {
   NumberToDollarFormat,
+  calculateCartTotal,
   notificationMessage,
 } from "@/helpers/commonHelpers";
 import { useCallback, useMemo, useState } from "react";
-import { CustomButton } from "../common";
+import { CustomButton, DescriptionItem } from "../common";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getCart } from "@/redux/selectors/cart";
@@ -45,9 +46,11 @@ import { fetchUserSignIn } from "@/redux/entities/users/asyncThunk";
 import { getUserSigninLoading } from "@/redux/selectors/user";
 import { saveUser } from "@/redux/entities/users";
 import Link from "next/link";
+import { useCart } from "@/hooks/useCart";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const router = useRouter();
+  const cartSession = useCart();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const onChangeSearchKeyword = (e) => {
     setSearchKeyword(e.target.value);
@@ -85,26 +88,8 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
 
 export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const dispatch = useAppDispatch();
+  const cartSession = useCart();
   const cartList = useAppSelector(getCart);
-  const DescriptionItem = ({
-    title,
-    content,
-    quantity,
-    price,
-    total,
-    type,
-  }: DescriptionItemModel) => (
-    <div className="site-description-item-profile-wrapper mt-2">
-      <p className="site-description-item-profile-p-label">
-        {type === "description" && `${title}: ${content}`}
-        {type === "item_total" &&
-          `${quantity} x ${NumberToDollarFormat(
-            price
-          )} = ${NumberToDollarFormat(quantity * price)}`}
-        {type === "cart_total" && `Total: ${NumberToDollarFormat(total)}`}
-      </p>
-    </div>
-  );
 
   const handleRemoveFromCart = useCallback(
     (item: CartType) => {
@@ -125,14 +110,6 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
     },
     [cartList]
   );
-
-  const calculateCartTotal = useMemo(() => {
-    let total = 0;
-    cartList.map((item: CartType) => {
-      total += item.storage.price * item.quantity;
-    });
-    return total;
-  }, [cartList]);
 
   return (
     <NavigationDrawer
@@ -211,11 +188,16 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
           />
         </div>
         <Divider />
-        <DescriptionItem type={"cart_total"} total={calculateCartTotal} />
+        <DescriptionItem
+          type={"cart_total"}
+          total={calculateCartTotal(cartList)}
+        />
         <Divider />
-        <Button type="default" className="w-full">
-          Checkout
-        </Button>
+        <Link href={"/checkout"}>
+          <Button type="default" className="w-full">
+            Checkout
+          </Button>
+        </Link>
       </div>
     </NavigationDrawer>
   );

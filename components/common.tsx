@@ -1,7 +1,7 @@
 import { Button, Card, Image } from "antd";
 import { motion } from "framer-motion";
 import { isEmpty } from "lodash";
-import { SigninButtonProps } from "@/models/navModel";
+import { DescriptionItemModel, SigninButtonProps } from "@/models/navModel";
 import { CustomText } from "./homePage/common";
 import Link from "next/link";
 import { ProductCardType } from "@/models/common";
@@ -9,6 +9,7 @@ import {
   productDescriptionImageVariants,
   productDescriptionVariants,
 } from "@/models/productDetailModel";
+import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 
 export const CustomButton: React.FC<SigninButtonProps> = ({
   children,
@@ -292,3 +293,23 @@ export const CategoryDescriptionTabItem = ({
   };
   return renderItem();
 };
+
+export const DescriptionItem = ({
+  title,
+  content,
+  quantity,
+  price,
+  total,
+  type,
+}: DescriptionItemModel) => (
+  <div className="site-description-item-profile-wrapper mt-2">
+    <p className="site-description-item-profile-p-label">
+      {type === "description" && `${title}: ${content}`}
+      {type === "item_total" &&
+        `${quantity} x ${NumberToDollarFormat(price)} = ${NumberToDollarFormat(
+          quantity * price
+        )}`}
+      {type === "cart_total" && `Total: ${NumberToDollarFormat(total)}`}
+    </p>
+  </div>
+);

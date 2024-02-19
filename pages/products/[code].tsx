@@ -11,6 +11,8 @@ import {
 import { isEmpty, toString } from "lodash";
 import {
   ProductColorType,
+  ProductDetailDescription,
+  ProductDetailType,
   ProductStorageType,
 } from "@/models/productDetailModel";
 import DescriptionTabItem from "@/components/productDetailComponents/descriptionTab";
@@ -104,15 +106,17 @@ export default function ProductDetailsPage() {
               {descriptionTab === "overview" && (
                 <Spin spinning={productDetailLoading}>
                   {checkProductExist &&
-                    productDetail[productCode].description.map((item) => (
-                      <>
-                        <DescriptionTabItem
-                          type={item.type}
-                          title={item.label}
-                          content={item.content}
-                        />
-                      </>
-                    ))}
+                    productDetail[productCode].description.map(
+                      (item: ProductDetailDescription, index: number) => (
+                        <div key={index}>
+                          <DescriptionTabItem
+                            type={item.type}
+                            title={item.label}
+                            content={item.content}
+                          />
+                        </div>
+                      )
+                    )}
                 </Spin>
               )}
               {descriptionTab === "specifications" && (

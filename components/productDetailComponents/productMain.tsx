@@ -50,7 +50,6 @@ export default function ProductMain({
   const handleAddToCart = (data: CartType) => {
     dispatch(saveCart(data));
   };
-  console.log(cartData);
   return (
     <Row gutter={30}>
       <Col span={18}>
@@ -102,16 +101,19 @@ export default function ProductMain({
               <Spin spinning={productDetailLoading}>
                 <div className="h-fit w-full flex justify-start gap-10">
                   {checkProductExist &&
-                    productDetail[productCode].colors.map((item: any) => (
-                      <div
-                        className={`h-8 w-8 rounded-full cursor-pointer border-2 ${
-                          productColor.lowercase === item.lowercase &&
-                          "border-blue-400"
-                        } shadow-md transition-all duration-500`}
-                        style={{ backgroundColor: item.color }}
-                        onClick={() => onChangeProductColor(item)}
-                      ></div>
-                    ))}
+                    productDetail[productCode].colors.map(
+                      (item: any, index: number) => (
+                        <div
+                          key={index}
+                          className={`h-8 w-8 rounded-full cursor-pointer border-2 ${
+                            productColor.lowercase === item.lowercase &&
+                            "border-blue-400"
+                          } shadow-md transition-all duration-500`}
+                          style={{ backgroundColor: item.color }}
+                          onClick={() => onChangeProductColor(item)}
+                        ></div>
+                      )
+                    )}
                 </div>
               </Spin>
             </div>
@@ -129,8 +131,9 @@ export default function ProductMain({
                 <div className="h-fit w-full flex-rows justify-start gap-10">
                   {checkProductExist &&
                     productDetail[productCode].storage.map(
-                      (item: ProductStorageType) => (
+                      (item: ProductStorageType, index: number) => (
                         <div
+                          key={index}
                           className={`h-fit w-full my-5 grid grid-cols-2 border-[1px] border-neutral-600/50 ${
                             productStorage.capacity === item.capacity &&
                             "!border-blue-400"
