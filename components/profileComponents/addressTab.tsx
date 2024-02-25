@@ -30,6 +30,7 @@ import {
 import { useState } from "react";
 import { renderInput, renderText } from "@/modules/profile/addressRender";
 import { AddAddressModal } from "@/modules/profile/addAddressModal";
+import { isEmpty } from "lodash";
 
 export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
   const dispatch = useAppDispatch();
@@ -163,11 +164,12 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
       <Divider />
       <Spin spinning={loadingDeleteAddress}>
         <Row gutter={16}>
-          {authenAccount.address.map((item: UserAddressType, key: number) => (
-            <Col className="mb-5" span={8} key={key}>
-              {renderAddressCard(item, key)}
-            </Col>
-          ))}
+          {!isEmpty(authenAccount.address) &&
+            authenAccount.address.map((item: UserAddressType, key: number) => (
+              <Col className="mb-5" span={8} key={key}>
+                {renderAddressCard(item, key)}
+              </Col>
+            ))}
         </Row>
       </Spin>
     </>

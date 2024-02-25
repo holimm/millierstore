@@ -13,8 +13,8 @@ export const useAuthen = () => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    if (!isEmpty(sessionStorage.getItem("signin_token")))
-      setToken(sessionStorage.getItem("signin_token"));
+    if (!isEmpty(localStorage.getItem("signin_token")))
+      setToken(localStorage.getItem("signin_token"));
   }, []);
 
   useEffect(() => {

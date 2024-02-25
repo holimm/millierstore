@@ -78,7 +78,7 @@ export const userSlice = createSlice({
         type: "success",
         content: "Logged in successfully",
       });
-      sessionStorage.setItem("signin_token", data.token);
+      localStorage.setItem("signin_token", data.token);
     });
     builder.addCase(fetchUserSignIn.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoading(state, {

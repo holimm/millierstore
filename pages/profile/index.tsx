@@ -46,8 +46,8 @@ export default function Profile() {
               <Menu
                 className="h-full"
                 mode="inline"
-                defaultSelectedKeys={["addressesTab"]}
-                defaultOpenKeys={["addressesTab"]}
+                defaultSelectedKeys={["profileTab"]}
+                defaultOpenKeys={["profileTab"]}
                 onClick={onClickMenu}
                 items={itemMenu}
               />
