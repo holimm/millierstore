@@ -21,6 +21,8 @@ import {
   Divider,
   Form,
   Input,
+  Radio,
+  RadioChangeEvent,
   Row,
   Spin,
   Tabs,
@@ -44,26 +46,8 @@ const ExistedAddressForm = ({
   };
   return (
     <>
-      <Form.Item name="type">
-        <Input />
-      </Form.Item>
-      <Form.Item name="street">
-        <Input />
-      </Form.Item>
-      <Form.Item name="ward">
-        <Input />
-      </Form.Item>
-      <Form.Item name="district">
-        <Input />
-      </Form.Item>
-      <Form.Item name="city">
-        <Input />
-      </Form.Item>
-      <Form.Item name="phone">
-        <Input />
-      </Form.Item>
       {!isEmpty(authenAccount.address) && (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-3 gap-5 my-8">
           {authenAccount.address.map(
             (item: CheckoutFormAddressType, key: number) => (
               <div
@@ -104,9 +88,16 @@ export const FormCheckout = ({
   const loadingChangingInformation = useAppSelector(
     getUserChangingPasswordLoading
   );
-  const [addressValue, setAddressValue] = useState<CheckoutFormAddressType>();
+  const [addressValue, setAddressValue] =
+    useState<CheckoutFormAddressType | null>();
+  const [currentAddressTab, setCurrentAddressTab] = useState<string>("existed");
+
   const onFinishCheckout = async (values: FieldProfileInformationType) => {
-    console.log(values);
+    console.log(
+      !isEmpty(addressValue) && currentAddressTab === "existed"
+        ? { ...addressValue, ...values }
+        : values
+    );
     // dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
   };
   const onChangeExistedAddress = async (values: CheckoutFormAddressType) => {
@@ -114,23 +105,10 @@ export const FormCheckout = ({
     // dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
   };
 
-  const addressTabItems: TabsProps["items"] = [
-    {
-      key: "1",
-      label: "Existed Address",
-      children: (
-        <ExistedAddressForm
-          authenAccount={authenAccount}
-          onChangeExistedAddress={onChangeExistedAddress}
-        />
-      ),
-    },
-    {
-      key: "2",
-      label: "New Address",
-      children: <AddressFormItem />,
-    },
-  ];
+  const onChangeAddressTab = (e: RadioChangeEvent) => {
+    setCurrentAddressTab(e.target.value);
+    setAddressValue(null);
+  };
 
   return (
     <Spin spinning={false}>
@@ -144,15 +122,6 @@ export const FormCheckout = ({
         onFinish={onFinishCheckout}
         autoComplete="off"
         disabled={loadingChangingInformation}
-        initialValues={{
-          name: isEmpty(authenAccount) ? "" : authenAccount.name,
-          type: isEmpty(addressValue) ? "" : addressValue.type,
-          street: isEmpty(addressValue) ? "" : addressValue.street,
-          ward: isEmpty(addressValue) ? "" : addressValue.ward,
-          district: isEmpty(addressValue) ? "" : addressValue.district,
-          city: isEmpty(addressValue) ? "" : addressValue.city,
-          phone: isEmpty(addressValue) ? "" : addressValue.phone,
-        }}
       >
         <CustomText
           type="paragraph"
@@ -170,7 +139,7 @@ export const FormCheckout = ({
               rules={[
                 { required: true, message: "Please input your full name!" },
               ]}
-              initialValue={(value) => value}
+              initialValue={isEmpty(authenAccount) ? "" : authenAccount.name}
             >
               <Input className="py-3" placeholder="Full name" size="middle" />
             </Form.Item>
@@ -183,11 +152,28 @@ export const FormCheckout = ({
         >
           Deliver Information
         </CustomText>
+        <Divider />
         {isEmpty(authenAccount) ? (
           <AddressFormItem />
         ) : (
           <>
-            <Tabs items={addressTabItems} />
+            <Radio.Group
+              className="flex justify-start"
+              size="large"
+              value={currentAddressTab}
+              onChange={onChangeAddressTab}
+              style={{ marginBottom: 16 }}
+            >
+              <Radio.Button value="existed">Existed Address</Radio.Button>
+              <Radio.Button value="new">New Address</Radio.Button>
+            </Radio.Group>
+            {currentAddressTab === "existed" && (
+              <ExistedAddressForm
+                authenAccount={authenAccount}
+                onChangeExistedAddress={onChangeExistedAddress}
+              />
+            )}
+            {currentAddressTab === "new" && <AddressFormItem />}
           </>
         )}
         <Form.Item className="w-fit mt-5">
