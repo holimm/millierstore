@@ -66,8 +66,12 @@ export const cartSlice = createSlice({
           item.storage.capacity === action.payload.storage.capacity &&
           item.storage.unit === action.payload.storage.unit
         ) {
-          console.log("Cart index: ", state.cart);
           state.cart[index].quantity = action.payload.quantity;
+          window.localStorage.setItem(
+            "cart_session",
+            JSON.stringify(state.cart)
+          );
+          window.dispatchEvent(new Event("cart_localStorage"));
         }
       });
     },

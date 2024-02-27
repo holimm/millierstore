@@ -38,10 +38,13 @@ import { useCart } from "@/hooks/useCart";
 import { FormCheckout } from "@/modules/checkout/formCheckout";
 import { useAuthen } from "@/hooks/useAuthen";
 import { ListCart } from "@/modules/checkout/listCart";
-import { CheckoutFormAddressType } from "@/models/checkoutModel";
+import {
+  CheckoutFormAddressType,
+  CheckoutInformationType,
+} from "@/models/checkoutModel";
 import { FieldProfileInformationType } from "@/models/common";
-import { saveCheckoutInformation } from "@/redux/entities/checkout";
-import { getCheckoutInformation } from "@/redux/selectors/checkout";
+import { getCreateOrderLoading } from "@/redux/selectors/order";
+import { createOrder } from "@/redux/entities/orders/asyncThunk";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -51,11 +54,23 @@ export default function Home() {
   const [form] = Form.useForm();
   const [currentAddressTab, setCurrentAddressTab] = useState<string>("existed");
   const [currentPaymentTab, setCurrentPaymentTab] = useState<string>("cod");
-  const checkoutInfo = useAppSelector(getCheckoutInformation);
-  const [cartTotal, setCartTotal] = useState(0);
-
-  const onFinishCheckout = async (values: FieldProfileInformationType) => {
-    console.log(values);
+  const createOrderLoading = useAppSelector(getCreateOrderLoading);
+  console.log(cartList);
+  const onFinishCheckout = async ({
+    name,
+    method,
+    total,
+    ...address
+  }: CheckoutInformationType) => {
+    const addressData: any = address;
+    const data: CheckoutInformationType = {
+      name: name,
+      method: method,
+      address: addressData,
+      total: total,
+    };
+    console.log(data);
+    dispatch(createOrder(data));
     // dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
   };
 
@@ -89,7 +104,7 @@ export default function Home() {
               district: "",
               city: "",
               phone: "",
-              total: cartTotal,
+              total: 0,
             }}
           >
             <Row gutter={20}>

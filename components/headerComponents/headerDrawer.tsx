@@ -34,7 +34,7 @@ import {
   calculateCartTotal,
   notificationMessage,
 } from "@/helpers/commonHelpers";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CustomButton, DescriptionItem } from "../common";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";

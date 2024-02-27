@@ -4,7 +4,7 @@ import { productsDetailSlice } from "./entities/productsDetail";
 import { productsSlice } from "./entities/products";
 import { cartSlice } from "./entities/cart";
 import { userSlice } from "./entities/users";
-import { checkoutSlice } from "./entities/checkout";
+import { orderSlice } from "./entities/orders";
 
 export const store = configureStore({
   reducer: combineReducers({
@@ -12,7 +12,7 @@ export const store = configureStore({
     [productsSlice.name]: productsSlice.reducer,
     [cartSlice.name]: cartSlice.reducer,
     [userSlice.name]: userSlice.reducer,
-    [checkoutSlice.name]: checkoutSlice.reducer,
+    [orderSlice.name]: orderSlice.reducer,
   }),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -6,10 +6,10 @@ export interface CheckoutInformationType {
 }
 
 export interface CheckoutFormAddressType {
-  type: string;
-  phone: string;
-  street: string;
-  district: string;
-  ward: string;
-  city: string;
+  type?: string;
+  phone?: string;
+  street?: string;
+  district?: string;
+  ward?: string;
+  city?: string;
 }
