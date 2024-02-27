@@ -9,15 +9,6 @@ export interface UserAddressType {
   city: string;
 }
 
-export interface CheckoutFormAddressType {
-  type: string;
-  phone: string;
-  street: string;
-  district: string;
-  ward: string;
-  city: string;
-}
-
 export interface UserType {
   username: string;
   password: string;

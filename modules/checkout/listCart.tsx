@@ -1,7 +1,11 @@
 import { DescriptionItem } from "@/components/common";
 import { CustomText } from "@/components/homePage/common";
-import { NumberToDollarFormat } from "@/helpers/commonHelpers";
+import {
+  NumberToDollarFormat,
+  calculateCartTotal,
+} from "@/helpers/commonHelpers";
 import { CartType } from "@/models/cartModel";
+import { CheckoutInformationType } from "@/models/checkoutModel";
 import { removeFromCart, updateQuantity } from "@/redux/entities/cart";
 import { useAppDispatch } from "@/redux/hooks";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -10,11 +14,14 @@ import {
   Col,
   Divider,
   Flex,
+  Form,
   Image,
+  Input,
   InputNumber,
   List,
   Row,
 } from "antd";
+import { isEmpty } from "lodash";
 import { useCallback } from "react";
 
 export const ListCart = ({ cartList }: { cartList: CartType[] }) => {
@@ -49,7 +56,7 @@ export const ListCart = ({ cartList }: { cartList: CartType[] }) => {
       </CustomText>
       <Divider />
       <List
-        className="max-h-[90vh] overflow-y-auto"
+        style={{ height: "fit-content", overflowY: "auto", maxHeight: "80vh" }}
         itemLayout="horizontal"
         dataSource={cartList}
         renderItem={(item, index) => (
@@ -113,6 +120,19 @@ export const ListCart = ({ cartList }: { cartList: CartType[] }) => {
           </List.Item>
         )}
       />
+      <Divider />
+      <CustomText type="paragraph" extraClass="!text-lg !text-black">
+        Total: {NumberToDollarFormat(calculateCartTotal(cartList))}
+      </CustomText>
+      {!isEmpty(cartList) && (
+        <Form.Item<CheckoutInformationType>
+          name="total"
+          rules={[{ required: true }]}
+          hidden
+        >
+          <Input />
+        </Form.Item>
+      )}
     </>
   );
 };

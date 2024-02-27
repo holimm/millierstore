@@ -1,18 +1,7 @@
 import { CustomButton } from "@/components/common";
 import { CustomText } from "@/components/homePage/common";
-import {
-  FieldProfileInformationType,
-  FieldProfilePasswordType,
-} from "@/models/common";
-import {
-  CheckoutFormAddressType,
-  UserAddressType,
-  UserType,
-} from "@/models/userModel";
-import {
-  updateUserInformation,
-  updateUserPassword,
-} from "@/redux/entities/users/asyncThunk";
+import { FieldProfileInformationType } from "@/models/common";
+import { UserType } from "@/models/userModel";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUserChangingPasswordLoading } from "@/redux/selectors/user";
 import {
@@ -20,6 +9,7 @@ import {
   Col,
   Divider,
   Form,
+  FormInstance,
   Input,
   Radio,
   RadioChangeEvent,
@@ -31,7 +21,11 @@ import {
 import { isEmpty } from "lodash";
 import { AddressFormItem } from "../profile/addAddressModal";
 import { renderText } from "../profile/addressRender";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
+import {
+  CheckoutFormAddressType,
+  CheckoutInformationType,
+} from "@/models/checkoutModel";
 
 const ExistedAddressForm = ({
   authenAccount,
@@ -78,114 +72,163 @@ const ExistedAddressForm = ({
   );
 };
 
+const PaymentTabBox = ({ children }: { children: ReactNode }) => {
+  return <Card className="mt-10 border-1 border-neutral-700">{children}</Card>;
+};
+
 export const FormCheckout = ({
+  formHook,
   authenAccount,
+  currentAddressTab,
+  currentPaymentTab,
+  setCurrentAddressTab,
+  setCurrentPaymentTab,
 }: {
+  formHook: FormInstance<any>;
   authenAccount: UserType;
+  currentAddressTab: string;
+  currentPaymentTab: string;
+  setCurrentAddressTab: any;
+  setCurrentPaymentTab: any;
 }) => {
   const dispatch = useAppDispatch();
-  const [form] = Form.useForm();
-  const loadingChangingInformation = useAppSelector(
-    getUserChangingPasswordLoading
-  );
-  const [addressValue, setAddressValue] =
-    useState<CheckoutFormAddressType | null>();
-  const [currentAddressTab, setCurrentAddressTab] = useState<string>("existed");
 
-  const onFinishCheckout = async (values: FieldProfileInformationType) => {
-    console.log(
-      !isEmpty(addressValue) && currentAddressTab === "existed"
-        ? { ...addressValue, ...values }
-        : values
-    );
-    // dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
-  };
   const onChangeExistedAddress = async (values: CheckoutFormAddressType) => {
-    setAddressValue(values);
-    // dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
+    formHook.setFieldValue("type", values.type);
+    formHook.setFieldValue("street", values.street);
+    formHook.setFieldValue("ward", values.ward);
+    formHook.setFieldValue("district", values.district);
+    formHook.setFieldValue("city", values.city);
+    formHook.setFieldValue("phone", values.phone);
   };
 
   const onChangeAddressTab = (e: RadioChangeEvent) => {
     setCurrentAddressTab(e.target.value);
-    setAddressValue(null);
+    formHook.resetFields([
+      "type",
+      "street",
+      "ward",
+      "district",
+      "city",
+      "phone",
+    ]);
+  };
+
+  const onChangePaymentTab = (e: RadioChangeEvent) => {
+    setCurrentPaymentTab(e.target.value);
+    formHook.setFieldValue("method", e.target.value);
   };
 
   return (
     <Spin spinning={false}>
-      <Form
-        form={form}
-        name="basic"
-        layout="vertical"
-        className="w-full mb-10"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 24 }}
-        onFinish={onFinishCheckout}
-        autoComplete="off"
-        disabled={loadingChangingInformation}
+      <CustomText
+        type="paragraph"
+        extraClass="!text-black !font-semibold"
+        topClass="!text-xl"
       >
-        <CustomText
-          type="paragraph"
-          extraClass="!text-black !font-semibold"
-          topClass="!text-xl"
-        >
-          Contact Information
-        </CustomText>
-        <Divider />
-        <Row gutter={20}>
-          <Col span={12}>
-            <Form.Item<FieldProfileInformationType>
-              name="name"
-              label="Name"
-              rules={[
-                { required: true, message: "Please input your full name!" },
-              ]}
-              initialValue={isEmpty(authenAccount) ? "" : authenAccount.name}
-            >
-              <Input className="py-3" placeholder="Full name" size="middle" />
-            </Form.Item>
-          </Col>
-        </Row>
-        <CustomText
-          type="paragraph"
-          extraClass="!text-black !font-semibold"
-          topClass="!text-xl"
-        >
-          Deliver Information
-        </CustomText>
-        <Divider />
-        {isEmpty(authenAccount) ? (
-          <AddressFormItem />
-        ) : (
-          <>
-            <Radio.Group
-              className="flex justify-start"
-              size="large"
-              value={currentAddressTab}
-              onChange={onChangeAddressTab}
-              style={{ marginBottom: 16 }}
-            >
-              <Radio.Button value="existed">Existed Address</Radio.Button>
-              <Radio.Button value="new">New Address</Radio.Button>
-            </Radio.Group>
-            {currentAddressTab === "existed" && (
+        Contact Information
+      </CustomText>
+      <Divider />
+      <Row gutter={20}>
+        <Col span={12}>
+          <Form.Item<FieldProfileInformationType>
+            name="name"
+            label="Name"
+            rules={[
+              { required: true, message: "Please input your full name!" },
+            ]}
+          >
+            <Input className="py-3" placeholder="Full name" size="middle" />
+          </Form.Item>
+        </Col>
+      </Row>
+      <CustomText
+        type="paragraph"
+        extraClass="!text-black !font-semibold"
+        topClass="!text-xl"
+      >
+        Delivery Information
+      </CustomText>
+      <Divider />
+      {isEmpty(authenAccount) ? (
+        <AddressFormItem />
+      ) : (
+        <>
+          <Radio.Group
+            className="flex justify-start"
+            size="large"
+            value={currentAddressTab}
+            onChange={onChangeAddressTab}
+            style={{ marginBottom: 16 }}
+          >
+            <Radio.Button value="existed">Existed Address</Radio.Button>
+            <Radio.Button value="new">New Address</Radio.Button>
+          </Radio.Group>
+          {currentAddressTab === "existed" ? (
+            <AddressFormItem isHidden />
+          ) : (
+            <AddressFormItem />
+          )}
+          {currentAddressTab === "existed" && (
+            <>
+              <AddressFormItem isHidden />
               <ExistedAddressForm
                 authenAccount={authenAccount}
                 onChangeExistedAddress={onChangeExistedAddress}
               />
-            )}
-            {currentAddressTab === "new" && <AddressFormItem />}
-          </>
-        )}
-        <Form.Item className="w-fit mt-5">
-          <CustomButton
-            type="primary"
-            htmlType="submit"
-            extraClass="bg-blue-500 px-10"
-          >
-            Checkout
-          </CustomButton>
-        </Form.Item>
-      </Form>
+            </>
+          )}
+        </>
+      )}
+      <CustomText
+        type="paragraph"
+        extraClass="!text-black !font-semibold"
+        topClass="!text-xl"
+      >
+        Choose payment method
+      </CustomText>
+      <Divider />
+      <Radio.Group
+        className="flex justify-start"
+        size="large"
+        value={currentPaymentTab}
+        onChange={onChangePaymentTab}
+        style={{ marginBottom: 16 }}
+      >
+        <Radio.Button value="cod">Cash on Delivery</Radio.Button>
+        <Radio.Button value="credit-card">Credit Card</Radio.Button>
+      </Radio.Group>
+      <Form.Item<CheckoutInformationType>
+        name="method"
+        rules={[{ required: true }]}
+        hidden
+      >
+        <Input />
+      </Form.Item>
+      {currentPaymentTab === "cod" && (
+        <PaymentTabBox>
+          <CustomText type="paragraph" extraClass="!text-lg !text-black">
+            Payment is made on delivery
+          </CustomText>
+        </PaymentTabBox>
+      )}
+      {currentPaymentTab === "credit-card" && (
+        <PaymentTabBox>
+          <CustomText type="paragraph" extraClass="!text-lg !text-black">
+            Pay by credit card
+          </CustomText>
+        </PaymentTabBox>
+      )}
+
+      <Form.Item className="w-fit mt-10">
+        <CustomButton
+          type="primary"
+          htmlType="submit"
+          extraClass="bg-blue-500 px-10"
+        >
+          Place Order
+        </CustomButton>
+      </Form.Item>
     </Spin>
   );
 };

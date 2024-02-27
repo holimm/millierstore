@@ -1,15 +1,11 @@
 import { CustomButton } from "@/components/common";
-import {
-  CheckoutFormAddressType,
-  UserAddressType,
-  UserType,
-} from "@/models/userModel";
+import { UserAddressType, UserType } from "@/models/userModel";
 import { createUserAddress } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUserCreateAddressLoading } from "@/redux/selectors/user";
 import { Col, Divider, Form, Input, Modal, Row, Spin } from "antd";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export const AddAddressModal = ({
   authenAccount,
@@ -54,9 +50,17 @@ export const AddAddressModal = ({
   );
 };
 
-export const AddressFormItem = ({ isProfile }: { isProfile?: boolean }) => {
+export const AddressFormItem = ({
+  isProfile,
+  isHidden,
+  onFormFieldChange,
+}: {
+  isProfile?: boolean;
+  isHidden?: boolean;
+  onFormFieldChange?: (value: string) => void;
+}) => {
   return (
-    <Row gutter={20}>
+    <Row gutter={20} hidden={isHidden}>
       <Col span={12}>
         <Form.Item<UserAddressType>
           name="type"
