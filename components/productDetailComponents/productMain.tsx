@@ -80,7 +80,9 @@ export default function ProductMain({
                   )
                 )}
             </Carousel>
-            <p className="w-full mt-2 text-center">&larr; Draggable &rarr;</p>
+            <p className="w-full mt-2 text-center text-black">
+              &larr; Draggable &rarr;
+            </p>
           </Spin>
         </div>
       </Col>

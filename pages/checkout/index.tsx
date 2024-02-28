@@ -1,50 +1,17 @@
-import {
-  Button,
-  Card,
-  Col,
-  Empty,
-  Flex,
-  Form,
-  Image,
-  InputNumber,
-  List,
-  Row,
-  Spin,
-  Typography,
-} from "antd";
-import { isEmpty, omit } from "lodash";
-import { CustomText } from "@/components/homePage/common";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  NumberToDollarFormat,
-  calculateCartTotal,
-} from "@/helpers/commonHelpers";
-import Link from "next/link";
+import { Col, Form, Row } from "antd";
+import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
+import { calculateCartTotal } from "@/helpers/commonHelpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { fetchCategory, fetchProducts } from "@/redux/entities/products";
-import {
-  getCategory,
-  getProducts,
-  getProductsLoading,
-} from "@/redux/selectors/products";
-import { CategoryType, ProductsType } from "@/models/productModel";
-import { DescriptionItem, RenderProductCard } from "@/components/common";
-import { CategoryProducts } from "@/components/products/categoryProducts";
 import { getCart } from "@/redux/selectors/cart";
-import { CartType } from "@/models/cartModel";
-import { removeFromCart, updateQuantity } from "@/redux/entities/cart";
-import { DeleteOutlined } from "@ant-design/icons";
 import { useCart } from "@/hooks/useCart";
-import { FormCheckout } from "@/modules/checkout/formCheckout";
+import { FormCheckout } from "@/modules/orders/formCheckout";
 import { useAuthen } from "@/hooks/useAuthen";
-import { ListCart } from "@/modules/checkout/listCart";
-import {
-  CheckoutFormAddressType,
-  CheckoutInformationType,
-} from "@/models/checkoutModel";
-import { FieldProfileInformationType } from "@/models/common";
-import { getCreateOrderLoading } from "@/redux/selectors/order";
+import { CheckoutCart } from "@/modules/orders/checkoutCart";
+import { CheckoutInformationType } from "@/models/orderModel";
+import { getCreateOrderLoading } from "@/redux/selectors/orders";
 import { createOrder } from "@/redux/entities/orders/asyncThunk";
+import dayjs from "dayjs";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -55,27 +22,40 @@ export default function Home() {
   const [currentAddressTab, setCurrentAddressTab] = useState<string>("existed");
   const [currentPaymentTab, setCurrentPaymentTab] = useState<string>("cod");
   const createOrderLoading = useAppSelector(getCreateOrderLoading);
-  console.log(cartList);
+
+  // console.log(dayjs("2024-02-28T22:56:43+07:00").format("DD/MM/YYYY HH:mm:ss"));
+
   const onFinishCheckout = async ({
     name,
     method,
     total,
+    note,
     ...address
   }: CheckoutInformationType) => {
     const addressData: any = address;
     const data: CheckoutInformationType = {
+      accountID:
+        authenAccount && !isEmpty(authenAccount) ? authenAccount._id : null,
       name: name,
       method: method,
       address: addressData,
+      product: cartList,
       total: total,
+      date: [
+        {
+          id: "dateOrder",
+          dateString: dayjs().format(),
+        },
+      ],
+      note: note,
     };
-    console.log(data);
+    // console.log(data);
     dispatch(createOrder(data));
     // dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
   };
 
   useEffect(() => {
-    form.setFieldValue("name", authenAccount.name);
+    form.setFieldValue("name", authenAccount ? authenAccount.name : "");
   }, [authenAccount]);
 
   useEffect(() => {
@@ -119,7 +99,7 @@ export default function Home() {
                 />
               </Col>
               <Col span={8}>
-                <ListCart cartList={cartList} />
+                <CheckoutCart cartList={cartList} />
               </Col>
             </Row>
           </Form>

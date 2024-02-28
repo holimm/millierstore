@@ -3,7 +3,6 @@ import {
   Checkbox,
   Col,
   Divider,
-  DrawerProps,
   Dropdown,
   Flex,
   Form,
@@ -24,17 +23,13 @@ import {
   SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import {
-  DescriptionItemModel,
-  FieldType,
-  NavigationDrawerProps,
-} from "@/models/navModel";
+import { FieldType, NavigationDrawerProps } from "@/models/navModel";
 import {
   NumberToDollarFormat,
   calculateCartTotal,
   notificationMessage,
 } from "@/helpers/commonHelpers";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { CustomButton, DescriptionItem } from "../common";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -164,7 +159,9 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
                       <Col span={24}>
                         <div className="site-description-item-profile-wrapper mt-2">
                           <InputNumber
-                            defaultValue={item.quantity}
+                            value={item.quantity}
+                            min={1}
+                            max={20}
                             onChange={(value) => handleQuantity(item, value)}
                           />
                         </div>
@@ -325,7 +322,7 @@ export const HeaderProfileDropdown = ({
         <span
           onClick={() => {
             dispatch(saveUser({}));
-            sessionStorage.removeItem("signin_token");
+            localStorage.removeItem("signin_token");
             notificationMessage({ type: "success", content: "Logged out" });
           }}
         >

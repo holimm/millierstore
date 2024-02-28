@@ -3,7 +3,6 @@ import { CustomText } from "@/components/homePage/common";
 import { FieldProfileInformationType } from "@/models/common";
 import { UserType } from "@/models/userModel";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getUserChangingPasswordLoading } from "@/redux/selectors/user";
 import {
   Card,
   Col,
@@ -15,8 +14,6 @@ import {
   RadioChangeEvent,
   Row,
   Spin,
-  Tabs,
-  TabsProps,
 } from "antd";
 import { isEmpty } from "lodash";
 import { AddressFormItem } from "../profile/addAddressModal";
@@ -25,7 +22,8 @@ import { ReactNode, useState } from "react";
 import {
   CheckoutFormAddressType,
   CheckoutInformationType,
-} from "@/models/checkoutModel";
+} from "@/models/orderModel";
+import { getCreateOrderLoading } from "@/redux/selectors/orders";
 
 const ExistedAddressForm = ({
   authenAccount,
@@ -73,7 +71,7 @@ const ExistedAddressForm = ({
 };
 
 const PaymentTabBox = ({ children }: { children: ReactNode }) => {
-  return <Card className="mt-10 border-1 border-neutral-700">{children}</Card>;
+  return <Card className="my-10 border-1 border-neutral-700">{children}</Card>;
 };
 
 export const FormCheckout = ({
@@ -92,6 +90,7 @@ export const FormCheckout = ({
   setCurrentPaymentTab: any;
 }) => {
   const dispatch = useAppDispatch();
+  const loadingCreateOrder = useAppSelector(getCreateOrderLoading);
 
   const onChangeExistedAddress = async (values: CheckoutFormAddressType) => {
     formHook.setFieldValue("type", values.type);
@@ -120,7 +119,7 @@ export const FormCheckout = ({
   };
 
   return (
-    <Spin spinning={false}>
+    <Spin spinning={loadingCreateOrder}>
       <CustomText
         type="paragraph"
         extraClass="!text-black !font-semibold"
@@ -219,6 +218,26 @@ export const FormCheckout = ({
           </CustomText>
         </PaymentTabBox>
       )}
+      <CustomText
+        type="paragraph"
+        extraClass="!text-black !font-semibold"
+        topClass="!text-xl"
+      >
+        Note
+      </CustomText>
+      <Divider />
+      <Form.Item<CheckoutInformationType>
+        name="note"
+        rules={[{ required: false }]}
+      >
+        <Input.TextArea
+          className="p-5"
+          placeholder="Write your note here"
+          autoSize={{ minRows: 3, maxRows: 6 }}
+          maxLength={100}
+          showCount
+        />
+      </Form.Item>
 
       <Form.Item className="w-fit mt-10">
         <CustomButton

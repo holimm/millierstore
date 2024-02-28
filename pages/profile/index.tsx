@@ -1,4 +1,5 @@
 import { AddressTab } from "@/components/profileComponents/addressTab";
+import { OrdersTab } from "@/components/profileComponents/ordersTab";
 import { ProfileTab } from "@/components/profileComponents/profileTab";
 import { useAuthen } from "@/hooks/useAuthen";
 import {
@@ -9,7 +10,7 @@ import {
 import { Layout, Menu, MenuProps } from "antd";
 import React, { useState } from "react";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const itemMenu: MenuProps["items"] = [
   {
@@ -53,10 +54,12 @@ export default function Profile() {
               />
             </Sider>
             <Content className="p-10 min-h-[40em]">
-              {currentTab === "profileTab" && (
+              {currentTab === "orderTab" && (
                 <ProfileTab authenAccount={authenAccount && authenAccount} />
               )}
-              {currentTab === "orderTab" && <>Order</>}
+              {currentTab === "profileTab" && (
+                <OrdersTab authenAccount={authenAccount && authenAccount} />
+              )}
               {currentTab === "addressesTab" && (
                 <AddressTab authenAccount={authenAccount && authenAccount} />
               )}
