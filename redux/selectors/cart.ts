@@ -4,5 +4,5 @@ import { CartType } from "@/models/cartModel";
 
 export const getCart = createSelector([getCartList], (entities) => {
   const result: CartType[] = entities;
-  return result;
+  return { data: result };
 });

@@ -57,7 +57,7 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
 
     return (
       <Card className="shadow">
-        <Spin spinning={loadingUpdateAddress}>
+        <Spin spinning={loadingUpdateAddress.data}>
           <Form
             name="basic"
             layout="vertical"

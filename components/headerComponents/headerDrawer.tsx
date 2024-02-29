@@ -90,7 +90,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
     (item: CartType) => {
       dispatch(removeFromCart(item));
     },
-    [cartList]
+    [cartList.data]
   );
 
   const handleQuantity = useCallback(
@@ -103,7 +103,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
       };
       dispatch(updateQuantity(data));
     },
-    [cartList]
+    [cartList.data]
   );
 
   return (
@@ -119,7 +119,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
         <div className="h-[70%] overflow-y-auto">
           <List
             itemLayout="horizontal"
-            dataSource={cartList}
+            dataSource={cartList.data}
             renderItem={(item, index) => (
               <List.Item>
                 <Row>
@@ -187,7 +187,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
         <Divider />
         <DescriptionItem
           type={"cart_total"}
-          total={calculateCartTotal(cartList)}
+          total={calculateCartTotal(cartList.data)}
         />
         <Divider />
         <Link href={"/checkout"}>

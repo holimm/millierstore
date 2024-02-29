@@ -39,7 +39,7 @@ export default function Home() {
       name: name,
       method: method,
       address: addressData,
-      product: cartList,
+      product: cartList.data,
       total: total,
       date: [
         {
@@ -59,7 +59,7 @@ export default function Home() {
   }, [authenAccount]);
 
   useEffect(() => {
-    form.setFieldValue("total", calculateCartTotal(cartList));
+    form.setFieldValue("total", calculateCartTotal(cartList.data));
   }, [cartList]);
 
   return (

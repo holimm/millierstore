@@ -2,7 +2,7 @@ import { Card, Col, Divider, Empty, Row, Spin } from "antd";
 import { UserType } from "@/models/userModel";
 import { CustomText } from "../homePage/common";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getOrders, getOrdersLoading } from "@/redux/selectors/orders";
+import { getOrders } from "@/redux/selectors/orders";
 import { useEffect, useState } from "react";
 import { fetchOrdersByAccountId } from "@/redux/entities/orders/asyncThunk";
 import { CheckoutInformationType } from "@/models/orderModel";
@@ -17,7 +17,6 @@ export const OrdersTab = ({ authenAccount }: { authenAccount: UserType }) => {
     useState<CheckoutInformationType>();
   const [openDetailOrderModal, setOpenDetailOrderModal] = useState(false);
   const accountOrders = useAppSelector(getOrders);
-  const loadingFetchOrders = useAppSelector(getOrdersLoading);
 
   useEffect(() => {
     dispatch(fetchOrdersByAccountId(authenAccount._id));
@@ -43,10 +42,10 @@ export const OrdersTab = ({ authenAccount }: { authenAccount: UserType }) => {
         My orders
       </CustomText>
       <Divider />
-      <Spin spinning={loadingFetchOrders}>
+      <Spin spinning={accountOrders.loading}>
         <Row gutter={16}>
-          {!isEmpty(accountOrders) ? (
-            accountOrders.map((item: CheckoutInformationType) => (
+          {!isEmpty(accountOrders.data) ? (
+            accountOrders.data.map((item: CheckoutInformationType) => (
               <Col span={8}>
                 <Card
                   className="shadow hover:border-1 hover:border-blue-400 transition-all duration-500 cursor-pointer"

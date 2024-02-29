@@ -23,5 +23,5 @@ export const useAuthen = () => {
     }
   }, [token]);
 
-  return !isEmpty(userData) ? userData : false;
+  return !isEmpty(userData.data) ? userData.data : false;
 };

@@ -119,7 +119,7 @@ export const FormCheckout = ({
   };
 
   return (
-    <Spin spinning={loadingCreateOrder}>
+    <Spin spinning={loadingCreateOrder.data}>
       <CustomText
         type="paragraph"
         extraClass="!text-black !font-semibold"

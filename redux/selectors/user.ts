@@ -14,30 +14,30 @@ import { UserType } from "@/models/userModel";
 
 export const getUser = createSelector([getUserData], (entities) => {
   const result: UserType = entities;
-  return result;
+  return { data: result };
 });
 
 export const getUserSigninLoading = createSelector(
   [getUserDataLoading],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );
 
 export const getUserChangingInformationLoading = createSelector(
-  [getUserDataChangingPasswordLoading],
+  [getUserDataChangingInformationLoading],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );
 
 export const getUserChangingPasswordLoading = createSelector(
-  [getUserDataChangingInformationLoading],
+  [getUserDataChangingPasswordLoading],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );
 
@@ -45,7 +45,7 @@ export const getUserCreateAddressLoading = createSelector(
   [getUserDataCreateAddressLoading],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );
 
@@ -53,7 +53,7 @@ export const getUserUpdateAddressLoading = createSelector(
   [getUserDataUpdateAddressLoading],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );
 

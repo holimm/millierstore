@@ -4,10 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect, useMemo, useState } from "react";
 import { fetchProductDetailById } from "@/redux/entities/productsDetail";
 import { useRouter } from "next/router";
-import {
-  getProductDetail,
-  getProductDetailLoading,
-} from "@/redux/selectors/products";
+import { getProductDetail } from "@/redux/selectors/products";
 import { isEmpty, toString } from "lodash";
 import {
   ProductColorType,
@@ -33,11 +30,11 @@ export default function ProductDetailsPage() {
   }, [productCode]);
 
   const productDetail = useAppSelector(getProductDetail);
-  const productDetailLoading = useAppSelector(getProductDetailLoading);
+  const productDetailData = productDetail.data;
 
   useEffect(() => {
-    if (!isEmpty(productDetail[productCode]))
-      setProductColor(productDetail[productCode].colors[0]);
+    if (!isEmpty(productDetailData[productCode]))
+      setProductColor(productDetailData[productCode].colors[0]);
   }, [productDetail]);
 
   useEffect(() => {
@@ -48,10 +45,10 @@ export default function ProductDetailsPage() {
 
   const checkProductExist = useMemo(() => {
     setProductColor(
-      !isEmpty(productDetail[productCode]) &&
-        productDetail[productCode].colors[0]
+      !isEmpty(productDetailData[productCode]) &&
+        productDetailData[productCode].colors[0]
     );
-    return !isEmpty(productDetail[productCode]);
+    return !isEmpty(productDetailData[productCode]);
   }, [productDetail]);
 
   const checkColorExist = useMemo(() => {
@@ -82,7 +79,6 @@ export default function ProductDetailsPage() {
             productDetail={productDetail}
             checkProductExist={checkProductExist}
             checkColorExist={checkColorExist}
-            productDetailLoading={productDetailLoading}
             productCode={productCode}
             productColor={productColor}
             productStorage={productStorage}
@@ -104,9 +100,9 @@ export default function ProductDetailsPage() {
             </Radio.Group>
             <div className="h-fit w-full mx-auto my-10">
               {descriptionTab === "overview" && (
-                <Spin spinning={productDetailLoading}>
+                <Spin spinning={productDetail.loading}>
                   {checkProductExist &&
-                    productDetail[productCode].description.map(
+                    productDetailData[productCode].description.map(
                       (item: ProductDetailDescription, index: number) => (
                         <div key={index}>
                           <DescriptionTabItem
@@ -120,10 +116,10 @@ export default function ProductDetailsPage() {
                 </Spin>
               )}
               {descriptionTab === "specifications" && (
-                <Spin spinning={productDetailLoading}>
+                <Spin spinning={productDetail.loading}>
                   <SpecificationTab
                     checkProductExist={checkProductExist}
-                    productDetail={productDetail}
+                    productDetail={productDetail.data}
                     productCode={productCode}
                   />
                 </Spin>

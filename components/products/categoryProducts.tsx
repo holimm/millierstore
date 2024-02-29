@@ -9,14 +9,12 @@ import Link from "next/link";
 export const CategoryProducts = ({
   title,
   productsList,
-  loadingProductList,
   productSeries,
   onChangeProductSeries,
   exploreMore = true,
 }: {
   title: string;
-  productsList: ProductDetailType;
-  loadingProductList: boolean;
+  productsList: { data: ProductDetailType; loading: boolean };
   productSeries?: {
     key: string;
     label: React.ReactNode;
@@ -24,7 +22,8 @@ export const CategoryProducts = ({
   onChangeProductSeries?: (activeKey: string) => void;
   exploreMore?: boolean;
 }) => {
-  const checkExist = !isEmpty(productsList[title]);
+  const productListData = productsList.data;
+  const checkExist = !isEmpty(productListData[title]);
   return (
     <div className="mt-20 first:my-0">
       <Typography.Title className="text-center">
@@ -37,21 +36,23 @@ export const CategoryProducts = ({
           onChange={onChangeProductSeries}
         />
       )}
-      <Spin spinning={loadingProductList}>
+      <Spin spinning={productsList.loading}>
         {checkExist && (
           <>
             <div className="h-full w-full pb-6 grid grid-cols-4 gap-10">
-              {productsList[title].map((item: ProductsType, index: number) => (
-                <div key={index}>
-                  <RenderProductCard
-                    code={item._id}
-                    name={item.name}
-                    description={item.description}
-                    price={`From ${NumberToDollarFormat(item.lowest_price)}`}
-                    srcImage={item.image}
-                  />
-                </div>
-              ))}
+              {productListData[title].map(
+                (item: ProductsType, index: number) => (
+                  <div key={index}>
+                    <RenderProductCard
+                      code={item._id}
+                      name={item.name}
+                      description={item.description}
+                      price={`From ${NumberToDollarFormat(item.lowest_price)}`}
+                      srcImage={item.image}
+                    />
+                  </div>
+                )
+              )}
             </div>
             {exploreMore && (
               <div className="h-fit w-full flex justify-center">

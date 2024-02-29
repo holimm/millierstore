@@ -14,60 +14,34 @@ import {
 import { CategoryType, ProductsType } from "@/models/productModel";
 import { getProductsEntityLoading } from "../entities/products";
 
-export const getProducts = createSelector([getProductsSlice], (entities) => {
-  const result: ProductDetailType = entities;
-  return result;
-});
-
-export const getProductsLoading = createSelector(
-  [getProductsEntityLoading],
-  (entities) => {
-    const result: boolean = entities;
-    return result;
+export const getProducts = createSelector(
+  [getProductsSlice, getProductsEntityLoading],
+  (entities, loading) => {
+    const result: ProductDetailType = entities;
+    return { data: result, loading: loading };
   }
 );
 
 export const getProductsSearch = createSelector(
-  [getProductSearchSlice],
-  (entities) => {
+  [getProductSearchSlice, getProductSearchEntityLoading],
+  (entities, loading) => {
     const result: ProductsType[] = entities;
-    return result;
+    return { data: result, loading: loading };
   }
 );
 
-export const getProductsSearchLoading = createSelector(
-  [getProductSearchEntityLoading],
-  (entities) => {
-    const result: boolean = entities;
-    return result;
-  }
-);
-
-export const getCategory = createSelector([getCategorySlice], (entities) => {
-  const result: CategoryType[] = entities;
-  return result;
-});
-
-export const getCategoryLoading = createSelector(
-  [getCategoryEntityLoading],
-  (entities) => {
-    const result: boolean = entities;
-    return result;
+export const getCategory = createSelector(
+  [getCategorySlice, getCategoryEntityLoading],
+  (entities, loading) => {
+    const result: CategoryType[] = entities;
+    return { data: result, loading: loading };
   }
 );
 
 export const getProductDetail = createSelector(
-  [getProductsDetailSlice],
-  (entities) => {
+  [getProductsDetailSlice, getProductsDetailLoading],
+  (entities, loading) => {
     const result: ProductDetailType = entities;
-    return result;
-  }
-);
-
-export const getProductDetailLoading = createSelector(
-  [getProductsDetailLoading],
-  (entities) => {
-    const result: boolean = entities;
-    return result;
+    return { data: result, loading: loading };
   }
 );

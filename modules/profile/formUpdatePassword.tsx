@@ -19,7 +19,7 @@ export const FormUpdatePassword = ({
     dispatch(updateUserPassword({ _id: authenAccount._id, ...values }));
   };
   return (
-    <Spin spinning={loadingChangingPassword}>
+    <Spin spinning={loadingChangingPassword.data}>
       <Form
         name="basic"
         layout="vertical"
@@ -29,7 +29,7 @@ export const FormUpdatePassword = ({
         initialValues={{ remember: true }}
         onFinish={onFinishUpdatePassword}
         autoComplete="off"
-        disabled={loadingChangingPassword}
+        disabled={loadingChangingPassword.data}
       >
         <Row gutter={20}>
           <Col span={12}>

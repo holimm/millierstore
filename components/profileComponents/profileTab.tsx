@@ -28,17 +28,6 @@ import { FormUpdateInformation } from "@/modules/profile/formUpdateInformation";
 
 export const ProfileTab = ({ authenAccount }: { authenAccount: UserType }) => {
   const dispatch = useAppDispatch();
-  const loadingChangingInformation = useAppSelector(
-    getUserChangingPasswordLoading
-  );
-
-  console.log(authenAccount);
-
-  const onFinishUpdateInformation = async (
-    values: FieldProfileInformationType
-  ) => {
-    dispatch(updateUserInformation(values));
-  };
 
   return (
     <>

@@ -12,12 +12,7 @@ import { BsShop } from "react-icons/bs";
 import { ReactNode, useEffect, useState } from "react";
 import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  getCategory,
-  getCategoryLoading,
-  getProductsLoading,
-  getProducts,
-} from "@/redux/selectors/products";
+import { getCategory, getProducts } from "@/redux/selectors/products";
 import { fetchCategory, fetchProducts } from "@/redux/entities/products";
 import { CategoryType, ProductsType } from "@/models/productModel";
 import { RenderProductCard } from "@/components/common";
@@ -25,9 +20,8 @@ import { RenderProductCard } from "@/components/common";
 export default function Home() {
   const dispatch = useAppDispatch();
   const productsList = useAppSelector(getProducts);
-  const loadingProductList = useAppSelector(getProductsLoading);
   const categoryList = useAppSelector(getCategory);
-  const loadingCategoryList = useAppSelector(getCategoryLoading);
+  const productListData = productsList.data;
 
   useEffect(() => {
     dispatch(fetchProducts({}));
@@ -116,9 +110,9 @@ export default function Home() {
               Discover diverse categories for a personalized shopping experience
             </span>
           </Typography.Paragraph>
-          <Spin spinning={loadingCategoryList}>
+          <Spin spinning={categoryList.loading}>
             <div className="h-fit w-full mx-auto mt-10 grid grid-cols-3 gap-20">
-              {categoryList.map((item: CategoryType, index) => (
+              {categoryList.data.map((item: CategoryType, index) => (
                 <CategoryCard
                   key={index}
                   label={item.name}
@@ -137,10 +131,10 @@ export default function Home() {
               Discover our latest collection of high-quality products
             </span>
           </Typography.Paragraph>
-          <Spin spinning={loadingProductList}>
+          <Spin spinning={productsList.loading}>
             <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-              {!isEmpty(productsList) &&
-                productsList["iPhone"].map(
+              {!isEmpty(productListData) &&
+                productListData["iPhone"].map(
                   (item: ProductsType, index: number) => (
                     <div key={index}>
                       <RenderProductCard
@@ -198,8 +192,8 @@ export default function Home() {
             Introducing our latest collection
           </Typography.Paragraph>
           <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-            {!isEmpty(productsList) &&
-              productsList["iPhone"].map(
+            {!isEmpty(productListData) &&
+              productListData["iPhone"].map(
                 (item: ProductsType, index: number) => (
                   <div key={index}>
                     <RenderProductCard

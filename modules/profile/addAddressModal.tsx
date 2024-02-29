@@ -31,7 +31,7 @@ export const AddAddressModal = ({
       onCancel={() => setOpenAddAddressModal(false)}
       footer={false}
     >
-      <Spin spinning={loadingCreateAddress}>
+      <Spin spinning={loadingCreateAddress.data}>
         <Divider />
         <Form
           name="basic"

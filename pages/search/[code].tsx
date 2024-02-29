@@ -4,10 +4,7 @@ import { useEffect } from "react";
 import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchProductsSearch } from "@/redux/entities/products";
-import {
-  getProductsSearch,
-  getProductsSearchLoading,
-} from "@/redux/selectors/products";
+import { getProductsSearch } from "@/redux/selectors/products";
 import { useRouter } from "next/router";
 import { RenderProductCard } from "@/components/common";
 
@@ -15,7 +12,6 @@ export default function Search() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const productsList = useAppSelector(getProductsSearch);
-  const loadingProductList = useAppSelector(getProductsSearchLoading);
 
   useEffect(() => {
     if (!isEmpty(router.query.code)) {
@@ -34,14 +30,14 @@ export default function Search() {
           <div className="my-20 first:my-0">
             <Typography.Title className="text-center">
               <span className="!font-sf_pro">
-                {productsList.length} results found
+                {productsList.data.length} results found
               </span>
             </Typography.Title>
-            <Spin spinning={loadingProductList}>
+            <Spin spinning={productsList.loading}>
               {checkExist && (
                 <>
                   <div className="h-full w-full pb-6 grid grid-cols-4 gap-10">
-                    {productsList.map((item: any, index: number) => (
+                    {productsList.data.map((item: any, index: number) => (
                       <div key={index}>
                         <RenderProductCard
                           code={item._id}

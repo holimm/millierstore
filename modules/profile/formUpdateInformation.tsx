@@ -9,7 +9,10 @@ import {
   updateUserPassword,
 } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getUserChangingPasswordLoading } from "@/redux/selectors/user";
+import {
+  getUserChangingInformationLoading,
+  getUserChangingPasswordLoading,
+} from "@/redux/selectors/user";
 import { Col, Form, Input, Row, Spin } from "antd";
 
 export const FormUpdateInformation = ({
@@ -19,7 +22,7 @@ export const FormUpdateInformation = ({
 }) => {
   const dispatch = useAppDispatch();
   const loadingChangingInformation = useAppSelector(
-    getUserChangingPasswordLoading
+    getUserChangingInformationLoading
   );
   const onFinishUpdateInformation = async (
     values: FieldProfileInformationType
@@ -27,7 +30,7 @@ export const FormUpdateInformation = ({
     dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
   };
   return (
-    <Spin spinning={loadingChangingInformation}>
+    <Spin spinning={loadingChangingInformation.data}>
       <Form
         name="basic"
         layout="vertical"
@@ -37,7 +40,7 @@ export const FormUpdateInformation = ({
         initialValues={{ remember: true }}
         onFinish={onFinishUpdateInformation}
         autoComplete="off"
-        disabled={loadingChangingInformation}
+        disabled={loadingChangingInformation.data}
       >
         <Row gutter={20}>
           <Col span={12}>

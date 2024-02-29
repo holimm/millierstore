@@ -13,7 +13,11 @@ import { isEmpty } from "lodash";
 import { useCallback } from "react";
 import { ListCart } from "./listCart";
 
-export const CheckoutCart = ({ cartList }: { cartList: CartType[] }) => {
+export const CheckoutCart = ({
+  cartList,
+}: {
+  cartList: { data: CartType[] };
+}) => {
   const dispatch = useAppDispatch();
   const loadingCreateOrder = useAppSelector(getCreateOrderLoading);
 
@@ -37,7 +41,7 @@ export const CheckoutCart = ({ cartList }: { cartList: CartType[] }) => {
     [cartList]
   );
   return (
-    <Spin spinning={loadingCreateOrder}>
+    <Spin spinning={loadingCreateOrder.data}>
       <CustomText
         type="paragraph"
         extraClass="!text-black !font-semibold"
@@ -47,14 +51,14 @@ export const CheckoutCart = ({ cartList }: { cartList: CartType[] }) => {
       </CustomText>
       <Divider />
       <ListCart
-        cartList={cartList}
+        cartList={cartList.data}
         handleRemoveFromCart={handleRemoveFromCart}
         handleQuantity={handleQuantity}
         showCartFunction
       />
       <Divider />
       <CustomText type="paragraph" extraClass="!text-lg !text-black">
-        Total: {NumberToDollarFormat(calculateCartTotal(cartList))}
+        Total: {NumberToDollarFormat(calculateCartTotal(cartList.data))}
       </CustomText>
       {!isEmpty(cartList) && (
         <Form.Item<CheckoutInformationType>

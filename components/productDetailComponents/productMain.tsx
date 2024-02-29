@@ -26,7 +26,6 @@ export default function ProductMain({
   productDetail,
   checkProductExist,
   checkColorExist,
-  productDetailLoading,
   productCode,
   productColor,
   productStorage,
@@ -34,10 +33,9 @@ export default function ProductMain({
   onChangeProductColor,
   onChangeProductStorage,
 }: {
-  productDetail: ProductDetailType;
+  productDetail: { data: ProductDetailType; loading: boolean };
   checkProductExist: boolean;
   checkColorExist: boolean;
-  productDetailLoading: boolean;
   productCode: string;
   productColor: ProductColorType;
   productStorage: ProductStorageType;
@@ -50,35 +48,38 @@ export default function ProductMain({
   const handleAddToCart = (data: CartType) => {
     dispatch(saveCart(data));
   };
+  const productDetailData = productDetail.data;
+
+  console.log(productDetailData);
   return (
     <Row gutter={30}>
       <Col span={18}>
         <div className="!sticky top-28">
-          <Spin spinning={productDetailLoading}>
+          <Spin spinning={productDetail.loading}>
             <CustomText
               type="paragraph"
               extraClass="!text-black !text-3xl !font-bold"
             >
-              {checkProductExist && productDetail[productCode].name}
+              {checkProductExist && productDetailData[productCode].name}
             </CustomText>
             <Carousel className=" cursor-pointer" draggable autoplay infinite>
               {checkProductExist &&
                 checkColorExist &&
-                productDetail[productCode].images[productColor.lowercase].map(
-                  (item, index) => (
-                    <motion.div
+                productDetailData[productCode].images[
+                  productColor.lowercase
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <Image
                       key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      <Image
-                        key={index}
-                        src={`${process.env.MONGO_BE_URL + item}`}
-                        preview={false}
-                      ></Image>
-                    </motion.div>
-                  )
-                )}
+                      src={`${process.env.MONGO_BE_URL + item}`}
+                      preview={false}
+                    ></Image>
+                  </motion.div>
+                ))}
             </Carousel>
             <p className="w-full mt-2 text-center text-black">
               &larr; Draggable &rarr;
@@ -100,10 +101,10 @@ export default function ProductMain({
               <CustomText type="paragraph" extraClass="!text-black !text-2xl">
                 Color - {productColor.label}
               </CustomText>
-              <Spin spinning={productDetailLoading}>
+              <Spin spinning={productDetail.loading}>
                 <div className="h-fit w-full flex justify-start gap-10">
                   {checkProductExist &&
-                    productDetail[productCode].colors.map(
+                    productDetailData[productCode].colors.map(
                       (item: any, index: number) => (
                         <div
                           key={index}
@@ -129,10 +130,10 @@ export default function ProductMain({
                   How much space do you need?
                 </span>
               </CustomText>
-              <Spin spinning={productDetailLoading}>
+              <Spin spinning={productDetail.loading}>
                 <div className="h-fit w-full flex-rows justify-start gap-10">
                   {checkProductExist &&
-                    productDetail[productCode].storage.map(
+                    productDetailData[productCode].storage.map(
                       (item: ProductStorageType, index: number) => (
                         <div
                           key={index}
@@ -190,7 +191,8 @@ export default function ProductMain({
                           extraClass="!text-black !text-lg"
                         >
                           {`${
-                            checkProductExist && productDetail[productCode].name
+                            checkProductExist &&
+                            productDetailData[productCode].name
                           }`}
                           <br />
                           {`${productColor.label}`}
@@ -207,7 +209,7 @@ export default function ProductMain({
                           size="large"
                           onClick={() => {
                             handleAddToCart({
-                              name: productDetail[productCode].name,
+                              name: productDetailData[productCode].name,
                               storage: productStorage,
                               color: productColor,
                               quantity: 1,

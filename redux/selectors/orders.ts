@@ -6,16 +6,11 @@ import {
 } from "../entities/orders";
 import { CheckoutInformationType } from "@/models/orderModel";
 
-export const getOrders = createSelector([getOrdersData], (entities) => {
-  const result: CheckoutInformationType[] = entities;
-  return result;
-});
-
-export const getOrdersLoading = createSelector(
-  [getOrdersLoadingData],
-  (entities) => {
-    const result: boolean = entities;
-    return result;
+export const getOrders = createSelector(
+  [getOrdersData, getOrdersLoadingData],
+  (entities, loading) => {
+    const result: CheckoutInformationType[] = entities;
+    return { data: result, loading: loading };
   }
 );
 
@@ -23,6 +18,6 @@ export const getCreateOrderLoading = createSelector(
   [getCreateOrderLoadingData],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );
