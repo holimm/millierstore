@@ -41,7 +41,7 @@ export const ListCart = ({
                   <DescriptionItem
                     type={"description"}
                     title="Name"
-                    content={item.name}
+                    content={`${item.name} | ${item.storage.capacity} ${item.storage.unit}`}
                   />
                 </Col>
                 <Col span={24}>

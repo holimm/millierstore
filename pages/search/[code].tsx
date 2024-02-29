@@ -21,7 +21,7 @@ export default function Search() {
     }
   }, [router.query.code]);
 
-  const checkExist = !isEmpty(productsList);
+  const checkExist = !isEmpty(productsList.data);
 
   return (
     <main className={`h-fit w-full`}>
@@ -53,7 +53,7 @@ export default function Search() {
                   </div>
                 </>
               )}
-              {!checkExist && <Empty />}
+              {!checkExist && <Empty className="mt-20" />}
             </Spin>
           </div>
         </div>

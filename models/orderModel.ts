@@ -8,6 +8,7 @@ export interface CheckoutInformationType {
   address?: CheckoutFormAddressType;
   product?: CartType[];
   total?: number;
+  status?: string;
   date?: OrderDateType[];
   note: string;
 }
@@ -22,6 +23,6 @@ export interface CheckoutFormAddressType {
 }
 
 export interface OrderDateType {
-  id?: "dateOrder" | "dateDelivered";
+  id?: "dateOrder" | "dateDelivering" | "dateDelivered" | "dateCancelled";
   dateString?: string;
 }

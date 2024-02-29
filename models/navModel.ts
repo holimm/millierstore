@@ -55,6 +55,7 @@ export interface SigninButtonProps {
 }
 
 export interface NavigationDrawerProps {
+  className?: string;
   children?: ReactNode;
   height?: string | number;
   width?: string | number;

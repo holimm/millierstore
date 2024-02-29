@@ -1,4 +1,4 @@
-import { Card, Col, Divider, Empty, Row, Spin } from "antd";
+import { Card, Col, Divider, Empty, Row, Spin, Tag } from "antd";
 import { UserType } from "@/models/userModel";
 import { CustomText } from "../homePage/common";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -52,8 +52,9 @@ export const OrdersTab = ({ authenAccount }: { authenAccount: UserType }) => {
                   onClick={() => handleOpenDetailOrderModal(item)}
                 >
                   <CustomText type="paragraph" extraClass="!text-black">
-                    <span className="font-semibold">Status: </span>
-                    {item._id}
+                    <Tag color={item.status === "Completed" && "success"}>
+                      {item.status}
+                    </Tag>
                   </CustomText>
                   <Divider />
                   <CustomText type="paragraph" extraClass="!text-black">

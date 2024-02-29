@@ -21,7 +21,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { ReactNode, useMemo } from "react";
-import {NumberToDollarFormat} from "@/helpers/commonHelpers";
+import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import {
   DescriptionItemModel,
   NavDrawerModel,
@@ -34,6 +34,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
 }) => {
   return (
     <Drawer
+      className={props.className}
       height={props.height}
       width={props.width}
       title={props.title}

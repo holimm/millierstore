@@ -1,6 +1,6 @@
 import { CustomText } from "@/components/homePage/common";
 import { NumberToDollarFormat } from "@/helpers/commonHelpers";
-import { CheckoutInformationType } from "@/models/orderModel";
+import { CheckoutInformationType, OrderDateType } from "@/models/orderModel";
 import { UserType } from "@/models/userModel";
 import { useAppDispatch } from "@/redux/hooks";
 import {
@@ -15,7 +15,7 @@ import {
   Timeline,
 } from "antd";
 import dayjs from "dayjs";
-import { isEmpty, toUpper } from "lodash";
+import { findLast, isEmpty, toUpper } from "lodash";
 import { ListCart } from "./listCart";
 import { FaMapMarkedAlt } from "react-icons/fa";
 
@@ -30,15 +30,6 @@ export const DetailOrderModal = ({
   openDetailOrderModal: boolean;
   setOpenDetailOrderModal: any;
 }) => {
-  const dispatch = useAppDispatch();
-
-  const renderInformation = (data: { label: string; value: string }) => (
-    <CustomText type="paragraph" extraClass="!text-black" topClass="mt-4">
-      <span className="font-semibold">{data.label}</span>
-      {data.value}
-    </CustomText>
-  );
-
   const renderInformationColumn = (data: { label: string; value: string }) => (
     <Col span={8}>
       <div className="h-fit w-full my-2 mx-auto md:w-fit">
@@ -86,6 +77,45 @@ export const DetailOrderModal = ({
       description: NumberToDollarFormat(currentOrderDetail.total),
     },
   ];
+
+  const timelineOrderData = currentOrderDetail.date.map(
+    (item: OrderDateType) => {
+      let data: { color?: string; label?: string } = {};
+      if (item.id === "dateOrder")
+        data = { color: "blue", label: "You created the order" };
+      if (item.id === "dateDelivering")
+        data = { color: "blue", label: "Your package is on its way" };
+      if (item.id === "dateDelivered")
+        data = {
+          color: "green",
+          label: "Your package has delivered to your location",
+        };
+      if (item.id === "dateCancelled")
+        data = {
+          color: "red",
+          label: "You cancelled your order",
+        };
+      return {
+        color: data.color,
+        children: (
+          <>
+            <CustomText
+              type="paragraph"
+              extraClass="!text-black !font-semibold"
+            >
+              {dayjs(item.dateString).format("HH:mm:ss | DD MMMM YYYY")}
+            </CustomText>
+            <CustomText type="paragraph" extraClass="!text-black">
+              {data.label}
+            </CustomText>
+          </>
+        ),
+      };
+    }
+  );
+
+  const timelineOrderDataLast = findLast(currentOrderDetail.date);
+  console.log(timelineOrderDataLast);
 
   return (
     <Modal
@@ -187,25 +217,15 @@ export const DetailOrderModal = ({
       </CustomText>
       <Divider />
       <Timeline
-        className="mt-20"
-        mode="left"
-        items={[
-          {
-            label: "2015-09-01",
-            children: "Create a services",
-          },
-          {
-            label: "2015-09-01 09:12:11",
-            children: "Solve initial network problems",
-          },
-          {
-            children: "Technical testing",
-          },
-          {
-            label: "2015-09-01 09:12:11",
-            children: "Network problems being solved",
-          },
-        ]}
+        pending={
+          timelineOrderDataLast.id === "dateDelivered" ||
+          timelineOrderDataLast.id === "dateCancelled"
+            ? null
+            : "Processing your order..."
+        }
+        className="mt-20 pb-20"
+        mode="alternate"
+        items={timelineOrderData}
       />
     </Modal>
   );

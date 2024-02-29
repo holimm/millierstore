@@ -4,6 +4,7 @@ import {
   Col,
   Divider,
   Dropdown,
+  Empty,
   Flex,
   Form,
   Image,
@@ -29,8 +30,8 @@ import {
   calculateCartTotal,
   notificationMessage,
 } from "@/helpers/commonHelpers";
-import { useCallback, useState } from "react";
-import { CustomButton, DescriptionItem } from "../common";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { CustomButton, DescriptionItem, RenderProductCard } from "../common";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getCart } from "@/redux/selectors/cart";
@@ -42,41 +43,120 @@ import { getUserSigninLoading } from "@/redux/selectors/user";
 import { saveUser } from "@/redux/entities/users";
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
+import { debounce, isEmpty, throttle } from "lodash";
+import { fetchProductsSearch } from "@/redux/entities/products";
+import { getProductsSearch } from "@/redux/selectors/products";
+import { CustomText } from "../homePage/common";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const cartSession = useCart();
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const onChangeSearchKeyword = (e) => {
-    setSearchKeyword(e.target.value);
+  const [keyword, setKeyword] = useState<string>("");
+  const [keywordThrottled, setKeywordThrottled] = useState<string>("");
+  const productsList = useAppSelector(getProductsSearch);
+  const checkExist = !isEmpty(productsList.data);
+
+  const debounced = useCallback(
+    debounce((keywordValue) => setKeywordThrottled(keywordValue), 300),
+    []
+  );
+
+  useEffect(() => debounced(keyword), [keyword]);
+  const onFinishSubmitSearch = () => {
+    if (isEmpty(keyword)) {
+      notificationMessage({
+        type: "error",
+        content: "Please enter a product's name",
+      });
+    } else {
+      router.push({ pathname: `/search/${keyword}` });
+      props.onClose();
+    }
   };
-  const onSubmit = () => {
-    router.push({ pathname: `/search/${searchKeyword}` });
+
+  useEffect(() => {
+    if (!isEmpty(keywordThrottled)) {
+      dispatch(
+        fetchProductsSearch({ params: { name: keywordThrottled.toString() } })
+      );
+    }
+  }, [keywordThrottled]);
+
+  const onChangeSearchKeyword = (value: string) => {
+    setKeyword(value);
   };
+
   return (
     <NavigationDrawer
-      height={"4.5em"}
+      className="bg-blue-500"
+      height={"fit-content"}
       placement="top"
       open={props.open}
       onClose={props.onClose}
       closable={false}
     >
-      <div className="h-full w-full flex justify-center items-center text-black">
+      <Flex className="h-[1em] w-2/5 mx-auto" justify="center" align="center">
         <Input
-          className="w-[30%]"
+          className="w-full"
           size="large"
           bordered={false}
           placeholder="Enter a product's name ..."
-          onChange={onChangeSearchKeyword}
+          onChange={(e) => onChangeSearchKeyword(e.target.value)}
           allowClear
         />
         <Button
+          htmlType="submit"
           type="text"
           size="large"
-          onClick={onSubmit}
           icon={<SearchOutlined />}
+          onClick={() => onFinishSubmitSearch()}
         ></Button>
-      </div>
+      </Flex>
+      <Divider />
+      <Spin spinning={productsList.loading}>
+        {checkExist ? (
+          <>
+            <div className="h-fit max-h-[50vh] w-2/5 mx-auto flex-row justify-center overflow-y-auto">
+              {productsList.data.map((item: any, index: number) => (
+                <div key={index}>
+                  <Link href={`/products/${item._id}`}>
+                    <div className="h-fit w-full flex gap-8">
+                      <Image src={item.image} height={"6em"} />
+                      <div className="h-full w-fit">
+                        <CustomText
+                          type="paragraph"
+                          extraClass="!text-lg !text-black"
+                        >
+                          {item.name}
+                          <br />
+                          <span className="text-neutral-500 !text-sm">
+                            {item.description}
+                          </span>
+                          <br />
+                          <span className="text-neutral-500 !text-sm">
+                            {`From ${NumberToDollarFormat(item.lowest_price)}`}
+                          </span>
+                        </CustomText>
+                      </div>
+                    </div>
+                  </Link>
+                  {/* // <RenderProductCard
+                  //   code={item._id}
+                  //   name={item.name}
+                  //   description={item.description}
+                  //   price={`From ${NumberToDollarFormat(item.lowest_price)}`}
+                  //   srcImage={item.image}
+                  // /> */}
+                  <Divider />
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <Empty />
+        )}
+      </Spin>
     </NavigationDrawer>
   );
 };
@@ -139,7 +219,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
                         <DescriptionItem
                           type={"description"}
                           title="Name"
-                          content={item.name}
+                          content={`${item.name} | ${item.storage.capacity} ${item.storage.unit}`}
                         />
                       </Col>
                       <Col span={24}>
@@ -214,7 +294,7 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
       onClose={props.onClose}
       closable={false}
     >
-      <Spin spinning={userSigningIn}>
+      <Spin spinning={userSigningIn.data}>
         <Flex className="h-full w-full" justify="center" align="center">
           <Form
             name="basic"

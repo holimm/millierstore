@@ -47,6 +47,7 @@ export default function Home() {
           dateString: dayjs().format(),
         },
       ],
+      status: "Pending",
       note: note,
     };
     // console.log(data);
