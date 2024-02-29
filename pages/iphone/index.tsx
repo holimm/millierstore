@@ -7,11 +7,7 @@ import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchCategory, fetchProducts } from "@/redux/entities/products";
-import {
-  getCategory,
-  getProducts,
-  getProductsLoading,
-} from "@/redux/selectors/products";
+import { getCategory, getProducts } from "@/redux/selectors/products";
 import { CategoryType, ProductsType } from "@/models/productModel";
 import {
   CategoryDescriptionTabItem,
@@ -31,7 +27,6 @@ interface ParamsSeriesType {
 export default function Home() {
   const dispatch = useAppDispatch();
   const productsList = useAppSelector(getProducts);
-  const loadingProductList = useAppSelector(getProductsLoading);
   const [paramsSeries, setParamsSeries] = useState<ParamsSeriesType>({
     category: "iPhone",
   });
@@ -58,7 +53,6 @@ export default function Home() {
           <CategoryProducts
             title="iPhone"
             productsList={productsList}
-            loadingProductList={loadingProductList}
             productSeries={[
               {
                 key: "All",
