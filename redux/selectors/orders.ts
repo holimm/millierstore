@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  getCancelOrderLoadingData,
   getCreateOrderLoadingData,
   getOrdersData,
   getOrdersLoadingData,
@@ -16,6 +17,14 @@ export const getOrders = createSelector(
 
 export const getCreateOrderLoading = createSelector(
   [getCreateOrderLoadingData],
+  (entities) => {
+    const result: boolean = entities;
+    return { data: result };
+  }
+);
+
+export const getCancelOrderLoading = createSelector(
+  [getCancelOrderLoadingData],
   (entities) => {
     const result: boolean = entities;
     return { data: result };

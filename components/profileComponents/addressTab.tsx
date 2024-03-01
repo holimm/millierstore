@@ -3,9 +3,11 @@ import {
   Card,
   Col,
   Divider,
+  Empty,
   Form,
   Input,
   Modal,
+  Popconfirm,
   Row,
   Spin,
 } from "antd";
@@ -37,11 +39,15 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
   const [openAddAddressModal, setOpenAddAddressModal] = useState(false);
   const loadingDeleteAddress = useAppSelector(getUserDeleteAddressLoading);
 
-  console.log(authenAccount.address);
-
-  const renderAddressCard = (item: UserAddressType, index: number) => {
-    const loadingUpdateAddress = useAppSelector(getUserUpdateAddressLoading);
+  const AddressCard = ({
+    item,
+    index,
+  }: {
+    item: UserAddressType;
+    index: number;
+  }) => {
     const [editingAddress, setEditingAddress] = useState(false);
+    const loadingUpdateAddress = useAppSelector(getUserUpdateAddressLoading);
 
     const onFinishUpdateAddress = async (values: UserAddressType) => {
       dispatch(updateUserAddress({ _id: authenAccount._id, ...values }));
@@ -124,15 +130,20 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
                     Update
                   </Button>
                 ) : (
-                  <Button
-                    onClick={() => {
+                  <Popconfirm
+                    title="Delete the address"
+                    description="Are you sure to delete this address?"
+                    onConfirm={() => {
                       onClickDeleteAddress({ index, ...item });
                     }}
-                    key={"delete"}
-                    icon={<DeleteOutlined />}
+                    okText="Yes"
+                    okType="danger"
+                    cancelText="No"
                   >
-                    Delete
-                  </Button>
+                    <Button key={"delete"} icon={<DeleteOutlined />}>
+                      Delete
+                    </Button>
+                  </Popconfirm>
                 )}
               </Col>
             </Row>
@@ -162,14 +173,17 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
         Add
       </Button>
       <Divider />
-      <Spin spinning={loadingDeleteAddress}>
+      <Spin spinning={loadingDeleteAddress.data}>
         <Row gutter={16}>
-          {!isEmpty(authenAccount.address) &&
+          {!isEmpty(authenAccount.address) ? (
             authenAccount.address.map((item: UserAddressType, key: number) => (
               <Col className="mb-5" span={8} key={key}>
-                {renderAddressCard(item, key)}
+                <AddressCard item={item} index={key} />
               </Col>
-            ))}
+            ))
+          ) : (
+            <Empty className="mt-10" />
+          )}
         </Row>
       </Spin>
     </>

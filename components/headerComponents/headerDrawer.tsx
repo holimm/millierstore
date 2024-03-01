@@ -22,6 +22,7 @@ import {
   FacebookOutlined,
   GoogleOutlined,
   SearchOutlined,
+  UserAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { FieldType, NavigationDrawerProps } from "@/models/navModel";
@@ -288,7 +289,7 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
   };
   return (
     <NavigationDrawer
-      width={"30%"}
+      width={"25%"}
       placement="right"
       open={props.open}
       onClose={props.onClose}
@@ -357,13 +358,15 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
             </Form.Item>
             <Divider plain>OR</Divider>
             <Form.Item>
-              <CustomButton
-                type="text"
-                extraClass="bg-[#3a5997] text-white"
-                icon={<FacebookOutlined />}
-              >
-                Login with Facebook
-              </CustomButton>
+              <Link href={"/register"} onClick={() => props.onClose()}>
+                <CustomButton
+                  type="text"
+                  extraClass="bg-blue-500 text-white"
+                  icon={<UserAddOutlined />}
+                >
+                  Create an account
+                </CustomButton>
+              </Link>
             </Form.Item>
             <Form.Item>
               <CustomButton
@@ -372,6 +375,15 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
                 icon={<GoogleOutlined />}
               >
                 Login with Google
+              </CustomButton>
+            </Form.Item>
+            <Form.Item>
+              <CustomButton
+                type="text"
+                extraClass="bg-[#3a5997] text-white"
+                icon={<FacebookOutlined />}
+              >
+                Login with Facebook
               </CustomButton>
             </Form.Item>
           </Form>

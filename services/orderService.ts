@@ -15,6 +15,16 @@ const orderService = {
     );
     return result as any;
   },
+  async cancelOrderById(id: string): Promise<ResponseBEType<string>> {
+    try {
+      const result = await axiosMongo.put(`/api/orders/cancelOrder/${id}`, {
+        idOrder: id,
+      });
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
 };
 
 export default orderService;

@@ -21,7 +21,7 @@ export const FormUpdatePassword = ({
   return (
     <Spin spinning={loadingChangingPassword.data}>
       <Form
-        name="basic"
+        name="formUpdatePassword"
         layout="vertical"
         className="w-full mb-10"
         labelCol={{ span: 8 }}

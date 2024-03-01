@@ -2,13 +2,18 @@ import { AddressTab } from "@/components/profileComponents/addressTab";
 import { OrdersTab } from "@/components/profileComponents/ordersTab";
 import { ProfileTab } from "@/components/profileComponents/profileTab";
 import { useAuthen } from "@/hooks/useAuthen";
+import { useAppSelector } from "@/redux/hooks";
+import {
+  getUserDeleteAddressLoading,
+  getUserUpdateAddressLoading,
+} from "@/redux/selectors/user";
 import {
   BookOutlined,
   CreditCardOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, MenuProps } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const { Content, Sider } = Layout;
 
@@ -54,10 +59,10 @@ export default function Profile() {
               />
             </Sider>
             <Content className="p-10 min-h-[40em]">
-              {currentTab === "orderTab" && (
+              {currentTab === "profileTab" && (
                 <ProfileTab authenAccount={authenAccount && authenAccount} />
               )}
-              {currentTab === "profileTab" && (
+              {currentTab === "orderTab" && (
                 <OrdersTab authenAccount={authenAccount && authenAccount} />
               )}
               {currentTab === "addressesTab" && (

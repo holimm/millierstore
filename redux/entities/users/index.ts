@@ -78,7 +78,7 @@ export const userSlice = createSlice({
         type: "success",
         content: "Logged in successfully",
       });
-      localStorage.setItem("signin_token", data.token);
+      data.remember && localStorage.setItem("signin_token", data.token);
     });
     builder.addCase(fetchUserSignIn.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoading(state, {
@@ -126,6 +126,7 @@ export const userSlice = createSlice({
         payload: false,
         type: `${storeName}/setUserLoadingChangingInformation`,
       });
+      window.dispatchEvent(new Event("account_update_information"));
     });
     builder.addCase(updateUserInformation.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoadingChangingInformation(state, {
@@ -148,6 +149,7 @@ export const userSlice = createSlice({
         payload: false,
         type: `${storeName}/setUserLoadingChangingPassword`,
       });
+      window.dispatchEvent(new Event("account_update_information"));
     });
     builder.addCase(updateUserPassword.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoadingChangingPassword(state, {
@@ -170,6 +172,7 @@ export const userSlice = createSlice({
         payload: false,
         type: `${storeName}/setUserLoadingCreateAddress`,
       });
+      window.dispatchEvent(new Event("account_update_information"));
     });
     builder.addCase(createUserAddress.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoadingCreateAddress(state, {
@@ -192,6 +195,7 @@ export const userSlice = createSlice({
         payload: false,
         type: `${storeName}/setUserLoadingUpdateAddress`,
       });
+      window.dispatchEvent(new Event("account_update_information"));
     });
     builder.addCase(updateUserAddress.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoadingUpdateAddress(state, {
@@ -214,6 +218,7 @@ export const userSlice = createSlice({
         payload: false,
         type: `${storeName}/setUserLoadingDeleteAddress`,
       });
+      window.dispatchEvent(new Event("account_update_information"));
     });
     builder.addCase(deleteUserAddress.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserLoadingDeleteAddress(state, {

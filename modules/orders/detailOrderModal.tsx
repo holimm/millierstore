@@ -2,7 +2,7 @@ import { CustomText } from "@/components/homePage/common";
 import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { CheckoutInformationType, OrderDateType } from "@/models/orderModel";
 import { UserType } from "@/models/userModel";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   Button,
   Card,
@@ -10,6 +10,7 @@ import {
   Divider,
   List,
   Modal,
+  Popconfirm,
   Row,
   Tag,
   Timeline,
@@ -18,6 +19,10 @@ import dayjs from "dayjs";
 import { findLast, isEmpty, toUpper } from "lodash";
 import { ListCart } from "./listCart";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import { getCancelOrderLoading } from "@/redux/selectors/orders";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { cancelOrderById } from "@/redux/entities/orders/asyncThunk";
+import { useRef } from "react";
 
 export const DetailOrderModal = ({
   authenAccount,
@@ -30,6 +35,10 @@ export const DetailOrderModal = ({
   openDetailOrderModal: boolean;
   setOpenDetailOrderModal: any;
 }) => {
+  const dispatch = useAppDispatch();
+  const timelineOrderDataLast = findLast(currentOrderDetail.date);
+  const loadingCancelOrder = useAppSelector(getCancelOrderLoading);
+
   const renderInformationColumn = (data: { label: string; value: string }) => (
     <Col span={8}>
       <div className="h-fit w-full my-2 mx-auto md:w-fit">
@@ -39,16 +48,9 @@ export const DetailOrderModal = ({
     </Col>
   );
 
-  const renderOrderButton = (label) => (
-    <Col span={12}>
-      <Button
-        className="h-10 w-full text-black !bg-neutral-600 rounded-md"
-        size="large"
-      >
-        {label}
-      </Button>
-    </Col>
-  );
+  const onCancelOrder = async (idOrder: string) => {
+    dispatch(cancelOrderById(idOrder));
+  };
 
   const dataAddress = [
     {
@@ -114,9 +116,6 @@ export const DetailOrderModal = ({
     }
   );
 
-  const timelineOrderDataLast = findLast(currentOrderDetail.date);
-  console.log(timelineOrderDataLast);
-
   return (
     <Modal
       width={"60vw"}
@@ -149,8 +148,33 @@ export const DetailOrderModal = ({
         </Row>
       </Card>
       <Row className="mt-5" gutter={12}>
-        {renderOrderButton("Assign Order")}
-        {renderOrderButton("Cancel Order")}
+        <Col span={12}>
+          <Button
+            className="h-10 w-full text-black !bg-neutral-600 rounded-md"
+            size="large"
+          >
+            Assign Order
+          </Button>
+        </Col>
+        <Col span={12}>
+          <Popconfirm
+            title="Cancel order"
+            description="Are you sure to cancel this order?"
+            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+            onConfirm={() => onCancelOrder(currentOrderDetail._id)}
+            okText="Yes"
+            okType="danger"
+            cancelText="No"
+          >
+            <Button
+              className="h-10 w-full text-black !bg-neutral-600 rounded-md"
+              size="large"
+              disabled={timelineOrderDataLast.id !== "dateOrder"}
+            >
+              Cancel Order
+            </Button>
+          </Popconfirm>
+        </Col>
       </Row>
       <Row className="mt-5" gutter={16}>
         <Col span={12}>

@@ -21,23 +21,27 @@ export const FormUpdateInformation = ({
   authenAccount: UserType;
 }) => {
   const dispatch = useAppDispatch();
+  const [form] = Form.useForm();
   const loadingChangingInformation = useAppSelector(
     getUserChangingInformationLoading
   );
+
   const onFinishUpdateInformation = async (
     values: FieldProfileInformationType
   ) => {
     dispatch(updateUserInformation({ _id: authenAccount._id, ...values }));
   };
+
   return (
     <Spin spinning={loadingChangingInformation.data}>
       <Form
-        name="basic"
+        form={form}
+        name="formUpdateInformation"
         layout="vertical"
         className="w-full mb-10"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 24 }}
-        initialValues={{ remember: true }}
+        initialValues={{ name: authenAccount.name, phone: authenAccount.phone }}
         onFinish={onFinishUpdateInformation}
         autoComplete="off"
         disabled={loadingChangingInformation.data}
@@ -50,7 +54,6 @@ export const FormUpdateInformation = ({
               rules={[
                 { required: true, message: "Please input your full name!" },
               ]}
-              initialValue={authenAccount.name}
             >
               <Input className="py-3" placeholder="Full name" size="middle" />
             </Form.Item>
@@ -65,7 +68,6 @@ export const FormUpdateInformation = ({
                   message: "Please input your phone number!",
                 },
               ]}
-              initialValue={authenAccount.phone}
             >
               <Input
                 className="py-3"

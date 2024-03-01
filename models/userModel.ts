@@ -18,4 +18,14 @@ export interface UserType {
   address: UserAddressType[];
   token: string;
   _id: string;
+  remember: boolean;
+}
+
+export interface RegisterAccountType {
+  name?: string;
+  username?: string;
+  password?: string;
+  confirm_password?: string;
+  email?: string;
+  phone?: string;
 }

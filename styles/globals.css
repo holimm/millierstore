@@ -23,6 +23,11 @@
   src: url("../public/assets/font/SF-Pro-Display-Black.otf");
 }
 
+@font-face {
+  font-family: "Lobster-Regular";
+  src: url("../public/assets/font/Lobster-Regular.ttf");
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

@@ -14,7 +14,7 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        lobster: ["var(--font-lobster)"],
+        lobster: ["Lobster-Regular", "sans-serif"],
         sf_pro: ["SF-Pro", "sans-serif"],
         sf_pro_rounded: ["SF-Pro-Rounded-Black", "sans-serif"],
         sf_pro_text: ["SF-Pro-Text-Black", "sans-serif"],

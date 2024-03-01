@@ -2,7 +2,11 @@ import { notificationMessage } from "@/helpers/commonHelpers";
 import { CheckoutInformationType } from "@/models/orderModel";
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { createOrder, fetchOrdersByAccountId } from "./asyncThunk";
+import {
+  cancelOrderById,
+  createOrder,
+  fetchOrdersByAccountId,
+} from "./asyncThunk";
 import { ResponseBEType } from "@/models/common";
 
 const storeName = "checkoutSlice";
@@ -13,6 +17,7 @@ export const orderSlice = createSlice({
     idsOrders: [],
     loadingOrders: false,
     loadingCreateOrder: false,
+    loadingCancelOrder: false,
   },
   reducers: {
     saveOrders(state, action: PayloadAction<CheckoutInformationType[]>) {
@@ -23,6 +28,9 @@ export const orderSlice = createSlice({
     },
     setLoadingCreateOrder(state, action: PayloadAction<boolean>) {
       state.loadingCreateOrder = action.payload;
+    },
+    setLoadingCancelOrder(state, action: PayloadAction<boolean>) {
+      state.loadingCancelOrder = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -68,6 +76,24 @@ export const orderSlice = createSlice({
       });
       notificationMessage({ type: "error", content: error.message });
     });
+    //CANCEL ORDER BY ID
+    builder.addCase(cancelOrderById.pending, (state, { payload }) => {
+      orderSlice.caseReducers.setLoadingCancelOrder(state, {
+        payload: true,
+        type: `${storeName}/setLoadingCancelOrder`,
+      });
+    });
+    builder.addCase(cancelOrderById.fulfilled, (state, { payload }) => {
+      orderSlice.caseReducers.setLoadingCancelOrder(state, {
+        payload: false,
+        type: `${storeName}/setLoadingCancelOrder`,
+      });
+      notificationMessage({
+        type: "success",
+        content: "Your order was cancelled!",
+      });
+      window.dispatchEvent(new Event("cancel_order"));
+    });
   },
 });
 
@@ -81,3 +107,5 @@ export const getOrdersLoadingData = (state: boolean) =>
   state[storeName].loadingOrders;
 export const getCreateOrderLoadingData = (state: boolean) =>
   state[storeName].loadingCreateOrder;
+export const getCancelOrderLoadingData = (state: boolean) =>
+  state[storeName].loadingCancelOrder;

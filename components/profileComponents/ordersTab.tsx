@@ -20,7 +20,7 @@ export const OrdersTab = ({ authenAccount }: { authenAccount: UserType }) => {
 
   useEffect(() => {
     dispatch(fetchOrdersByAccountId(authenAccount._id));
-  }, [authenAccount]);
+  }, [authenAccount, openDetailOrderModal]);
 
   const handleOpenDetailOrderModal = (orderDetail: CheckoutInformationType) => {
     setCurrentOrderDetail(orderDetail);
@@ -45,43 +45,51 @@ export const OrdersTab = ({ authenAccount }: { authenAccount: UserType }) => {
       <Spin spinning={accountOrders.loading}>
         <Row gutter={16}>
           {!isEmpty(accountOrders.data) ? (
-            accountOrders.data.map((item: CheckoutInformationType) => (
-              <Col span={8}>
-                <Card
-                  className="shadow hover:border-1 hover:border-blue-400 transition-all duration-500 cursor-pointer"
-                  onClick={() => handleOpenDetailOrderModal(item)}
-                >
-                  <CustomText type="paragraph" extraClass="!text-black">
-                    <Tag color={item.status === "Completed" && "success"}>
-                      {item.status}
-                    </Tag>
-                  </CustomText>
-                  <Divider />
-                  <CustomText type="paragraph" extraClass="!text-black">
-                    <span className="font-semibold">Order ID: </span>
-                    {item._id}
-                  </CustomText>
-                  <CustomText type="paragraph" extraClass="!text-black">
-                    <span className="font-semibold">Recipient: </span>
-                    {item.name}
-                  </CustomText>
-                  <CustomText type="paragraph" extraClass="!text-black">
-                    <span className="font-semibold">Payment Method: </span>
-                    {item.method}
-                  </CustomText>
-                  <CustomText type="paragraph" extraClass="!text-black">
-                    <span className="font-semibold">Total: </span>
-                    {NumberToDollarFormat(item.total)}
-                  </CustomText>
-                  <CustomText type="paragraph" extraClass="!text-black">
-                    <span className="font-semibold">Order Date: </span>
-                    {dayjs(item.date[0].dateString).format(
-                      "HH:mm:ss | DD MMMM, YYYY"
-                    )}
-                  </CustomText>
-                </Card>
-              </Col>
-            ))
+            accountOrders.data.map(
+              (item: CheckoutInformationType, index: number) => (
+                <Col span={8} key={index}>
+                  <Card
+                    className="shadow hover:border-1 hover:border-blue-400 transition-all duration-500 cursor-pointer"
+                    onClick={() => handleOpenDetailOrderModal(item)}
+                  >
+                    <CustomText type="paragraph" extraClass="!text-black">
+                      <Tag
+                        color={
+                          item.status === "Completed"
+                            ? "success"
+                            : item.status === "Cancelled" && "error"
+                        }
+                      >
+                        {item.status}
+                      </Tag>
+                    </CustomText>
+                    <Divider />
+                    <CustomText type="paragraph" extraClass="!text-black">
+                      <span className="font-semibold">Order ID: </span>
+                      {item._id}
+                    </CustomText>
+                    <CustomText type="paragraph" extraClass="!text-black">
+                      <span className="font-semibold">Recipient: </span>
+                      {item.name}
+                    </CustomText>
+                    <CustomText type="paragraph" extraClass="!text-black">
+                      <span className="font-semibold">Payment Method: </span>
+                      {item.method}
+                    </CustomText>
+                    <CustomText type="paragraph" extraClass="!text-black">
+                      <span className="font-semibold">Total: </span>
+                      {NumberToDollarFormat(item.total)}
+                    </CustomText>
+                    <CustomText type="paragraph" extraClass="!text-black">
+                      <span className="font-semibold">Order Date: </span>
+                      {dayjs(item.date[0].dateString).format(
+                        "HH:mm:ss | DD MMMM, YYYY"
+                      )}
+                    </CustomText>
+                  </Card>
+                </Col>
+              )
+            )
           ) : (
             <Empty className="my-10 mx-auto" />
           )}

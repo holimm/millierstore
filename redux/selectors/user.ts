@@ -61,6 +61,6 @@ export const getUserDeleteAddressLoading = createSelector(
   [getUserDataDeleteAddressLoading],
   (entities) => {
     const result: boolean = entities;
-    return result;
+    return { data: result };
   }
 );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Row, Col, Flex, Dropdown, Space, MenuProps } from "antd";
 import {
   SearchOutlined,
@@ -13,12 +13,23 @@ import {
 } from "./headerDrawer";
 import Link from "next/link";
 import { useAuthen } from "@/hooks/useAuthen";
+import { CustomText } from "../homePage/common";
 
 const HeaderNavigation: React.FC = () => {
   const authentication = useAuthen();
   const [showSearchDrawer, setShowSearchDrawer] = useState<boolean>(false);
   const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
   const [showSignInDrawer, setShowSignInDrawer] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleStorage = (event) => {
+      setShowSignInDrawer(true);
+    };
+    window.addEventListener("open_signin_drawer", handleStorage);
+    return () =>
+      window.removeEventListener("open_signin_drawer", handleStorage);
+  }, []);
+
   const handleShowSearchDrawer = () => {
     setShowSearchDrawer(!showSearchDrawer);
   };
@@ -27,6 +38,24 @@ const HeaderNavigation: React.FC = () => {
   };
   const handleShowSignInDrawer = () => {
     setShowSignInDrawer(!showSignInDrawer);
+  };
+
+  const ScreenButton = ({
+    linkHref,
+    label,
+  }: {
+    linkHref: string;
+    label: string;
+  }) => {
+    return (
+      <Link href={linkHref}>
+        <Button type="text" className="!font-sf_pro">
+          <CustomText type="paragraph" extraClass="!text-black">
+            {label}
+          </CustomText>
+        </Button>
+      </Link>
+    );
   };
 
   return (
@@ -42,7 +71,6 @@ const HeaderNavigation: React.FC = () => {
           onClose={handleShowSignInDrawer}
         />
       )}
-
       <div className="h-16 w-full sticky top-0 z-50 bg-white shadow-md">
         <div className="h-full w-3/4 mx-auto">
           <Row className="h-full w-full">
@@ -53,28 +81,14 @@ const HeaderNavigation: React.FC = () => {
                 justify="start"
                 align="center"
               >
-                <h1 className="text-4xl font-lobster text-black pr-8">
+                <h1 className="text-4xl !font-lobster text-black pr-8">
                   Millier
                 </h1>
-                <Link href="/">
-                  <Button type="text" className="!font-sf_pro">
-                    Home
-                  </Button>
-                </Link>
-                <Link href="/products">
-                  <Button type="text" className="!font-sf_pro">
-                    Shop
-                  </Button>
-                </Link>
-                <Button type="text" className="!font-sf_pro">
-                  Blog
-                </Button>
-                <Button type="text" className="!font-sf_pro">
-                  About
-                </Button>
-                <Button type="text" className="!font-sf_pro">
-                  Contact
-                </Button>
+                <ScreenButton linkHref="/" label="Home" />
+                <ScreenButton linkHref="/products" label="Shop" />
+                <ScreenButton linkHref="/blogs" label="Blog" />
+                <ScreenButton linkHref="/about" label="About" />
+                <ScreenButton linkHref="/contact" label="Contact" />
               </Flex>
             </Col>
             <Col span={12}>

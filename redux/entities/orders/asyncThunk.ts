@@ -19,3 +19,12 @@ export const fetchOrdersByAccountId = createAsyncThunk(
     return resp;
   }
 );
+
+export const cancelOrderById = createAsyncThunk(
+  `${storeName}/cancelOrderById`,
+  async (id: string) => {
+    const resp = await orderService.cancelOrderById(id);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);

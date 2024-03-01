@@ -8,13 +8,6 @@ import { Lobster } from "next/font/google";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 
-const lobster = Lobster({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-lobster",
-  display: "swap",
-});
-
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -30,7 +23,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     ((page: ReactElement) => <DefaultLayout>{page}</DefaultLayout>);
 
   return (
-    <main className={`${lobster.variable} font-sans`}>
+    <main className={`font-sans`}>
       <Provider store={store}>
         {MyLayout(<Component {...pageProps} />)}
       </Provider>

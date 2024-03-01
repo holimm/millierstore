@@ -11,6 +11,16 @@ export const useAuthen = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(getUser);
   const [token, setToken] = useState("");
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    const handleStorage = (event) => {
+      setRefresh(!refresh);
+    };
+    window.addEventListener("account_update_information", handleStorage);
+    return () =>
+      window.removeEventListener("account_update_information", handleStorage);
+  }, [refresh]);
 
   useEffect(() => {
     if (!isEmpty(localStorage.getItem("signin_token")))
@@ -21,7 +31,7 @@ export const useAuthen = () => {
     if (!isEmpty(token)) {
       dispatch(fetchUserSession(token));
     }
-  }, [token]);
+  }, [token, refresh]);
 
   return !isEmpty(userData.data) ? userData.data : false;
 };
