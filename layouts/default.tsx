@@ -8,10 +8,16 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUser } from "@/redux/selectors/user";
 import { useAuthen } from "@/hooks/useAuthen";
 
-const DefaultLayout = ({ children }: { children: ReactElement }) => {
+const DefaultLayout = ({
+  children,
+  onlyContent,
+}: {
+  children: ReactElement;
+  onlyContent?: boolean;
+}) => {
   return (
     <>
-      <HeaderNavigation />
+      {!onlyContent && <HeaderNavigation />}
       <ConfigProvider
         theme={{
           components: {
@@ -24,7 +30,7 @@ const DefaultLayout = ({ children }: { children: ReactElement }) => {
       >
         {children}
       </ConfigProvider>
-      <PageFooter />
+      {!onlyContent && <PageFooter />}
     </>
   );
 };

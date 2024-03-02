@@ -20,7 +20,6 @@ export default function Home() {
     dispatch(fetchProducts({}));
     dispatch(fetchCategory());
   }, []);
-  console.log(productsList);
 
   return (
     <main className={`h-fit w-full`}>

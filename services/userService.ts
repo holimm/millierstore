@@ -3,7 +3,11 @@ import {
   FieldProfileInformationType,
   ResponseBEType,
 } from "@/models/common";
-import { UserType, UserAddressType } from "@/models/userModel";
+import {
+  UserType,
+  UserAddressType,
+  RegisterAccountType,
+} from "@/models/userModel";
 import axiosMongo from "@/network/axiosMongo";
 
 const userService = {
@@ -23,6 +27,29 @@ const userService = {
           Authorization: `Bearer ${token}`,
         },
       });
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async createUserAccount(
+    values: RegisterAccountType
+  ): Promise<ResponseBEType<RegisterAccountType>> {
+    try {
+      const result = await axiosMongo.post(`/api/users/createAccount`, values);
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async sendVerifyEmail(
+    values: RegisterAccountType
+  ): Promise<ResponseBEType<RegisterAccountType>> {
+    try {
+      const result = await axiosMongo.post(
+        `/api/users/sendVerifyEmail`,
+        values
+      );
       return result.data as any;
     } catch (err) {
       return err as any;

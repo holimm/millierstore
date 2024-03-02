@@ -4,16 +4,18 @@ import {
   ProductColorType,
   ProductStorageType,
 } from "@/models/productDetailModel";
-import { UserType } from "@/models/userModel";
+import { RegisterAccountType, UserType } from "@/models/userModel";
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { isEmpty } from "lodash";
 import {
+  createUserAccount,
   createUserAddress,
   deleteUserAddress,
   fetchUserSession,
   fetchUserSignIn,
+  sendVerifyEmail,
   updateUserAddress,
   updateUserInformation,
   updateUserPassword,
@@ -27,6 +29,8 @@ export const userSlice = createSlice({
   initialState: {
     user: {},
     loading: false,
+    loadingCreateAccount: { status: "pending" },
+    loadingCreateAccountSendEmail: false,
     loadingChangingInformation: false,
     loadingChangingPassword: false,
     loadingCreateAddress: false,
@@ -39,6 +43,18 @@ export const userSlice = createSlice({
     },
     setUserLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
+    },
+    setUserCreateAccountLoading(
+      state,
+      action: PayloadAction<{ status: string }>
+    ) {
+      state.loadingCreateAccount = action.payload;
+    },
+    setUserCreateAccountSendEmailLoading(
+      state,
+      action: PayloadAction<boolean>
+    ) {
+      state.loadingCreateAccountSendEmail = action.payload;
     },
     setUserLoadingChangingInformation(state, action: PayloadAction<boolean>) {
       state.loadingChangingInformation = action.payload;
@@ -109,6 +125,59 @@ export const userSlice = createSlice({
       userSlice.caseReducers.setUserLoading(state, {
         payload: false,
         type: `${storeName}/setUserLoading`,
+      });
+      notificationMessage({ type: "error", content: error.message });
+    });
+    //USER CREATE ACCOUNT
+    builder.addCase(createUserAccount.pending, (state, { payload }) => {
+      userSlice.caseReducers.setUserCreateAccountLoading(state, {
+        payload: {
+          status: "pending",
+        },
+        type: `${storeName}/setUserCreateAccountLoading`,
+      });
+    });
+    builder.addCase(createUserAccount.fulfilled, (state, { payload }) => {
+      const { data } = payload as ResponseBEType<string>;
+      notificationMessage({ type: "success", content: data });
+      userSlice.caseReducers.setUserCreateAccountLoading(state, {
+        payload: {
+          status: "success",
+        },
+        type: `${storeName}/setUserCreateAccountLoading`,
+      });
+    });
+    builder.addCase(createUserAccount.rejected, (state, { error }) => {
+      userSlice.caseReducers.setUserCreateAccountLoading(state, {
+        payload: {
+          status: "rejected",
+        },
+        type: `${storeName}/setUserCreateAccountLoading`,
+      });
+      notificationMessage({ type: "error", content: error.message });
+    });
+    //USER CREATE ACCOUNT SEND EMAIL
+    builder.addCase(sendVerifyEmail.pending, (state, { payload }) => {
+      userSlice.caseReducers.setUserCreateAccountSendEmailLoading(state, {
+        payload: true,
+        type: `${storeName}/setUserCreateAccountSendEmailLoading`,
+      });
+    });
+    builder.addCase(sendVerifyEmail.fulfilled, (state, { payload }) => {
+      const data = payload as ResponseBEType<RegisterAccountType>;
+      console.log(data);
+      notificationMessage({ type: "success", content: "Success" });
+      userSlice.caseReducers.setUserCreateAccountSendEmailLoading(state, {
+        payload: false,
+        type: `${storeName}/setUserCreateAccountSendEmailLoading`,
+      });
+      localStorage.setItem("create_account_temp", JSON.stringify(data));
+      window.dispatchEvent(new Event("open_sent_email_modal"));
+    });
+    builder.addCase(sendVerifyEmail.rejected, (state, { error }) => {
+      userSlice.caseReducers.setUserCreateAccountSendEmailLoading(state, {
+        payload: false,
+        type: `${storeName}/setUserCreateAccountSendEmailLoading`,
       });
       notificationMessage({ type: "error", content: error.message });
     });
@@ -233,6 +302,8 @@ export const userSlice = createSlice({
 export const {
   saveUser,
   setUserLoading,
+  setUserCreateAccountLoading,
+  setUserCreateAccountSendEmailLoading,
   setUserLoadingChangingPassword,
   setUserLoadingCreateAddress,
   setUserLoadingUpdateAddress,
@@ -244,6 +315,10 @@ export const getUserData = (state: UserType) => state[storeName].user;
 export const getUserDataLoading = (state: boolean) => state[storeName].loading;
 export const getUserDataChangingInformationLoading = (state: boolean) =>
   state[storeName].loadingChangingInformation;
+export const getUserDataCreateAccountLoading = (state: { status: string }) =>
+  state[storeName].loadingCreateAccount;
+export const getUserDataCreateAccountSendEmailLoading = (state: boolean) =>
+  state[storeName].loadingCreateAccountSendEmail;
 export const getUserDataChangingPasswordLoading = (state: boolean) =>
   state[storeName].loadingChangingPassword;
 export const getUserDataCreateAddressLoading = (state: boolean) =>

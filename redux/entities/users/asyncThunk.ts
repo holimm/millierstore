@@ -1,7 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { storeName } from ".";
 import userService from "@/services/userService";
-import { UserAddressType, UserType } from "@/models/userModel";
+import {
+  RegisterAccountType,
+  UserAddressType,
+  UserType,
+} from "@/models/userModel";
 import {
   FieldProfileInformationType,
   FieldProfilePasswordType,
@@ -20,6 +24,22 @@ export const fetchUserSession = createAsyncThunk(
   `${storeName}/fetchUserSession`,
   async (token: string) => {
     const resp = await userService.sessionSignIn(token);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
+export const createUserAccount = createAsyncThunk(
+  `${storeName}/createUserAccount`,
+  async (values: RegisterAccountType) => {
+    const resp = await userService.createUserAccount(values);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
+export const sendVerifyEmail = createAsyncThunk(
+  `${storeName}/sendVerifyEmail`,
+  async (values: RegisterAccountType) => {
+    const resp = await userService.sendVerifyEmail(values);
     if (resp.status === "error") throw resp.data;
     return resp;
   }

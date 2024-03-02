@@ -5,6 +5,8 @@ import {
   getUserData,
   getUserDataChangingInformationLoading,
   getUserDataChangingPasswordLoading,
+  getUserDataCreateAccountLoading,
+  getUserDataCreateAccountSendEmailLoading,
   getUserDataCreateAddressLoading,
   getUserDataDeleteAddressLoading,
   getUserDataLoading,
@@ -19,6 +21,22 @@ export const getUser = createSelector([getUserData], (entities) => {
 
 export const getUserSigninLoading = createSelector(
   [getUserDataLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return { data: result };
+  }
+);
+
+export const getUserCreateAccountLoading = createSelector(
+  [getUserDataCreateAccountLoading],
+  (entities) => {
+    const result: { status: string } = entities;
+    return { data: result };
+  }
+);
+
+export const getUserCreateAccountSendEmailLoading = createSelector(
+  [getUserDataCreateAccountSendEmailLoading],
   (entities) => {
     const result: boolean = entities;
     return { data: result };
