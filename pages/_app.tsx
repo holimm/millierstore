@@ -23,7 +23,11 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const MyLayout =
     Component.getLayout ??
     ((page: ReactElement) => (
-      <DefaultLayout onlyContent={pathname === "/verify-email"}>
+      <DefaultLayout
+        onlyContent={
+          pathname === "/verify-email" || pathname === "/reset-password"
+        }
+      >
         {page}
       </DefaultLayout>
     ));

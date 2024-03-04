@@ -27,6 +27,7 @@ import {
 } from "@/redux/selectors/user";
 import {
   CloseOutlined,
+  DoubleLeftOutlined,
   ExceptionOutlined,
   UserAddOutlined,
   UserOutlined,
@@ -115,63 +116,100 @@ const ForgotPassword = () => {
           ]}
         />
       </Modal>
-      <div className="h-fit w-full pt-16 pb-24 bg-gradient-to-r from-zinc-100 to-neutral-100">
-        <Flex justify="center" align="center">
-          <div className="h-fit w-[30vw] p-10 bg-white shadow-lg rounded-xl">
-            <Spin spinning={loadingResetPassword.data}>
-              <CustomText
-                type="paragraph"
-                topClass="text-center"
-                extraClass="!text-2xl !text-black !font-semibold"
-              >
-                RESET PASSWORD
-              </CustomText>
-              <Divider />
-              <Form
-                name="formRegisterAccount"
-                layout="vertical"
-                className="w-full mb-10"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                autoComplete="off"
-              >
-                <Form.Item<RegisterAccountType>
-                  name="password"
-                  label="Password"
-                  className="mt-2"
-                  rules={passwordConstraint}
-                >
-                  <Input.Password
-                    className="py-3"
-                    placeholder="Password"
-                    size="middle"
-                  />
-                </Form.Item>
-                <Form.Item<RegisterAccountType>
-                  name="confirm_password"
-                  label="Confirm Password"
-                  className="mt-2"
-                  rules={confirmPasswordConstraint}
-                >
-                  <Input.Password
-                    className="py-3"
-                    placeholder="Password"
-                    size="middle"
-                  />
-                </Form.Item>
-                <Form.Item className="mt-10">
-                  <CustomButton
-                    type="primary"
-                    htmlType="submit"
-                    extraClass="bg-blue-500"
-                    icon={<UserOutlined />}
+      <div className="h-screen w-full shadow-md bg-gradient-to-r from-stone-500 via-neutral-500 to-zinc-500">
+        <Flex className="h-full w-full" justify="center" align="center">
+          {isEmpty(token) ? (
+            <div className="h-fit w-[60vw] bg-white p-10 rounded-xl">
+              <Result
+                status="warning"
+                title={
+                  <CustomText
+                    type="paragraph"
+                    extraClass="!text-black !text-3xl !font-semibold"
                   >
-                    Reset password
-                  </CustomButton>
-                </Form.Item>
-              </Form>
-            </Spin>
-          </div>
+                    Reset Password Rejected
+                  </CustomText>
+                }
+                subTitle={
+                  <CustomText
+                    type="paragraph"
+                    extraClass="!text-neutral-500 !text-lg"
+                  >
+                    Verification token not provided
+                  </CustomText>
+                }
+                extra={[
+                  <Link href={"/"} key={"button_backtopage"}>
+                    <Button
+                      icon={<DoubleLeftOutlined />}
+                      size="middle"
+                      key="buy"
+                    >
+                      Go back to page
+                    </Button>
+                  </Link>,
+                ]}
+              />
+            </div>
+          ) : (
+            <Flex justify="center" align="center">
+              <div className="h-fit w-[30vw] p-10 bg-white shadow-lg rounded-xl">
+                <Spin spinning={loadingResetPassword.data}>
+                  <CustomText
+                    type="paragraph"
+                    topClass="text-center"
+                    extraClass="!text-2xl !text-black !font-semibold"
+                  >
+                    RESET PASSWORD
+                  </CustomText>
+                  <Divider />
+                  <Form
+                    name="formRegisterAccount"
+                    layout="vertical"
+                    className="w-full mb-10"
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                    autoComplete="off"
+                  >
+                    <Form.Item<RegisterAccountType>
+                      name="password"
+                      label="Password"
+                      className="mt-2"
+                      rules={passwordConstraint}
+                    >
+                      <Input.Password
+                        className="py-3"
+                        placeholder="Password"
+                        size="middle"
+                      />
+                    </Form.Item>
+                    <Form.Item<RegisterAccountType>
+                      name="confirm_password"
+                      label="Confirm Password"
+                      className="mt-2"
+                      rules={confirmPasswordConstraint}
+                    >
+                      <Input.Password
+                        className="py-3"
+                        placeholder="Password"
+                        size="middle"
+                      />
+                    </Form.Item>
+                    <Form.Item className="mt-10">
+                      <CustomButton
+                        type="primary"
+                        htmlType="submit"
+                        extraClass="bg-blue-500"
+                        icon={<UserOutlined />}
+                      >
+                        Reset password
+                      </CustomButton>
+                    </Form.Item>
+                  </Form>
+                </Spin>
+              </div>
+            </Flex>
+          )}
         </Flex>
       </div>
     </>
