@@ -1,11 +1,16 @@
 import { CustomButton } from "@/components/common";
 import { CustomText } from "@/components/homePage/common";
 import { generateUUIDToken } from "@/helpers/commonHelpers";
-import { RegisterAccountType } from "@/models/userModel";
 import {
-  createUserAccount,
-  sendVerifyEmail,
-} from "@/redux/entities/users/asyncThunk";
+  confirmPasswordConstraint,
+  emailConstraint,
+  fullnameConstraint,
+  passwordConstraint,
+  phoneConstraint,
+  usernameConstraint,
+} from "@/helpers/constraint/userDataContraint";
+import { RegisterAccountType } from "@/models/userModel";
+import { createUserAccount } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   getUserCreateAccountLoading,
@@ -51,7 +56,7 @@ const RegisterAccount = () => {
 
   const onFinish = async (values: RegisterAccountType) => {
     const { confirm_password, ...data } = values;
-    dispatch(sendVerifyEmail(data));
+    dispatch(createUserAccount(data));
   };
   return (
     <>
@@ -119,16 +124,7 @@ const RegisterAccount = () => {
                       name="name"
                       label="Fullname"
                       className="mt-2"
-                      rules={[
-                        {
-                          required: true,
-                          message: "*Please input your fullname",
-                        },
-                        {
-                          pattern: /^[\p{L}']+(?: [\p{L}']+)+$/u,
-                          message: "*Please input valid fullname",
-                        },
-                      ]}
+                      rules={fullnameConstraint}
                     >
                       <Input
                         className="py-3"
@@ -142,22 +138,7 @@ const RegisterAccount = () => {
                       name="username"
                       label="Username"
                       className="mt-2"
-                      rules={[
-                        {
-                          required: true,
-                          message: "*Please input your username",
-                        },
-                        {
-                          min: 5,
-                          max: 30,
-                          message:
-                            "*Username must contain minimum 8 characters, maximum 30 characters",
-                        },
-                        {
-                          pattern: /^[a-zA-Z0-9]{5,30}$/,
-                          message: <>*Must be alphanumeric characters</>,
-                        },
-                      ]}
+                      rules={usernameConstraint}
                     >
                       <Input
                         className="py-3"
@@ -173,16 +154,7 @@ const RegisterAccount = () => {
                       name="email"
                       label="Email"
                       className="mt-2"
-                      rules={[
-                        {
-                          required: true,
-                          message: "*Please input your email address",
-                        },
-                        {
-                          type: "email",
-                          message: "*Please input valid email address",
-                        },
-                      ]}
+                      rules={emailConstraint}
                     >
                       <Input
                         className="py-3"
@@ -196,16 +168,7 @@ const RegisterAccount = () => {
                       name="phone"
                       label="Phone number"
                       className="mt-2"
-                      rules={[
-                        {
-                          required: true,
-                          message: "*Please input your phone number",
-                        },
-                        {
-                          pattern: /^\d{10}$/,
-                          message: "*Phone number must contains 10 numbers",
-                        },
-                      ]}
+                      rules={phoneConstraint}
                     >
                       <Input
                         className="py-3"
@@ -221,24 +184,7 @@ const RegisterAccount = () => {
                       name="password"
                       label="Password"
                       className="mt-2"
-                      rules={[
-                        {
-                          required: true,
-                          message: "*Please input your password",
-                        },
-                        {
-                          pattern:
-                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                          message: (
-                            <>
-                              *Password must contain minimum 8 characters
-                              <br />
-                              *At least one uppercase letter, one lowercase
-                              letter, one number and one special character
-                            </>
-                          ),
-                        },
-                      ]}
+                      rules={passwordConstraint}
                     >
                       <Input.Password
                         className="py-3"
@@ -252,24 +198,7 @@ const RegisterAccount = () => {
                       name="confirm_password"
                       label="Confirm Password"
                       className="mt-2"
-                      rules={[
-                        {
-                          required: true,
-                          message: "*Please confirm your password",
-                        },
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (!value || getFieldValue("password") === value) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              new Error(
-                                "*The two passwords that you entered do not match!"
-                              )
-                            );
-                          },
-                        }),
-                      ]}
+                      rules={confirmPasswordConstraint}
                     >
                       <Input.Password
                         className="py-3"
@@ -309,9 +238,11 @@ const RegisterAccount = () => {
                 </Col>
                 <Col span={12}>
                   <div>
-                    <CustomButton type="default" icon={<ExceptionOutlined />}>
-                      Forget password?
-                    </CustomButton>
+                    <Link href={"/forget-password"}>
+                      <CustomButton type="default" icon={<ExceptionOutlined />}>
+                        Forgot password?
+                      </CustomButton>
+                    </Link>
                   </div>
                 </Col>
               </Row>

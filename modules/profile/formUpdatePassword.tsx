@@ -1,4 +1,8 @@
 import { CustomButton } from "@/components/common";
+import {
+  confirmPasswordConstraint,
+  passwordConstraint,
+} from "@/helpers/constraint/userDataContraint";
 import { FieldProfilePasswordType } from "@/models/common";
 import { UserType } from "@/models/userModel";
 import { updateUserPassword } from "@/redux/entities/users/asyncThunk";
@@ -51,11 +55,9 @@ export const FormUpdatePassword = ({
         <Row gutter={20}>
           <Col span={12}>
             <Form.Item<FieldProfilePasswordType>
-              name="new_password"
+              name="password"
               label="New password"
-              rules={[
-                { required: true, message: "Please input your new password" },
-              ]}
+              rules={passwordConstraint}
             >
               <Input.Password
                 className="py-3"
@@ -66,26 +68,9 @@ export const FormUpdatePassword = ({
           </Col>
           <Col span={12}>
             <Form.Item<FieldProfilePasswordType>
-              name="new_password_confirm"
+              name="password_confirm"
               label="Confirm new password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please confirm your new password",
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("new_password") === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "The two passwords that you entered do not match!"
-                      )
-                    );
-                  },
-                }),
-              ]}
+              rules={confirmPasswordConstraint}
             >
               <Input.Password
                 className="py-3"

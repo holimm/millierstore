@@ -15,10 +15,12 @@ import {
   deleteUserAddress,
   fetchUserSession,
   fetchUserSignIn,
-  sendVerifyEmail,
+  verifyUserAccount,
   updateUserAddress,
   updateUserInformation,
   updateUserPassword,
+  sendEmailResetPassword,
+  resetPassword,
 } from "./asyncThunk";
 import { ResponseBEType } from "@/models/common";
 
@@ -29,8 +31,13 @@ export const userSlice = createSlice({
   initialState: {
     user: {},
     loading: false,
-    loadingCreateAccount: { status: "pending" },
+    loadingCreateAccount: {
+      status: "pending",
+      value: "Wait a moment! Your email verification is processing. ",
+    },
     loadingCreateAccountSendEmail: false,
+    loadingResetPasswordSendEmail: false,
+    loadingResetPassword: false,
     loadingChangingInformation: false,
     loadingChangingPassword: false,
     loadingCreateAddress: false,
@@ -46,7 +53,7 @@ export const userSlice = createSlice({
     },
     setUserCreateAccountLoading(
       state,
-      action: PayloadAction<{ status: string }>
+      action: PayloadAction<{ status: string; value: string }>
     ) {
       state.loadingCreateAccount = action.payload;
     },
@@ -55,6 +62,15 @@ export const userSlice = createSlice({
       action: PayloadAction<boolean>
     ) {
       state.loadingCreateAccountSendEmail = action.payload;
+    },
+    setUserResetPasswordSendEmailLoading(
+      state,
+      action: PayloadAction<boolean>
+    ) {
+      state.loadingResetPasswordSendEmail = action.payload;
+    },
+    setUserResetPasswordLoading(state, action: PayloadAction<boolean>) {
+      state.loadingResetPassword = action.payload;
     },
     setUserLoadingChangingInformation(state, action: PayloadAction<boolean>) {
       state.loadingChangingInformation = action.payload;
@@ -128,56 +144,104 @@ export const userSlice = createSlice({
       });
       notificationMessage({ type: "error", content: error.message });
     });
-    //USER CREATE ACCOUNT
-    builder.addCase(createUserAccount.pending, (state, { payload }) => {
+    //USER VERIFY ACCOUNT
+    builder.addCase(verifyUserAccount.pending, (state, { payload }) => {
       userSlice.caseReducers.setUserCreateAccountLoading(state, {
         payload: {
           status: "pending",
+          value: "Wait a moment! Your email verification is processing. ",
         },
         type: `${storeName}/setUserCreateAccountLoading`,
       });
     });
-    builder.addCase(createUserAccount.fulfilled, (state, { payload }) => {
+    builder.addCase(verifyUserAccount.fulfilled, (state, { payload }) => {
       const { data } = payload as ResponseBEType<string>;
-      notificationMessage({ type: "success", content: data });
+      console.log("FULLFILL", payload);
       userSlice.caseReducers.setUserCreateAccountLoading(state, {
         payload: {
           status: "success",
+          value: data,
         },
         type: `${storeName}/setUserCreateAccountLoading`,
       });
     });
-    builder.addCase(createUserAccount.rejected, (state, { error }) => {
+    builder.addCase(verifyUserAccount.rejected, (state, { error }) => {
+      console.log("ERROR", error);
       userSlice.caseReducers.setUserCreateAccountLoading(state, {
         payload: {
           status: "rejected",
+          value: error.message,
         },
         type: `${storeName}/setUserCreateAccountLoading`,
       });
-      notificationMessage({ type: "error", content: error.message });
     });
-    //USER CREATE ACCOUNT SEND EMAIL
-    builder.addCase(sendVerifyEmail.pending, (state, { payload }) => {
+    //USER CREATE ACCOUNT NOT VERIFIED
+    builder.addCase(createUserAccount.pending, (state, { payload }) => {
       userSlice.caseReducers.setUserCreateAccountSendEmailLoading(state, {
         payload: true,
         type: `${storeName}/setUserCreateAccountSendEmailLoading`,
       });
     });
-    builder.addCase(sendVerifyEmail.fulfilled, (state, { payload }) => {
-      const data = payload as ResponseBEType<RegisterAccountType>;
-      console.log(data);
-      notificationMessage({ type: "success", content: "Success" });
+    builder.addCase(createUserAccount.fulfilled, (state, { payload }) => {
+      const { data } = payload as ResponseBEType<string>;
+      notificationMessage({ type: "success", content: data });
       userSlice.caseReducers.setUserCreateAccountSendEmailLoading(state, {
         payload: false,
         type: `${storeName}/setUserCreateAccountSendEmailLoading`,
       });
-      localStorage.setItem("create_account_temp", JSON.stringify(data));
+      // localStorage.setItem("create_account_temp", JSON.stringify(data));
       window.dispatchEvent(new Event("open_sent_email_modal"));
     });
-    builder.addCase(sendVerifyEmail.rejected, (state, { error }) => {
+    builder.addCase(createUserAccount.rejected, (state, { error }) => {
       userSlice.caseReducers.setUserCreateAccountSendEmailLoading(state, {
         payload: false,
         type: `${storeName}/setUserCreateAccountSendEmailLoading`,
+      });
+      notificationMessage({ type: "error", content: error.message });
+    });
+    //USER SEND RESET PASSWORD EMAIL
+    builder.addCase(sendEmailResetPassword.pending, (state, { payload }) => {
+      userSlice.caseReducers.setUserResetPasswordSendEmailLoading(state, {
+        payload: true,
+        type: `${storeName}/setUserResetPasswordSendEmailLoading`,
+      });
+    });
+    builder.addCase(sendEmailResetPassword.fulfilled, (state, { payload }) => {
+      const { data } = payload as ResponseBEType<string>;
+      notificationMessage({ type: "success", content: data });
+      userSlice.caseReducers.setUserResetPasswordSendEmailLoading(state, {
+        payload: false,
+        type: `${storeName}/setUserResetPasswordSendEmailLoading`,
+      });
+      window.dispatchEvent(new Event("open_sent_email_modal"));
+    });
+    builder.addCase(sendEmailResetPassword.rejected, (state, { error }) => {
+      userSlice.caseReducers.setUserResetPasswordSendEmailLoading(state, {
+        payload: false,
+        type: `${storeName}/setUserResetPasswordSendEmailLoading`,
+      });
+      notificationMessage({ type: "error", content: error.message });
+    });
+    //USER RESET PASSWORD
+    builder.addCase(resetPassword.pending, (state, { payload }) => {
+      userSlice.caseReducers.setUserResetPasswordLoading(state, {
+        payload: true,
+        type: `${storeName}/setUserResetPasswordLoading`,
+      });
+    });
+    builder.addCase(resetPassword.fulfilled, (state, { payload }) => {
+      const { data } = payload as ResponseBEType<string>;
+      notificationMessage({ type: "success", content: data });
+      userSlice.caseReducers.setUserResetPasswordLoading(state, {
+        payload: false,
+        type: `${storeName}/setUserResetPasswordLoading`,
+      });
+      window.dispatchEvent(new Event("open_reset_password_modal"));
+    });
+    builder.addCase(resetPassword.rejected, (state, { error }) => {
+      userSlice.caseReducers.setUserResetPasswordLoading(state, {
+        payload: false,
+        type: `${storeName}/setUserResetPasswordLoading`,
       });
       notificationMessage({ type: "error", content: error.message });
     });
@@ -304,6 +368,7 @@ export const {
   setUserLoading,
   setUserCreateAccountLoading,
   setUserCreateAccountSendEmailLoading,
+  setUserResetPasswordSendEmailLoading,
   setUserLoadingChangingPassword,
   setUserLoadingCreateAddress,
   setUserLoadingUpdateAddress,
@@ -315,10 +380,16 @@ export const getUserData = (state: UserType) => state[storeName].user;
 export const getUserDataLoading = (state: boolean) => state[storeName].loading;
 export const getUserDataChangingInformationLoading = (state: boolean) =>
   state[storeName].loadingChangingInformation;
-export const getUserDataCreateAccountLoading = (state: { status: string }) =>
-  state[storeName].loadingCreateAccount;
+export const getUserDataCreateAccountLoading = (state: {
+  status: string;
+  value: string;
+}) => state[storeName].loadingCreateAccount;
 export const getUserDataCreateAccountSendEmailLoading = (state: boolean) =>
   state[storeName].loadingCreateAccountSendEmail;
+export const getUserDataResetPasswordSendEmailLoading = (state: boolean) =>
+  state[storeName].loadingResetPasswordSendEmail;
+export const getUserDataResetPasswordLoading = (state: boolean) =>
+  state[storeName].loadingResetPassword;
 export const getUserDataChangingPasswordLoading = (state: boolean) =>
   state[storeName].loadingChangingPassword;
 export const getUserDataCreateAddressLoading = (state: boolean) =>

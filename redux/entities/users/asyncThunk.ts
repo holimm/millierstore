@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { storeName } from ".";
 import userService from "@/services/userService";
 import {
+  ForgotPasswordAccountType,
   RegisterAccountType,
   UserAddressType,
   UserType,
@@ -28,18 +29,34 @@ export const fetchUserSession = createAsyncThunk(
     return resp;
   }
 );
-export const createUserAccount = createAsyncThunk(
-  `${storeName}/createUserAccount`,
-  async (values: RegisterAccountType) => {
-    const resp = await userService.createUserAccount(values);
+export const verifyUserAccount = createAsyncThunk(
+  `${storeName}/verifyUserAccount`,
+  async (values: { emailVerifyToken: string }) => {
+    const resp = await userService.verifyUserAccount(values);
     if (resp.status === "error") throw resp.data;
     return resp;
   }
 );
-export const sendVerifyEmail = createAsyncThunk(
-  `${storeName}/sendVerifyEmail`,
+export const sendEmailResetPassword = createAsyncThunk(
+  `${storeName}/sendEmailResetPassword`,
+  async (values: ForgotPasswordAccountType) => {
+    const resp = await userService.sendEmailResetPassword(values);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
+export const resetPassword = createAsyncThunk(
+  `${storeName}/resetPassword`,
+  async (values: ForgotPasswordAccountType) => {
+    const resp = await userService.resetPassword(values);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
+export const createUserAccount = createAsyncThunk(
+  `${storeName}/createUserAccount`,
   async (values: RegisterAccountType) => {
-    const resp = await userService.sendVerifyEmail(values);
+    const resp = await userService.createUserAccount(values);
     if (resp.status === "error") throw resp.data;
     return resp;
   }

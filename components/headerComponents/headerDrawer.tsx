@@ -343,9 +343,11 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
             <Form.Item<FieldType>>
-              <Typography.Link className="cursor-pointer">
-                Forget Password?
-              </Typography.Link>
+              <Link href={"/forget-password"}>
+                <Typography.Link className="cursor-pointer">
+                  Forgot Password?
+                </Typography.Link>
+              </Link>
             </Form.Item>
             <Form.Item>
               <CustomButton
@@ -410,17 +412,12 @@ export const HeaderProfileDropdown = ({
     },
     {
       key: "3",
-      label: (
-        <span
-          onClick={() => {
-            dispatch(saveUser({}));
-            localStorage.removeItem("signin_token");
-            notificationMessage({ type: "success", content: "Logged out" });
-          }}
-        >
-          Logout
-        </span>
-      ),
+      onClick: () => {
+        dispatch(saveUser({}));
+        localStorage.removeItem("signin_token");
+        notificationMessage({ type: "success", content: "Logged out" });
+      },
+      label: "Logout",
     },
   ];
   return (

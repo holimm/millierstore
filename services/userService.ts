@@ -7,6 +7,7 @@ import {
   UserType,
   UserAddressType,
   RegisterAccountType,
+  ForgotPasswordAccountType,
 } from "@/models/userModel";
 import axiosMongo from "@/network/axiosMongo";
 
@@ -32,22 +33,51 @@ const userService = {
       return err as any;
     }
   },
-  async createUserAccount(
-    values: RegisterAccountType
-  ): Promise<ResponseBEType<RegisterAccountType>> {
+  async verifyUserAccount(values: {
+    emailVerifyToken: string;
+  }): Promise<ResponseBEType<RegisterAccountType>> {
     try {
-      const result = await axiosMongo.post(`/api/users/createAccount`, values);
+      const result = await axiosMongo.post(
+        `/api/users/verifyUserAccount`,
+        values
+      );
       return result.data as any;
     } catch (err) {
       return err as any;
     }
   },
-  async sendVerifyEmail(
+  async sendEmailResetPassword(
+    values: ForgotPasswordAccountType
+  ): Promise<ResponseBEType<ForgotPasswordAccountType>> {
+    try {
+      const result = await axiosMongo.post(
+        `/api/users/sendEmailResetPassword`,
+        values
+      );
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async resetPassword(
+    values: ForgotPasswordAccountType
+  ): Promise<ResponseBEType<ForgotPasswordAccountType>> {
+    try {
+      const result = await axiosMongo.post(
+        `/api/users/verifyResetPassword`,
+        values
+      );
+      return result.data as any;
+    } catch (err) {
+      return err as any;
+    }
+  },
+  async createUserAccount(
     values: RegisterAccountType
   ): Promise<ResponseBEType<RegisterAccountType>> {
     try {
       const result = await axiosMongo.post(
-        `/api/users/sendVerifyEmail`,
+        `/api/users/createUserAccount`,
         values
       );
       return result.data as any;

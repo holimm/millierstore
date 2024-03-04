@@ -31,6 +31,13 @@ export interface RegisterAccountType {
   emailVerifyToken?: string;
 }
 
+export interface ForgotPasswordAccountType {
+  email?: string;
+  password?: string;
+  confirm_password?: string;
+  emailVerifyToken?: string;
+}
+
 export interface RegisterAccountAbsoluteType {
   name?: string;
   username?: string;

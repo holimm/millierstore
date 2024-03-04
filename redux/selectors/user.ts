@@ -10,6 +10,8 @@ import {
   getUserDataCreateAddressLoading,
   getUserDataDeleteAddressLoading,
   getUserDataLoading,
+  getUserDataResetPasswordLoading,
+  getUserDataResetPasswordSendEmailLoading,
   getUserDataUpdateAddressLoading,
 } from "../entities/users";
 import { UserType } from "@/models/userModel";
@@ -30,13 +32,29 @@ export const getUserSigninLoading = createSelector(
 export const getUserCreateAccountLoading = createSelector(
   [getUserDataCreateAccountLoading],
   (entities) => {
-    const result: { status: string } = entities;
+    const result: { status: string; value: string } = entities;
     return { data: result };
   }
 );
 
 export const getUserCreateAccountSendEmailLoading = createSelector(
   [getUserDataCreateAccountSendEmailLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return { data: result };
+  }
+);
+
+export const getUserResetPasswordSendEmailLoading = createSelector(
+  [getUserDataResetPasswordSendEmailLoading],
+  (entities) => {
+    const result: boolean = entities;
+    return { data: result };
+  }
+);
+
+export const getUserResetPasswordLoading = createSelector(
+  [getUserDataResetPasswordLoading],
   (entities) => {
     const result: boolean = entities;
     return { data: result };
