@@ -149,7 +149,7 @@ export const FormCheckout = ({
         Delivery Information
       </CustomText>
       <Divider />
-      {isEmpty(authenAccount) ? (
+      {isEmpty(authenAccount) || isEmpty(authenAccount.address) ? (
         <AddressFormItem />
       ) : (
         <>
