@@ -5,6 +5,7 @@ import { productsSlice } from "./entities/products";
 import { cartSlice } from "./entities/cart";
 import { userSlice } from "./entities/users";
 import { orderSlice } from "./entities/orders";
+import { googleLoginSlice } from "./entities/googleLogin";
 
 export const store = configureStore({
   reducer: combineReducers({
@@ -13,6 +14,7 @@ export const store = configureStore({
     [cartSlice.name]: cartSlice.reducer,
     [userSlice.name]: userSlice.reducer,
     [orderSlice.name]: orderSlice.reducer,
+    [googleLoginSlice.name]: googleLoginSlice.reducer,
   }),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

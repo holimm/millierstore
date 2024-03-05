@@ -182,7 +182,7 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
               </Col>
             ))
           ) : (
-            <Empty className="mt-10" />
+            <Empty className="mt-10 mx-auto" />
           )}
         </Row>
       </Spin>

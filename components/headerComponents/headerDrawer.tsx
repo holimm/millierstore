@@ -31,7 +31,7 @@ import {
   calculateCartTotal,
   notificationMessage,
 } from "@/helpers/commonHelpers";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CustomButton, DescriptionItem, RenderProductCard } from "../common";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -48,6 +48,8 @@ import { debounce, isEmpty, throttle } from "lodash";
 import { fetchProductsSearch } from "@/redux/entities/products";
 import { getProductsSearch } from "@/redux/selectors/products";
 import { CustomText } from "../homePage/common";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleLoginLayout from "../googleLogin";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -370,15 +372,11 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
                 </CustomButton>
               </Link>
             </Form.Item>
-            <Form.Item>
-              <CustomButton
-                type="text"
-                extraClass="bg-[#ea4236] text-white"
-                icon={<GoogleOutlined />}
-              >
-                Login with Google
-              </CustomButton>
-            </Form.Item>
+            <GoogleOAuthProvider clientId="296248512145-i1qchoom7g7adqiff9fnpeuu597jha7b.apps.googleusercontent.com">
+              <React.StrictMode>
+                <GoogleLoginLayout />
+              </React.StrictMode>
+            </GoogleOAuthProvider>
             <Form.Item>
               <CustomButton
                 type="text"

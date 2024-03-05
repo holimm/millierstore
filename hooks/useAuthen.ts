@@ -25,7 +25,7 @@ export const useAuthen = () => {
   useEffect(() => {
     if (!isEmpty(localStorage.getItem("signin_token")))
       setToken(localStorage.getItem("signin_token"));
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (!isEmpty(token)) {

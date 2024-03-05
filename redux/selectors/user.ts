@@ -1,6 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { getCartList } from "../entities/cart";
-import { CartType } from "@/models/cartModel";
 import {
   getUserData,
   getUserDataChangingInformationLoading,
