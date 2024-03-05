@@ -79,7 +79,7 @@ export default function Home() {
             initialValues={{
               name: "",
               method: "cod",
-              type: "",
+              type: "Home",
               street: "",
               ward: "",
               district: "",
