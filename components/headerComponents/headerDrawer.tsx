@@ -50,6 +50,7 @@ import { getProductsSearch } from "@/redux/selectors/products";
 import { CustomText } from "../homePage/common";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleLoginLayout from "../googleLogin";
+import { getLoginGoogleLoading } from "@/redux/selectors/googleLogin";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -286,6 +287,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
 export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const dispatch = useAppDispatch();
   const userSigningIn = useAppSelector(getUserSigninLoading);
+  const loadingGoogleLogin = useAppSelector(getLoginGoogleLoading);
   const onFinish = async (values: UserType) => {
     dispatch(fetchUserSignIn(values));
   };
@@ -297,7 +299,7 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
       onClose={props.onClose}
       closable={false}
     >
-      <Spin spinning={userSigningIn.data}>
+      <Spin spinning={userSigningIn.data || loadingGoogleLogin.data}>
         <Flex className="h-full w-full" justify="center" align="center">
           <Form
             name="basic"

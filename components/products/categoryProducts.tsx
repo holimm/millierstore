@@ -65,7 +65,7 @@ export const CategoryProducts = ({
             )}
           </>
         )}
-        {!checkExist && <Empty />}
+        {!checkExist && <Empty className="mt-20" />}
       </Spin>
     </div>
   );
