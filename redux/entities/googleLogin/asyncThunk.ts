@@ -11,6 +11,7 @@ export const fetchUserInfoLoginGoogle = createAsyncThunk(
   `${storeName}/fetchUserInfoLoginGoogle`,
   async (values: GoogleLoginCodeResponseType) => {
     const resp = await googleLoginService.fetchUserInfoLoginGoogle(values);
+    if (resp.status === "error") throw resp.data;
     return resp;
   }
 );
