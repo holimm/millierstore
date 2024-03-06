@@ -13,8 +13,11 @@ export interface ProductCardType {
 
 export interface FieldProfileInformationType {
   _id?: string;
+  username?: string;
   name?: string;
   phone?: string;
+  password?: string;
+  password_confirm?: string;
 }
 
 export interface FieldProfilePasswordType {

@@ -404,7 +404,14 @@ export const HeaderProfileDropdown = ({
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <span>Hello, {authenData.username}</span>,
+      label: (
+        <span>
+          Hello,{" "}
+          {isEmpty(authenData.username)
+            ? authenData.email
+            : authenData.username}
+        </span>
+      ),
     },
     {
       key: "2",

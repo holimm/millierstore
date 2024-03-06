@@ -1,5 +1,6 @@
 import { VideoPlayer } from "@/components/videoPlayer";
-import { Spin, Typography } from "antd";
+import { Button, Spin, Typography } from "antd";
+import { motion } from "framer-motion";
 import { isEmpty, omit } from "lodash";
 import {
   CategoryCard,
@@ -16,9 +17,14 @@ import { getCategory, getProducts } from "@/redux/selectors/products";
 import { fetchCategory, fetchProducts } from "@/redux/entities/products";
 import { CategoryType, ProductsType } from "@/models/productModel";
 import { RenderProductCard } from "@/components/common";
+import Iphone15Cutout from "../assets/img/homepage/iphone15_cutout.png";
+import Iphone15CutoutFront from "../assets/img/homepage/iphone15_cutout_front.png";
+import Link from "next/link";
 
 export default function Home() {
   const dispatch = useAppDispatch();
+  const [animateHomepage, setAnimateHomepage] = useState(true);
+  const [iPhone15HomePage, setIphone15Homepage] = useState(Iphone15Cutout.src);
   const productsList = useAppSelector(getProducts);
   const categoryList = useAppSelector(getCategory);
   const productListData = productsList.data;
@@ -49,8 +55,112 @@ export default function Home() {
   };
   return (
     <main className={`h-fit w-full`}>
-      <div className="h-[80vh] w-full relative">
-        <div className="h-full w-full absolute">
+      <div className="h-fit w-full relative">
+        <div
+          className="h-fit w-full py-20 bg-cover bg-center bg-no-repeat inline-block"
+          style={{
+            backgroundImage: `url(https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
+          }}
+        >
+          <div className="h-[32em] w-full flex justify-center items-center overflow-x-hidden">
+            <motion.div
+              className="h-fit w-fit"
+              style={{ writingMode: "vertical-rl", rotate: "180deg" }}
+              initial={{ y: "-100vh" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+            >
+              <motion.span className="text-7xl font-sf_pro_rounded">
+                iPhone 15
+              </motion.span>
+            </motion.div>
+            <motion.div
+              className="h-fit w-fit mr-6"
+              style={{ writingMode: "vertical-rl", rotate: "180deg" }}
+              initial={{ y: "-100vh" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1.2, delay: 0.5, ease: "easeInOut" }}
+            >
+              <motion.span className="text-7xl font-sf_pro_rounded">
+                PRO MAX
+              </motion.span>
+            </motion.div>
+            {iPhone15HomePage === Iphone15Cutout.src && animateHomepage && (
+              <motion.img
+                className="h-[32em] shadow-xl"
+                src={iPhone15HomePage}
+                initial={{ x: "100vw" }}
+                animate={{ x: 0 }}
+                transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+                onAnimationComplete={() => {
+                  setAnimateHomepage(false);
+                }}
+                onMouseEnter={() => {
+                  setIphone15Homepage(Iphone15CutoutFront.src);
+                }}
+              />
+            )}
+            {iPhone15HomePage === Iphone15Cutout.src &&
+              animateHomepage === false && (
+                <motion.img
+                  className="h-[32em] shadow-xl"
+                  src={iPhone15HomePage}
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+                  onMouseEnter={() => {
+                    setIphone15Homepage(Iphone15CutoutFront.src);
+                  }}
+                />
+              )}
+            {iPhone15HomePage === Iphone15CutoutFront.src && (
+              <motion.img
+                className="h-[32em] shadow-xl"
+                src={iPhone15HomePage}
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+                onMouseLeave={() => {
+                  setIphone15Homepage(Iphone15Cutout.src);
+                }}
+              />
+            )}
+          </div>
+          <motion.div
+            className="h-fit w-2/5 mx-auto"
+            initial={{ y: "100vw" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+          >
+            <p className="mt-10 text-center font-sf_pro_text_light">
+              The iPhone 15 Pro Max sets a new standard in smartphone
+              innovation. With its sleek design, powerful A-series chip, and
+              advanced camera capabilities, it delivers a seamless user
+              experience. The device also offers impressive battery life and
+              lightning-fast 5G connectivity, making it perfect for work or
+              play.
+            </p>
+          </motion.div>
+          <motion.div
+            className="h-20 w-fit mx-auto mt-10"
+            initial={{ y: "100vw" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1.2, delay: 0.5, ease: "easeInOut" }}
+          >
+            <Link href="/products/65ad32cd673347ff096529d6">
+              <button className="px-16 py-2 border-[1px] border-black rounded-full hover:bg-white hover:border-white hover:shadow-xl transition-all duration-100">
+                ORDER NOW
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+        <motion.div
+          className="h-full w-full bg-white absolute top-0"
+          initial={{ x: 0 }}
+          animate={{ x: "-100vw", transitionEnd: { display: "none" } }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeInOut" }}
+        ></motion.div>
+        {/* <div className="h-full w-full absolute">
           <div className="h-full w-full">
             <div className="h-full w-full relative overflow-hidden">
               <VideoPlayer urlVideo="./assets/videos/homepage_video.mp4" />
@@ -64,9 +174,9 @@ export default function Home() {
               <CustomText
                 type="paragraph"
                 extraClass="!text-5xl"
-                topClass="text-center !font-lobster"
+                topClass="text-center"
               >
-                Millier
+                <span className=" font-lobster">Millier</span>
               </CustomText>
               <CustomText
                 type="paragraph"
@@ -79,7 +189,7 @@ export default function Home() {
               <CustomButton extraClass="!mt-6">Check our products</CustomButton>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="h-fit w-full">
