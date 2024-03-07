@@ -50,7 +50,6 @@ export default function ProductMain({
   };
   const productDetailData = productDetail.data;
 
-  console.log(productDetailData);
   return (
     <Row gutter={30}>
       <Col span={18}>

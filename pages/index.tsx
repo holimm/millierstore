@@ -21,6 +21,9 @@ import Iphone15Cutout from "../assets/img/homepage/iphone15_cutout.png";
 import Iphone15CutoutFront from "../assets/img/homepage/iphone15_cutout_front.png";
 import Link from "next/link";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { fetchBlogs } from "@/redux/entities/blogs/asyncThunk";
+import { getBlogs } from "@/redux/selectors/blogs";
+import { BlogType } from "@/models/blogModel";
 
 interface ProductHomepageBannerType {
   text_1?: string;
@@ -49,11 +52,16 @@ export default function Home() {
     });
   const productsList = useAppSelector(getProducts);
   const categoryList = useAppSelector(getCategory);
+  const blogsList = useAppSelector(getBlogs);
   const productListData = productsList.data;
+  const blogListData = blogsList.data;
+
+  console.log(blogsList);
 
   useEffect(() => {
     dispatch(fetchProducts({}));
     dispatch(fetchCategory());
+    dispatch(fetchBlogs({}));
   }, []);
 
   const ProductHomepageBanner = (
@@ -196,38 +204,7 @@ export default function Home() {
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full relative">
         <ProductHomepageBanner productData={productHomepage} />
-        {/* <div className="h-full w-full absolute">
-          <div className="h-full w-full">
-            <div className="h-full w-full relative overflow-hidden">
-              <VideoPlayer urlVideo="./assets/videos/homepage_video.mp4" />
-            </div>
-          </div>
-        </div>
-        <div className="h-full w-full bg-black/20 absolute top-0 z-10"></div>
-        <div className="h-full w-full absolute top-0 z-20">
-          <div className="h-full w-full flex justify-center items-center p-20">
-            <div className="h-fit w-fit">
-              <CustomText
-                type="paragraph"
-                extraClass="!text-5xl"
-                topClass="text-center"
-              >
-                <span className=" font-lobster">Millier</span>
-              </CustomText>
-              <CustomText
-                type="paragraph"
-                extraClass="!text-2xl"
-                topClass="text-center"
-              >
-                Discover cutting-edge phones. Elevate your mobile experience
-                with us.
-              </CustomText>
-              <CustomButton extraClass="!mt-6">Check our products</CustomButton>
-            </div>
-          </div>
-        </div> */}
       </div>
-
       <div className="h-fit w-full">
         <div className="h-fit w-3/4 mx-auto pt-24">
           <div className="h-fit w-full grid grid-cols-3 gap-10 pb-20">
@@ -367,6 +344,36 @@ export default function Home() {
             </span>
           </Typography.Paragraph>
           <div className="h-fit w-full pt-10 pb-40 grid grid-cols-3 gap-10">
+            <Spin spinning={blogsList.loading}>
+              {!isEmpty(blogListData) &&
+                blogListData.map((item: BlogType, index: number) => (
+                  <Link href={`/blogs/${item.idTitle}`}>
+                    <Card
+                      className="shadow-md cursor-pointer"
+                      cover={
+                        <div className="pt-2 px-2">
+                          <Image
+                            src={`${process.env.MONGO_BE_URL}/${item.images.thumbnail}`}
+                            preview={false}
+                          ></Image>
+                        </div>
+                      }
+                      hoverable
+                    >
+                      <Typography.Paragraph ellipsis={{ rows: 2 }}>
+                        <span className={"!text-xl !text-black !font-semibold"}>
+                          {item.title}
+                        </span>
+                      </Typography.Paragraph>
+                      <Typography.Paragraph ellipsis={{ rows: 3 }}>
+                        <span className={"!text-lg !text-black"}>
+                          {item.chapeau}
+                        </span>
+                      </Typography.Paragraph>
+                    </Card>
+                  </Link>
+                ))}
+            </Spin>
             <Card
               className="shadow-md"
               cover={
@@ -390,9 +397,6 @@ export default function Home() {
                 </span>
               </Typography.Paragraph>
             </Card>
-            <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
-            <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
-            <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
           </div>
         </div>
       </div>

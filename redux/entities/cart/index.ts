@@ -22,6 +22,7 @@ export const cartSlice = createSlice({
       if (!isEmpty(state.cart)) {
         state.cart.map((item: CartType) => {
           if (
+            item.name === action.payload.name &&
             item.color.lowercase === action.payload.color.lowercase &&
             item.storage.capacity === action.payload.storage.capacity &&
             item.storage.unit === action.payload.storage.unit
@@ -49,6 +50,7 @@ export const cartSlice = createSlice({
     },
     removeFromCart(state, action: PayloadAction<CartType>) {
       state.cart = state.cart.filter((item: CartType) => {
+        if (item.name !== action.payload.name) return true;
         if (item.color.lowercase !== action.payload.color.lowercase)
           return true;
         if (item.storage.capacity !== action.payload.storage.capacity)
@@ -57,11 +59,12 @@ export const cartSlice = createSlice({
         return false;
       });
       window.localStorage.setItem("cart_session", JSON.stringify(state.cart));
-      window.dispatchEvent(new Event("cart_localStorage"));
+      window.dispatchEvent(new Event("storage"));
     },
     updateQuantity(state, action: PayloadAction<CartType>) {
       state.cart.map((item: CartType, index) => {
         if (
+          item.name === action.payload.name &&
           item.color.lowercase === action.payload.color.lowercase &&
           item.storage.capacity === action.payload.storage.capacity &&
           item.storage.unit === action.payload.storage.unit
@@ -71,7 +74,7 @@ export const cartSlice = createSlice({
             "cart_session",
             JSON.stringify(state.cart)
           );
-          window.dispatchEvent(new Event("cart_localStorage"));
+          window.dispatchEvent(new Event("storage"));
         }
       });
     },
