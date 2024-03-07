@@ -1,5 +1,5 @@
 import { VideoPlayer } from "@/components/videoPlayer";
-import { Button, Spin, Typography } from "antd";
+import { Button, Card, Image, Spin, Typography } from "antd";
 import { motion } from "framer-motion";
 import { isEmpty, omit } from "lodash";
 import {
@@ -20,11 +20,33 @@ import { RenderProductCard } from "@/components/common";
 import Iphone15Cutout from "../assets/img/homepage/iphone15_cutout.png";
 import Iphone15CutoutFront from "../assets/img/homepage/iphone15_cutout_front.png";
 import Link from "next/link";
+import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+
+interface ProductHomepageBannerType {
+  text_1?: string;
+  text_2?: string;
+  src_1?: string;
+  src_2?: string;
+  description?: string;
+  linkHref?: string;
+}
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const [animateHomepage, setAnimateHomepage] = useState(true);
-  const [iPhone15HomePage, setIphone15Homepage] = useState(Iphone15Cutout.src);
+  const [productHomepage, setProductHomepage] =
+    useState<ProductHomepageBannerType>({
+      text_1: "iPhone 15",
+      text_2: "PRO MAX",
+      src_1: Iphone15Cutout.src,
+      src_2: Iphone15CutoutFront.src,
+      description: `The iPhone 15 Pro Max sets a new standard in smartphone
+    innovation. With its sleek design, powerful A-series chip, and
+    advanced camera capabilities, it delivers a seamless user
+    experience. The device also offers impressive battery life and
+    lightning-fast 5G connectivity, making it perfect for work or
+    play.`,
+      linkHref: "/products/65ad32cd673347ff096529d6",
+    });
   const productsList = useAppSelector(getProducts);
   const categoryList = useAppSelector(getCategory);
   const productListData = productsList.data;
@@ -33,6 +55,123 @@ export default function Home() {
     dispatch(fetchProducts({}));
     dispatch(fetchCategory());
   }, []);
+
+  const ProductHomepageBanner = (
+    { productData },
+    { productData: ProductHomepageBannerType }
+  ) => {
+    const [productImage, setProductImage] = useState(productData.src_1);
+
+    const renderVerticalText = (values: {
+      label: string;
+      transitionData: any;
+    }) => {
+      return (
+        <motion.div
+          className="h-fit w-fit"
+          style={{ writingMode: "vertical-rl", rotate: "180deg" }}
+          initial={{ y: "-100vh" }}
+          animate={{ y: 0 }}
+          transition={values.transitionData}
+        >
+          <motion.span className="text-7xl text-black font-sf_pro_rounded">
+            {values.label}
+          </motion.span>
+        </motion.div>
+      );
+    };
+
+    const NavigateButton = ({ buttonIcon }: { buttonIcon: ReactNode }) => {
+      return (
+        <motion.div className="h-full w-fit mx-5 flex justify-center items-center">
+          <motion.div
+            className="h-fit w-fit cursor-pointer"
+            initial={{ opacity: 0.2 }}
+            whileHover={{ opacity: 0.5 }}
+          >
+            {buttonIcon}
+          </motion.div>
+        </motion.div>
+      );
+    };
+
+    return (
+      <>
+        <div
+          className="h-fit w-full py-20 bg-cover bg-center bg-no-repeat inline-block"
+          style={{
+            backgroundImage: `url(https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
+          }}
+        >
+          <div className="h-[32em] w-full flex justify-center items-center overflow-x-hidden">
+            <NavigateButton
+              buttonIcon={
+                <LeftCircleOutlined
+                  style={{ fontSize: "2em", color: "#000000" }}
+                />
+              }
+            />
+            {renderVerticalText({
+              label: productData.text_1,
+              transitionData: { duration: 1, delay: 0.5, ease: "easeInOut" },
+            })}
+            {renderVerticalText({
+              label: productData.text_2,
+              transitionData: { duration: 1.2, delay: 0.5, ease: "easeInOut" },
+            })}
+            <motion.img
+              className="h-[32em] shadow-xl"
+              src={productImage}
+              initial={{ x: "100vw" }}
+              animate={{ x: 0 }}
+              transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+              onHoverStart={() => {
+                setProductImage(productData.src_2);
+              }}
+              onHoverEnd={() => {
+                setProductImage(productData.src_1);
+              }}
+            />
+            <NavigateButton
+              buttonIcon={
+                <RightCircleOutlined
+                  style={{ fontSize: "2em", color: "#000000" }}
+                />
+              }
+            />
+          </div>
+          <motion.div
+            className="h-fit w-2/5 mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2, ease: "easeInOut" }}
+          >
+            <p className="mt-10 text-black text-center font-sf_pro_text_light">
+              {productData.description}
+            </p>
+          </motion.div>
+          <motion.div
+            className="h-20 w-fit mx-auto mt-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 1.2, ease: "easeInOut" }}
+          >
+            <Link href={productData.linkHref}>
+              <button className="px-16 py-2 text-black border-[1px] border-black rounded-full hover:bg-white hover:border-white hover:shadow-xl transition-all duration-100">
+                ORDER NOW
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+        <motion.div
+          className="h-full w-full bg-white absolute top-0"
+          initial={{ x: 0 }}
+          animate={{ x: "-100vw", transitionEnd: { display: "none" } }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeInOut" }}
+        ></motion.div>
+      </>
+    );
+  };
 
   const renderPickUsItem = (objectText: {
     icon: ReactNode;
@@ -56,110 +195,7 @@ export default function Home() {
   return (
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full relative">
-        <div
-          className="h-fit w-full py-20 bg-cover bg-center bg-no-repeat inline-block"
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
-          }}
-        >
-          <div className="h-[32em] w-full flex justify-center items-center overflow-x-hidden">
-            <motion.div
-              className="h-fit w-fit"
-              style={{ writingMode: "vertical-rl", rotate: "180deg" }}
-              initial={{ y: "-100vh" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-            >
-              <motion.span className="text-7xl font-sf_pro_rounded">
-                iPhone 15
-              </motion.span>
-            </motion.div>
-            <motion.div
-              className="h-fit w-fit mr-6"
-              style={{ writingMode: "vertical-rl", rotate: "180deg" }}
-              initial={{ y: "-100vh" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1.2, delay: 0.5, ease: "easeInOut" }}
-            >
-              <motion.span className="text-7xl font-sf_pro_rounded">
-                PRO MAX
-              </motion.span>
-            </motion.div>
-            {iPhone15HomePage === Iphone15Cutout.src && animateHomepage && (
-              <motion.img
-                className="h-[32em] shadow-xl"
-                src={iPhone15HomePage}
-                initial={{ x: "100vw" }}
-                animate={{ x: 0 }}
-                transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-                onAnimationComplete={() => {
-                  setAnimateHomepage(false);
-                }}
-                onMouseEnter={() => {
-                  setIphone15Homepage(Iphone15CutoutFront.src);
-                }}
-              />
-            )}
-            {iPhone15HomePage === Iphone15Cutout.src &&
-              animateHomepage === false && (
-                <motion.img
-                  className="h-[32em] shadow-xl"
-                  src={iPhone15HomePage}
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-                  onMouseEnter={() => {
-                    setIphone15Homepage(Iphone15CutoutFront.src);
-                  }}
-                />
-              )}
-            {iPhone15HomePage === Iphone15CutoutFront.src && (
-              <motion.img
-                className="h-[32em] shadow-xl"
-                src={iPhone15HomePage}
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-                onMouseLeave={() => {
-                  setIphone15Homepage(Iphone15Cutout.src);
-                }}
-              />
-            )}
-          </div>
-          <motion.div
-            className="h-fit w-2/5 mx-auto"
-            initial={{ y: "100vw" }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-          >
-            <p className="mt-10 text-center font-sf_pro_text_light">
-              The iPhone 15 Pro Max sets a new standard in smartphone
-              innovation. With its sleek design, powerful A-series chip, and
-              advanced camera capabilities, it delivers a seamless user
-              experience. The device also offers impressive battery life and
-              lightning-fast 5G connectivity, making it perfect for work or
-              play.
-            </p>
-          </motion.div>
-          <motion.div
-            className="h-20 w-fit mx-auto mt-10"
-            initial={{ y: "100vw" }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: "easeInOut" }}
-          >
-            <Link href="/products/65ad32cd673347ff096529d6">
-              <button className="px-16 py-2 border-[1px] border-black rounded-full hover:bg-white hover:border-white hover:shadow-xl transition-all duration-100">
-                ORDER NOW
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-        <motion.div
-          className="h-full w-full bg-white absolute top-0"
-          initial={{ x: 0 }}
-          animate={{ x: "-100vw", transitionEnd: { display: "none" } }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeInOut" }}
-        ></motion.div>
+        <ProductHomepageBanner productData={productHomepage} />
         {/* <div className="h-full w-full absolute">
           <div className="h-full w-full">
             <div className="h-full w-full relative overflow-hidden">
@@ -262,7 +298,7 @@ export default function Home() {
             </div>
           </Spin>
         </div>
-        <div className="h-[20em] w-full relative">
+        <div className="h-[20em] w-full inline-block relative">
           <div className="h-full w-full absolute">
             <div className="h-full w-full">
               <div className="h-full w-full relative overflow-hidden">
@@ -296,10 +332,12 @@ export default function Home() {
         </div>
         <div className="h-fit w-3/4 mx-auto pt-20 pb-10">
           <Typography.Title className="text-center">
-            New Arrival
+            <span className="!font-sf_pro">New Arrival</span>
           </Typography.Title>
           <Typography.Paragraph className="text-center text-lg">
-            Introducing our latest collection
+            <span className="!font-sf_pro_text_light">
+              Introducing our latest collection
+            </span>
           </Typography.Paragraph>
           <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
             {!isEmpty(productListData) &&
@@ -318,12 +356,40 @@ export default function Home() {
               )}
           </div>
         </div>
-        <div className="h-fit w-3/4 mx-auto pb-32">
-          <div className="h-fit w-full grid grid-cols-2 gap-10">
-            <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
-            <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
-          </div>
-          <div className="h-fit w-full grid grid-cols-3 gap-20 mt-10">
+
+        <div className="h-fit w-3/4 mx-auto">
+          <Typography.Title className="text-center">
+            <span className="!font-sf_pro">News</span>
+          </Typography.Title>
+          <Typography.Paragraph className="text-center text-lg">
+            <span className="!font-sf_pro_text_light">
+              Stay up to date with the latest blog posts
+            </span>
+          </Typography.Paragraph>
+          <div className="h-fit w-full pt-10 pb-40 grid grid-cols-3 gap-10">
+            <Card
+              className="shadow-md"
+              cover={
+                <div className="pt-2 px-2">
+                  <Image
+                    src="https://shopdunk.com/images/thumbs/0021924_iphone-15-pro-mau-titan-trang-ngoai-doi-thuc-khong-co-su-khac-biet-so-voi-tren-anh_1600.png"
+                    preview={false}
+                  ></Image>
+                </div>
+              }
+            >
+              <Typography.Paragraph ellipsis={{ rows: 2 }}>
+                <span className={"!text-xl !text-black !font-semibold"}>
+                  Exploring the Latest Trends in Smartphone Technology
+                </span>
+              </Typography.Paragraph>
+              <Typography.Paragraph ellipsis={{ rows: 3 }}>
+                <span className={"!text-lg !text-black"}>
+                  In today's fast-paced world, smartphones have become an
+                  indispensable part of our daily lives.
+                </span>
+              </Typography.Paragraph>
+            </Card>
             <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
             <div className="h-80 w-full bg-slate-500 rounded-xl"></div>
             <div className="h-80 w-full bg-slate-500 rounded-xl"></div>

@@ -50,13 +50,13 @@ export const FormUpdateInformation = ({
     <>
       {isEmpty(authenAccount.username && authenAccount.password) && (
         <div
-          className="h-20 w-full my-5 rounded-md shadow bg-yellow-300"
+          className="h-fit w-full my-5 rounded-md shadow bg-yellow-300"
           style={{
             backgroundColor: "rgb(253 224 71 / var(--tw-bg-opacity))",
             padding: `0.75em 0.75em 0.75em 0.75em`,
           }}
         >
-          <p className="font-sf_pro_text">
+          <p className="font-sf_pro_text text-black">
             Please update your profile information to complete your profile.
           </p>
         </div>
