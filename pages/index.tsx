@@ -361,12 +361,20 @@ export default function Home() {
                       hoverable
                     >
                       <Typography.Paragraph ellipsis={{ rows: 2 }}>
-                        <span className={"!text-xl !text-black !font-semibold"}>
+                        <span
+                          className={
+                            "!text-xl !text-black !font-bold !font-sf_pro_text_light"
+                          }
+                        >
                           {item.title}
                         </span>
                       </Typography.Paragraph>
                       <Typography.Paragraph ellipsis={{ rows: 3 }}>
-                        <span className={"!text-lg !text-black"}>
+                        <span
+                          className={
+                            "!text-lg !text-black !font-sf_pro_text_light"
+                          }
+                        >
                           {item.chapeau}
                         </span>
                       </Typography.Paragraph>
