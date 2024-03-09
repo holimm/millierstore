@@ -41,7 +41,7 @@ export function notificationMessage(data: dataMessageNotificationType) {
 export const calculateCartTotal = (cartList: CartType[]) => {
   let total = 0;
   cartList.map((item: CartType) => {
-    total += item.storage.price * item.quantity;
+    total += item.price * item.quantity;
   });
   return total;
 };

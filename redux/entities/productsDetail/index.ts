@@ -18,7 +18,7 @@ export const productsDetailSlice = createSlice({
   },
   reducers: {
     saveDetailProduct(state, action: PayloadAction<ProductDetailType>) {
-      state.ids[action.payload._id] = action.payload;
+      state.ids = action.payload;
     },
     setLoading(state, action) {
       state.loading = action.payload;

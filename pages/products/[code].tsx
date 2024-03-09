@@ -10,6 +10,7 @@ import {
   ProductColorType,
   ProductDetailDescription,
   ProductDetailType,
+  ProductMemoryType,
   ProductStorageType,
 } from "@/models/productDetailModel";
 import DescriptionTabItem from "@/components/productDetailComponents/descriptionTab";
@@ -22,6 +23,7 @@ export default function ProductDetailsPage() {
   const productCode: string = toString(router.query.code);
   const [productColor, setProductColor] = useState<ProductColorType>({});
   const [productStorage, setProductStorage] = useState<ProductStorageType>({});
+  const [productMemory, setProductMemory] = useState<ProductMemoryType>({});
   const [descriptionTab, setDescriptionTab] = useState<string>("overview");
   const [openAddToCart, setOpenAddToCart] = useState<string[] | []>([]);
 
@@ -33,22 +35,33 @@ export default function ProductDetailsPage() {
   const productDetailData = productDetail.data;
 
   useEffect(() => {
-    if (!isEmpty(productDetailData[productCode]))
-      setProductColor(productDetailData[productCode].colors[0]);
+    if (!isEmpty(productDetailData))
+      setProductColor(productDetailData.colors[0]);
   }, [productDetail]);
 
   useEffect(() => {
-    if (!isEmpty(productColor) && !isEmpty(productStorage))
-      setOpenAddToCart(["1"]);
-    else setOpenAddToCart([]);
-  }, [productColor, productStorage]);
+    if (isEmpty(productDetailData.storage)) {
+      !isEmpty(productColor) && setOpenAddToCart(["1"]);
+    } else {
+      if (isEmpty(productDetailData.memory)) {
+        if (!isEmpty(productColor) && !isEmpty(productStorage))
+          setOpenAddToCart(["1"]);
+        else setOpenAddToCart([]);
+      } else {
+        if (
+          !isEmpty(productColor) &&
+          !isEmpty(productStorage) &&
+          !isEmpty(productMemory)
+        )
+          setOpenAddToCart(["1"]);
+        else setOpenAddToCart([]);
+      }
+    }
+  }, [productColor, productStorage, productMemory]);
 
   const checkProductExist = useMemo(() => {
-    setProductColor(
-      !isEmpty(productDetailData[productCode]) &&
-        productDetailData[productCode].colors[0]
-    );
-    return !isEmpty(productDetailData[productCode]);
+    setProductColor(!isEmpty(productDetailData) && productDetailData.colors[0]);
+    return !isEmpty(productDetailData);
   }, [productDetail]);
 
   const checkColorExist = useMemo(() => {
@@ -63,6 +76,10 @@ export default function ProductDetailsPage() {
     setProductStorage(storage);
   };
 
+  const onChangeProductMemory = (memory: ProductMemoryType) => {
+    setProductMemory(memory);
+  };
+
   const onChangeDescriptionTab = (e: RadioChangeEvent) => {
     setDescriptionTab(e.target.value);
   };
@@ -74,17 +91,18 @@ export default function ProductDetailsPage() {
   return (
     <main className={`h-fit w-full`}>
       <div className="h-full w-full flex justify-center items-center">
-        <div className="h-fit w-3/4 py-16">
+        <div className="h-fit w-3/4 pt-12 py-16">
           <ProductMain
             productDetail={productDetail}
             checkProductExist={checkProductExist}
             checkColorExist={checkColorExist}
-            productCode={productCode}
             productColor={productColor}
             productStorage={productStorage}
+            productMemory={productMemory}
             openAddToCart={openAddToCart}
             onChangeProductColor={onChangeProductColor}
             onChangeProductStorage={onChangeProductStorage}
+            onChangeProductMemory={onChangeProductMemory}
           />
 
           <div className="h-fit w-3/4 mx-auto my-20">
@@ -102,7 +120,7 @@ export default function ProductDetailsPage() {
               {descriptionTab === "overview" && (
                 <Spin spinning={productDetail.loading}>
                   {checkProductExist &&
-                    productDetailData[productCode].description.map(
+                    productDetailData.description.map(
                       (item: ProductDetailDescription, index: number) => (
                         <div key={index}>
                           <DescriptionTabItem

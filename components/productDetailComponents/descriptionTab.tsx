@@ -16,6 +16,9 @@ export default function DescriptionTabItem({
     | "dual-images"
     | "contain-image"
     | "dual-contain-image"
+    | "contain-image-bottom-white"
+    | "contain-image-white"
+    | "dual-contain-image-white"
     | "contain-image-grey"
     | "dual-contain-image-grey";
   title: string;
@@ -145,6 +148,116 @@ export default function DescriptionTabItem({
                       <CustomText
                         type="paragraph"
                         extraClass="!text-white !text-2xl"
+                        topClass="w-full text-center"
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: item.text,
+                          }}
+                        ></div>
+                      </CustomText>
+                    </div>
+                    <img
+                      className="object-contain mx-auto mt-10"
+                      src={`${process.env.MONGO_BE_URL}${item.image}`}
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      );
+    if (type === "contain-image-white")
+      return (
+        <motion.div
+          viewport={{ once: true }}
+          initial="offscreen"
+          whileInView="onscreen"
+          variants={productDescriptionVariants}
+        >
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
+          {content.map((item: any, index: number) => (
+            <div key={index} className="h-fit w-full">
+              <motion.div className="bg-neutral-100 h-fit w-full my-10 py-4 relative rounded-xl">
+                <div className="h-fit w-full my-8">
+                  <div className="h-fit w-full">
+                    <CustomText
+                      type="paragraph"
+                      extraClass="!text-black !text-2xl"
+                      topClass="w-full text-center"
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: item.text,
+                        }}
+                      ></div>
+                    </CustomText>
+                  </div>
+                  <img
+                    className="object-contain mx-auto mt-10"
+                    src={`${process.env.MONGO_BE_URL}${item.image}`}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          ))}
+        </motion.div>
+      );
+    if (type === "contain-image-bottom-white")
+      return (
+        <motion.div
+          viewport={{ once: true }}
+          initial="offscreen"
+          whileInView="onscreen"
+          variants={productDescriptionVariants}
+        >
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
+          {content.map((item: any, index: number) => (
+            <div key={index} className="h-fit w-full">
+              <motion.div className="bg-neutral-100 h-fit w-full my-10 pt-4 relative rounded-xl">
+                <div className="h-fit w-full my-8">
+                  <div className="h-fit w-full">
+                    <CustomText
+                      type="paragraph"
+                      extraClass="!text-black !text-2xl"
+                      topClass="w-full text-center"
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: item.text,
+                        }}
+                      ></div>
+                    </CustomText>
+                  </div>
+                  <img
+                    className="object-contain mx-auto mt-10"
+                    src={`${process.env.MONGO_BE_URL}${item.image}`}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          ))}
+        </motion.div>
+      );
+    if (type === "dual-contain-image-white")
+      return (
+        <motion.div
+          viewport={{ once: true }}
+          initial="offscreen"
+          whileInView="onscreen"
+          variants={productDescriptionVariants}
+        >
+          {renderTitle({ title: title, topClass: "!text-center mt-10" })}
+          <div className="grid grid-cols-2 gap-5">
+            {content.map((item: any, index: number) => (
+              <div key={index} className="h-fit w-full">
+                <motion.div className="bg-neutral-100 h-fit w-full py-4 relative rounded-xl">
+                  <div className="h-fit w-full my-8">
+                    <div className="h-fit w-full">
+                      <CustomText
+                        type="paragraph"
+                        extraClass="!text-black !text-2xl"
                         topClass="w-full text-center"
                       >
                         <div

@@ -182,7 +182,9 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
       const data = {
         name: item.name,
         storage: item.storage,
+        memory: item.memory,
         color: item.color,
+        price: item.price,
         quantity: quantity,
       };
       dispatch(updateQuantity(data));
@@ -200,13 +202,13 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
       closable
     >
       <div className="h-full w-full text-black">
-        <div className="h-[70%] overflow-y-auto">
+        <div className="h-[70%] overflow-y-auto overflow-x-hidden">
           <List
             itemLayout="horizontal"
             dataSource={cartList.data}
             renderItem={(item, index) => (
               <List.Item>
-                <Row>
+                <Row gutter={20}>
                   <Col span={8}>
                     <Flex justify="center" align="center">
                       <Image
@@ -223,9 +225,28 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
                         <DescriptionItem
                           type={"description"}
                           title="Name"
-                          content={`${item.name} | ${item.storage.capacity} ${item.storage.unit}`}
+                          content={item.name}
                         />
                       </Col>
+                      {!isEmpty(item.storage) && (
+                        <Col span={24}>
+                          <DescriptionItem
+                            type={"description"}
+                            title="Storage"
+                            content={`${item.storage.capacity} ${item.storage.unit}`}
+                          />
+                        </Col>
+                      )}
+                      {!isEmpty(item.memory) && (
+                        <Col span={24}>
+                          <DescriptionItem
+                            type={"description"}
+                            title="Memory"
+                            content={`${item.memory.capacity} ${item.memory.unit}`}
+                          />
+                        </Col>
+                      )}
+
                       <Col span={24}>
                         <DescriptionItem
                           type={"description"}
@@ -237,7 +258,7 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
                         <DescriptionItem
                           type={"description"}
                           title="Price"
-                          content={NumberToDollarFormat(item.storage.price)}
+                          content={NumberToDollarFormat(item.price)}
                         />
                       </Col>
                       <Col span={24}>

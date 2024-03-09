@@ -19,6 +19,7 @@ export interface ProductDetailType {
   _id?: string;
   name?: string;
   name_lower?: string;
+  basePrice?: number;
   description?: ProductDetailDescription[];
   specs?: {
     label: string;
@@ -33,11 +34,8 @@ export interface ProductDetailType {
     lowercase: string;
     color: string;
   }[];
-  storage?: {
-    capacity: number;
-    unit: string;
-    price: number;
-  }[];
+  storage?: ProductStorageType[];
+  memory?: ProductMemoryType[];
 }
 
 export interface ProductColorType {
@@ -48,6 +46,12 @@ export interface ProductColorType {
 }
 
 export interface ProductStorageType {
+  capacity?: number;
+  unit?: string;
+  price?: number;
+}
+
+export interface ProductMemoryType {
   capacity?: number;
   unit?: string;
   price?: number;

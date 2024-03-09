@@ -3,6 +3,7 @@ import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { CartType } from "@/models/cartModel";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Col, Flex, Image, InputNumber, List, Row } from "antd";
+import { isEmpty } from "lodash";
 
 export const ListCart = ({
   cartList,
@@ -19,12 +20,17 @@ export const ListCart = ({
 }) => {
   return (
     <List
-      style={{ height: "fit-content", overflowY: "auto", maxHeight: maxHeight }}
+      style={{
+        height: "fit-content",
+        overflowY: "auto",
+        maxHeight: maxHeight,
+        overflowX: "hidden",
+      }}
       itemLayout="horizontal"
       dataSource={cartList}
       renderItem={(item, index) => (
         <List.Item>
-          <Row>
+          <Row gutter={30}>
             <Col span={8}>
               <Flex justify="center" align="center">
                 <Image
@@ -41,9 +47,27 @@ export const ListCart = ({
                   <DescriptionItem
                     type={"description"}
                     title="Name"
-                    content={`${item.name} | ${item.storage.capacity} ${item.storage.unit}`}
+                    content={item.name}
                   />
                 </Col>
+                {!isEmpty(item.storage) && (
+                  <Col span={24}>
+                    <DescriptionItem
+                      type={"description"}
+                      title="Storage"
+                      content={`${item.storage.capacity} ${item.storage.unit}`}
+                    />
+                  </Col>
+                )}
+                {!isEmpty(item.memory) && (
+                  <Col span={24}>
+                    <DescriptionItem
+                      type={"description"}
+                      title="Memory"
+                      content={`${item.memory.capacity} ${item.memory.unit}`}
+                    />
+                  </Col>
+                )}
                 <Col span={24}>
                   <DescriptionItem
                     type={"description"}
@@ -55,7 +79,7 @@ export const ListCart = ({
                   <DescriptionItem
                     type={"description"}
                     title="Price"
-                    content={NumberToDollarFormat(item.storage.price)}
+                    content={NumberToDollarFormat(item.price)}
                   />
                 </Col>
                 <Col span={24}>

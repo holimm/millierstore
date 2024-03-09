@@ -25,7 +25,9 @@ export const cartSlice = createSlice({
             item.name === action.payload.name &&
             item.color.lowercase === action.payload.color.lowercase &&
             item.storage.capacity === action.payload.storage.capacity &&
-            item.storage.unit === action.payload.storage.unit
+            item.storage.unit === action.payload.storage.unit &&
+            item.memory.capacity === action.payload.memory.capacity &&
+            item.memory.unit === action.payload.memory.unit
           )
             exist = true;
         });
@@ -56,6 +58,9 @@ export const cartSlice = createSlice({
         if (item.storage.capacity !== action.payload.storage.capacity)
           return true;
         if (item.storage.unit !== action.payload.storage.unit) return true;
+        if (item.memory.capacity !== action.payload.memory.capacity)
+          return true;
+        if (item.memory.unit !== action.payload.memory.unit) return true;
         return false;
       });
       window.localStorage.setItem("cart_session", JSON.stringify(state.cart));
@@ -67,7 +72,9 @@ export const cartSlice = createSlice({
           item.name === action.payload.name &&
           item.color.lowercase === action.payload.color.lowercase &&
           item.storage.capacity === action.payload.storage.capacity &&
-          item.storage.unit === action.payload.storage.unit
+          item.storage.unit === action.payload.storage.unit &&
+          item.memory.capacity === action.payload.memory.capacity &&
+          item.memory.unit === action.payload.memory.unit
         ) {
           state.cart[index].quantity = action.payload.quantity;
           window.localStorage.setItem(

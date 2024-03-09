@@ -14,7 +14,7 @@ export default function SpecificationTab({
     <table className="w-full table-auto">
       <tbody className="[&>*:nth-child(odd)]:bg-neutral-100 [&>*:nth-child(even)]:bg-inherit">
         {checkProductExist &&
-          productDetail[productCode].specs.map((item) => (
+          productDetail.specs.map((item) => (
             <tr>
               <td className="pl-4 pr-10">
                 <CustomText
