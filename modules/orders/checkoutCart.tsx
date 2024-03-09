@@ -33,7 +33,9 @@ export const CheckoutCart = ({
       const data = {
         name: item.name,
         storage: item.storage,
+        memory: item.memory,
         color: item.color,
+        price: item.price,
         quantity: quantity,
       };
       dispatch(updateQuantity(data));

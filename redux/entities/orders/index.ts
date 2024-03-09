@@ -68,6 +68,8 @@ export const orderSlice = createSlice({
         type: "success",
         content: "Your order was created successfully!",
       });
+      window.localStorage.removeItem("cart_session");
+      window.dispatchEvent(new Event("storage"));
     });
     builder.addCase(createOrder.rejected, (state, { error }) => {
       orderSlice.caseReducers.setLoadingCreateOrder(state, {

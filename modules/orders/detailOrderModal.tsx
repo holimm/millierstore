@@ -235,7 +235,7 @@ export const DetailOrderModal = ({
       <CustomText
         type="paragraph"
         extraClass="!text-black !font-semibold"
-        topClass="!text-xl"
+        topClass="!text-xl mt-8"
       >
         Delivery Timeline
       </CustomText>

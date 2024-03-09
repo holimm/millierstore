@@ -88,7 +88,11 @@ export default function ProductMain({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                     >
-                      <Flex justify="center" align="center">
+                      <Flex
+                        className="max-h-[70vh]"
+                        justify="center"
+                        align="center"
+                      >
                         <Image
                           key={index}
                           src={`${process.env.MONGO_BE_URL + item}`}
