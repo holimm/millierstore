@@ -16,6 +16,7 @@ export interface FieldProfileInformationType {
   username?: string;
   name?: string;
   phone?: string;
+  email?: string;
   password?: string;
   password_confirm?: string;
 }

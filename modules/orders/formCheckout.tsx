@@ -140,6 +140,15 @@ export const FormCheckout = ({
             <Input className="py-3" placeholder="Full name" size="middle" />
           </Form.Item>
         </Col>
+        <Col span={12}>
+          <Form.Item<FieldProfileInformationType>
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input className="py-3" placeholder="Email" size="middle" />
+          </Form.Item>
+        </Col>
       </Row>
       <CustomText
         type="paragraph"

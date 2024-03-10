@@ -17,8 +17,10 @@ import { getCategory, getProducts } from "@/redux/selectors/products";
 import { fetchCategory, fetchProducts } from "@/redux/entities/products";
 import { CategoryType, ProductsType } from "@/models/productModel";
 import { RenderProductCard } from "@/components/common";
-import Iphone15Cutout from "../assets/img/homepage/iphone15_cutout.png";
-import Iphone15CutoutFront from "../assets/img/homepage/iphone15_cutout_front.png";
+import Iphone15ProCutout from "../assets/img/homepage/iphone15_cutout.png";
+import Iphone15ProCutoutFront from "../assets/img/homepage/iphone15_cutout_front.png";
+import Iphone15Cutout from "../assets/img/homepage/iphone15_2_cutout.png";
+import Iphone15CutoutFront from "../assets/img/homepage/iphone15_2_cutout_front.png";
 import Link from "next/link";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import { fetchBlogs } from "@/redux/entities/blogs/asyncThunk";
@@ -34,22 +36,35 @@ interface ProductHomepageBannerType {
   linkHref?: string;
 }
 
+const productHomepageData = [
+  {
+    text_1: "iPhone 15",
+    text_2: "PRO MAX",
+    src_1: Iphone15ProCutout.src,
+    src_2: Iphone15ProCutoutFront.src,
+    description: `The iPhone 15 Pro Max sets a new standard in smartphone
+innovation. With its sleek design, powerful A-series chip, and
+advanced camera capabilities, it delivers a seamless user
+experience. The device also offers impressive battery life and
+lightning-fast 5G connectivity, making it perfect for work or
+play.`,
+    linkHref: "/products/65ad32cd673347ff096529d6",
+  },
+  {
+    text_1: "iPhone 15",
+    text_2: "PLUS",
+    src_1: Iphone15Cutout.src,
+    src_2: Iphone15CutoutFront.src,
+    description: `The iPhone 15 Plus offers cutting-edge technology and sleek design. With its advanced features and powerful performance, it's the perfect companion for your daily tasks and entertainment needs. Experience stunning visuals, seamless multitasking, and enhanced security with the iPhone 15 Plus.`,
+    linkHref: "/products/65b340160954165b4225d87d",
+  },
+];
+
 export default function Home() {
   const dispatch = useAppDispatch();
-  const [productHomepage, setProductHomepage] =
-    useState<ProductHomepageBannerType>({
-      text_1: "iPhone 15",
-      text_2: "PRO MAX",
-      src_1: Iphone15Cutout.src,
-      src_2: Iphone15CutoutFront.src,
-      description: `The iPhone 15 Pro Max sets a new standard in smartphone
-    innovation. With its sleek design, powerful A-series chip, and
-    advanced camera capabilities, it delivers a seamless user
-    experience. The device also offers impressive battery life and
-    lightning-fast 5G connectivity, making it perfect for work or
-    play.`,
-      linkHref: "/products/65ad32cd673347ff096529d6",
-    });
+  const [productHomepageImageIndex, setProductHomepageImageIndex] = useState(0);
+  const [productHomepageImageIsFirst, setProductHomepageImageIsFirst] =
+    useState(true);
   const productsList = useAppSelector(getProducts);
   const categoryList = useAppSelector(getCategory);
   const blogsList = useAppSelector(getBlogs);
@@ -58,17 +73,38 @@ export default function Home() {
 
   console.log(blogsList);
 
+  const onChangeHomepageBanner = (type: string) => {
+    if (type === "prev") {
+      if (productHomepageImageIndex !== 0)
+        setProductHomepageImageIndex(productHomepageImageIndex - 1);
+      else setProductHomepageImageIndex(productHomepageData.length - 1);
+    }
+    if (type === "next") {
+      if (productHomepageImageIndex !== productHomepageData.length - 1)
+        setProductHomepageImageIndex(productHomepageImageIndex + 1);
+      else setProductHomepageImageIndex(0);
+    }
+    setProductHomepageImageIsFirst(false);
+  };
+
   useEffect(() => {
     dispatch(fetchProducts({}));
     dispatch(fetchCategory());
     dispatch(fetchBlogs({}));
   }, []);
 
-  const ProductHomepageBanner = (
-    { productData },
-    { productData: ProductHomepageBannerType }
-  ) => {
-    const [productImage, setProductImage] = useState(productData.src_1);
+  const ProductHomepageBanner = ({
+    productData,
+    isFirstTime,
+    onChangeHomepageBanner,
+  }: {
+    productData: ProductHomepageBannerType;
+    isFirstTime: boolean;
+    onChangeHomepageBanner: (type: string) => void;
+  }) => {
+    const [productImage, setProductImage] = useState(
+      productData && productData.src_1
+    );
 
     const renderVerticalText = (values: {
       label: string;
@@ -89,13 +125,22 @@ export default function Home() {
       );
     };
 
-    const NavigateButton = ({ buttonIcon }: { buttonIcon: ReactNode }) => {
+    const NavigateButton = ({
+      buttonIcon,
+      buttonType,
+      onChangeHomepageBanner,
+    }: {
+      buttonIcon: ReactNode;
+      buttonType: string;
+      onChangeHomepageBanner: (type: string) => void;
+    }) => {
       return (
         <motion.div className="h-full w-fit mx-5 flex justify-center items-center">
           <motion.div
             className="h-fit w-fit cursor-pointer"
             initial={{ opacity: 0.2 }}
             whileHover={{ opacity: 0.5 }}
+            onClick={() => onChangeHomepageBanner(buttonType)}
           >
             {buttonIcon}
           </motion.div>
@@ -105,78 +150,100 @@ export default function Home() {
 
     return (
       <>
-        <div
-          className="h-fit w-full py-20 bg-cover bg-center bg-no-repeat inline-block"
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
-          }}
-        >
-          <div className="h-[32em] w-full flex justify-center items-center overflow-x-hidden">
-            <NavigateButton
-              buttonIcon={
-                <LeftCircleOutlined
-                  style={{ fontSize: "2em", color: "#000000" }}
-                />
-              }
-            />
-            {renderVerticalText({
-              label: productData.text_1,
-              transitionData: { duration: 1, delay: 0.5, ease: "easeInOut" },
-            })}
-            {renderVerticalText({
-              label: productData.text_2,
-              transitionData: { duration: 1.2, delay: 0.5, ease: "easeInOut" },
-            })}
-            <motion.img
-              className="h-[32em] shadow-xl"
-              src={productImage}
-              initial={{ x: "100vw" }}
-              animate={{ x: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-              onHoverStart={() => {
-                setProductImage(productData.src_2);
+        {!isEmpty(productData) && (
+          <>
+            <div
+              className="h-fit w-full py-20 bg-cover bg-center bg-no-repeat inline-block"
+              style={{
+                backgroundImage: `url(https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
               }}
-              onHoverEnd={() => {
-                setProductImage(productData.src_1);
-              }}
-            />
-            <NavigateButton
-              buttonIcon={
-                <RightCircleOutlined
-                  style={{ fontSize: "2em", color: "#000000" }}
+            >
+              <div className="h-[32em] w-full flex justify-center items-center overflow-x-hidden">
+                <NavigateButton
+                  buttonIcon={
+                    <LeftCircleOutlined
+                      style={{ fontSize: "2em", color: "#000000" }}
+                    />
+                  }
+                  buttonType="prev"
+                  onChangeHomepageBanner={onChangeHomepageBanner}
                 />
-              }
-            />
-          </div>
-          <motion.div
-            className="h-fit w-2/5 mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2, ease: "easeInOut" }}
-          >
-            <p className="mt-10 text-black text-center font-sf_pro_text_light">
-              {productData.description}
-            </p>
-          </motion.div>
-          <motion.div
-            className="h-20 w-fit mx-auto mt-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 1.2, ease: "easeInOut" }}
-          >
-            <Link href={productData.linkHref}>
-              <button className="px-16 py-2 text-black border-[1px] border-black rounded-full hover:bg-white hover:border-white hover:shadow-xl transition-all duration-100">
-                ORDER NOW
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-        <motion.div
-          className="h-full w-full bg-white absolute top-0"
-          initial={{ x: 0 }}
-          animate={{ x: "-100vw", transitionEnd: { display: "none" } }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeInOut" }}
-        ></motion.div>
+                {renderVerticalText({
+                  label: productData.text_1,
+                  transitionData: {
+                    duration: 1,
+                    delay: isFirstTime ? 0.5 : 0,
+                    ease: "easeInOut",
+                  },
+                })}
+                {renderVerticalText({
+                  label: productData.text_2,
+                  transitionData: {
+                    duration: 1.2,
+                    delay: isFirstTime ? 0.5 : 0,
+                    ease: "easeInOut",
+                  },
+                })}
+                <motion.img
+                  className="h-[32em] shadow-xl"
+                  src={productImage}
+                  initial={{ x: "100vw" }}
+                  animate={{ x: 0 }}
+                  transition={{
+                    duration: 1,
+                    delay: isFirstTime ? 0.5 : 0,
+                    ease: "easeInOut",
+                  }}
+                  onHoverStart={() => {
+                    setProductImage(productData.src_2);
+                  }}
+                  onHoverEnd={() => {
+                    setProductImage(productData.src_1);
+                  }}
+                />
+                <NavigateButton
+                  buttonIcon={
+                    <RightCircleOutlined
+                      style={{ fontSize: "2em", color: "#000000" }}
+                    />
+                  }
+                  buttonType="next"
+                  onChangeHomepageBanner={onChangeHomepageBanner}
+                />
+              </div>
+              <motion.div
+                className="h-fit w-2/5 mx-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 1,
+                  delay: isFirstTime ? 1.2 : 0,
+                  ease: "easeInOut",
+                }}
+              >
+                <p className="mt-10 text-black text-center font-sf_pro_text_light">
+                  {productData.description}
+                </p>
+              </motion.div>
+              <motion.div
+                className="h-20 w-fit mx-auto mt-10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 1.2,
+                  delay: isFirstTime ? 1.2 : 0,
+                  ease: "easeInOut",
+                }}
+              >
+                <Link href={productData.linkHref}>
+                  <button className="px-16 py-2 text-black border-[1px] border-black rounded-full hover:bg-white hover:border-white hover:shadow-xl transition-all duration-100">
+                    ORDER NOW
+                  </button>
+                </Link>
+              </motion.div>
+            </div>
+          </>
+        )}
       </>
     );
   };
@@ -203,7 +270,17 @@ export default function Home() {
   return (
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full relative">
-        <ProductHomepageBanner productData={productHomepage} />
+        <ProductHomepageBanner
+          productData={productHomepageData[productHomepageImageIndex]}
+          isFirstTime={productHomepageImageIsFirst}
+          onChangeHomepageBanner={onChangeHomepageBanner}
+        />
+        <motion.div
+          className="h-full w-full bg-white absolute top-0"
+          initial={{ x: 0 }}
+          animate={{ x: "-100vw", transitionEnd: { display: "none" } }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeInOut" }}
+        ></motion.div>
       </div>
       <div className="h-fit w-full">
         <div className="h-fit w-3/4 mx-auto pt-24">

@@ -57,6 +57,7 @@ export default function Home() {
 
   useEffect(() => {
     form.setFieldValue("name", authenAccount ? authenAccount.name : "");
+    form.setFieldValue("email", authenAccount ? authenAccount.email : "");
   }, [authenAccount]);
 
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function Home() {
             autoComplete="off"
             initialValues={{
               name: "",
+              email: "",
               method: "cod",
               type: "Home",
               street: "",
