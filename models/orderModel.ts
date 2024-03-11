@@ -5,6 +5,7 @@ export interface CheckoutInformationType {
   accountID: string;
   name?: string;
   method?: string;
+  email?: string;
   address?: CheckoutFormAddressType;
   product?: CartType[];
   total?: number;

@@ -1,5 +1,6 @@
 import { UserType } from "@/models/userModel";
 import axiosMongo from "@/network/axiosMongo";
+import { saveUser } from "@/redux/entities/users";
 import { fetchUserSession } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUser } from "@/redux/selectors/user";
@@ -10,7 +11,6 @@ import { useEffect, useState } from "react";
 export const useAuthen = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(getUser);
-  const [token, setToken] = useState("");
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -23,15 +23,20 @@ export const useAuthen = () => {
   }, [refresh]);
 
   useEffect(() => {
-    if (!isEmpty(localStorage.getItem("signin_token")))
-      setToken(localStorage.getItem("signin_token"));
+    const handleStorage = (event) => {
+      setRefresh(!refresh);
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, [refresh]);
 
   useEffect(() => {
-    if (!isEmpty(token)) {
-      dispatch(fetchUserSession(token));
+    if (!isEmpty(localStorage.getItem("signin_token"))) {
+      dispatch(fetchUserSession(localStorage.getItem("signin_token")));
+    } else {
+      dispatch(saveUser({}));
     }
-  }, [token, refresh]);
+  }, [refresh]);
 
   return !isEmpty(userData.data) ? userData.data : false;
 };

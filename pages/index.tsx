@@ -71,8 +71,6 @@ export default function Home() {
   const productListData = productsList.data;
   const blogListData = blogsList.data;
 
-  console.log(blogsList);
-
   const onChangeHomepageBanner = (type: string) => {
     if (type === "prev") {
       if (productHomepageImageIndex !== 0)

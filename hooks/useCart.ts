@@ -27,6 +27,7 @@ export const useCart = () => {
 
   useEffect(() => {
     if (!isEmpty(cartSession)) dispatch(saveCartSession(cartSession));
+    if (isEmpty(cartSession)) dispatch(saveCartSession([]));
     if (isEmpty(window.localStorage.getItem("cart_session")))
       dispatch(saveCartSession([]));
   }, [cartSession]);

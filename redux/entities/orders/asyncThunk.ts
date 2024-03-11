@@ -4,6 +4,15 @@ import { CheckoutInformationType } from "@/models/orderModel";
 
 export const storeName = "productsSlice";
 
+export const fetchOrderByCode = createAsyncThunk(
+  `${storeName}/fetchOrderByCode`,
+  async (args: { params: { code: string; email: string } }) => {
+    const resp = await orderService.fetchOrderByCode(args);
+    if (resp.status === "error") throw resp.data;
+    return resp;
+  }
+);
+
 export const createOrder = createAsyncThunk(
   `${storeName}/createOrder`,
   async (values: CheckoutInformationType) => {

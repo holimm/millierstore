@@ -12,6 +12,7 @@ import {
   Modal,
   Popconfirm,
   Row,
+  Spin,
   Tag,
   Timeline,
 } from "antd";
@@ -23,6 +24,11 @@ import { getCancelOrderLoading } from "@/redux/selectors/orders";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { cancelOrderById } from "@/redux/entities/orders/asyncThunk";
 import { useRef } from "react";
+import {
+  getDataAddress,
+  getDataInformation,
+  getTimelineOrderData,
+} from "./orderDetailDatas";
 
 export const DetailOrderModal = ({
   authenAccount,
@@ -35,7 +41,32 @@ export const DetailOrderModal = ({
   openDetailOrderModal: boolean;
   setOpenDetailOrderModal: any;
 }) => {
+  return (
+    <Modal
+      width={"60vw"}
+      open={openDetailOrderModal}
+      onOk={() => setOpenDetailOrderModal(false)}
+      onCancel={() => setOpenDetailOrderModal(false)}
+      footer={false}
+      centered
+    >
+      <DetailOrderContent currentOrderDetail={currentOrderDetail} />
+    </Modal>
+  );
+};
+
+export const DetailOrderContent = ({
+  currentOrderDetail,
+}: {
+  currentOrderDetail: CheckoutInformationType;
+}) => {
   const dispatch = useAppDispatch();
+  const onCancelOrder = async (idOrder: string) => {
+    dispatch(cancelOrderById(idOrder));
+  };
+  const dataAddress = getDataAddress(currentOrderDetail);
+  const dataInformation = getDataInformation(currentOrderDetail);
+  const timelineOrderData = getTimelineOrderData(currentOrderDetail);
   const timelineOrderDataLast = findLast(currentOrderDetail.date);
   const loadingCancelOrder = useAppSelector(getCancelOrderLoading);
 
@@ -47,93 +78,17 @@ export const DetailOrderModal = ({
       </div>
     </Col>
   );
-
-  const onCancelOrder = async (idOrder: string) => {
-    dispatch(cancelOrderById(idOrder));
-  };
-
-  const dataAddress = [
-    {
-      title: `${currentOrderDetail.name} | ${currentOrderDetail.address.phone}`,
-      description: `${currentOrderDetail.address.street}, ${currentOrderDetail.address.ward}, ${currentOrderDetail.address.district}, ${currentOrderDetail.address.city}`,
-      avatar: <FaMapMarkedAlt size={"3em"} />,
-      tag: <Tag color="success">{currentOrderDetail.address.type}</Tag>,
-    },
-  ];
-
-  const dataInformation = [
-    {
-      title: "Recipient",
-      description: currentOrderDetail.name,
-    },
-    {
-      title: "Payment Method",
-      description: currentOrderDetail.method,
-    },
-    {
-      title: "Note",
-      description: currentOrderDetail.note,
-    },
-    {
-      title: "Total",
-      description: NumberToDollarFormat(currentOrderDetail.total),
-    },
-  ];
-
-  const timelineOrderData = currentOrderDetail.date.map(
-    (item: OrderDateType) => {
-      let data: { color?: string; label?: string } = {};
-      if (item.id === "dateOrder")
-        data = { color: "blue", label: "You created the order" };
-      if (item.id === "dateDelivering")
-        data = { color: "blue", label: "Your package is on its way" };
-      if (item.id === "dateDelivered")
-        data = {
-          color: "green",
-          label: "Your package has delivered to your location",
-        };
-      if (item.id === "dateCancelled")
-        data = {
-          color: "red",
-          label: "You cancelled your order",
-        };
-      return {
-        color: data.color,
-        children: (
-          <>
-            <CustomText
-              type="paragraph"
-              extraClass="!text-black !font-semibold"
-            >
-              {dayjs(item.dateString).format("HH:mm:ss | DD MMMM YYYY")}
-            </CustomText>
-            <CustomText type="paragraph" extraClass="!text-black">
-              {data.label}
-            </CustomText>
-          </>
-        ),
-      };
-    }
-  );
-
   return (
-    <Modal
-      width={"60vw"}
-      open={openDetailOrderModal}
-      onOk={() => setOpenDetailOrderModal(false)}
-      onCancel={() => setOpenDetailOrderModal(false)}
-      footer={false}
-      centered
-    >
+    <Spin spinning={loadingCancelOrder.data}>
       <Divider />
       <Card className="shadow">
         <Row gutter={12}>
           {renderInformationColumn({
             label: "Order ID",
             value: `#
-            ${toUpper(
-              currentOrderDetail._id.substr(currentOrderDetail._id.length - 7)
-            )}`,
+        ${toUpper(
+          currentOrderDetail._id.substr(currentOrderDetail._id.length - 7)
+        )}`,
           })}
           {renderInformationColumn({
             label: "Order Date",
@@ -251,6 +206,6 @@ export const DetailOrderModal = ({
         mode="alternate"
         items={timelineOrderData}
       />
-    </Modal>
+    </Spin>
   );
 };

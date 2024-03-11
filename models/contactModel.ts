@@ -3,4 +3,5 @@ export interface ContactFormType {
   fullname?: string;
   subject?: string;
   content?: string;
+  date?: string;
 }

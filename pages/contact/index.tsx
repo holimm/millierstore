@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Divider, Form, Input, Spin, Typography } from "antd";
 import { isEmpty } from "lodash";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { ContactFormType } from "@/models/contactModel";
 import { createContactNode } from "@/redux/entities/contact/asyncThunk";
 import {
@@ -12,11 +12,17 @@ import {
 } from "@/helpers/constraint/userDataContraint";
 import { CustomButton } from "@/components/common";
 import { loadingCreateContactNode } from "@/redux/selectors/contacts";
+import { useAuthen } from "@/hooks/useAuthen";
 
 export default function Home() {
   const dispatch = useAppDispatch();
+  const authenAccount = useAuthen();
   const [form] = Form.useForm();
   const loadingCreateContact = useAppSelector(loadingCreateContactNode);
+
+  useEffect(() => {
+    form.setFieldValue("email", authenAccount ? authenAccount.email : "");
+  }, [authenAccount]);
 
   const onFinishCheckout = async (values: ContactFormType) => {
     dispatch(createContactNode(values));
@@ -59,7 +65,12 @@ export default function Home() {
                   label={"Email"}
                   rules={emailConstraint}
                 >
-                  <Input className="py-3" placeholder="Email" size="middle" />
+                  <Input
+                    className="py-3"
+                    placeholder="Email"
+                    size="middle"
+                    disabled={isEmpty(authenAccount) ? false : true}
+                  />
                 </Form.Item>
                 <Form.Item<ContactFormType>
                   className="mt-8"

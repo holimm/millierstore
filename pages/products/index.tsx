@@ -10,6 +10,7 @@ import { getCategory, getProducts } from "@/redux/selectors/products";
 import { CategoryType, ProductsType } from "@/models/productModel";
 import { RenderProductCard } from "@/components/common";
 import { CategoryProducts } from "@/components/products/categoryProducts";
+import { WaitingLoading } from "@/helpers/renderHelpers";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -25,9 +26,13 @@ export default function Home() {
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full">
         <div className="h-fit w-3/4 mx-auto py-20">
-          {categoryList.data.map((item: CategoryType) => (
-            <CategoryProducts title={item.name} productsList={productsList} />
-          ))}
+          {isEmpty(categoryList.data) ? (
+            <WaitingLoading loading={categoryList.loading} />
+          ) : (
+            categoryList.data.map((item: CategoryType) => (
+              <CategoryProducts title={item.name} productsList={productsList} />
+            ))
+          )}
         </div>
       </div>
     </main>

@@ -3,6 +3,15 @@ import { ResponseBEType } from "@/models/common";
 import axiosMongo from "@/network/axiosMongo";
 
 const orderService = {
+  async fetchOrderByCode(args: {
+    params: { code: string; email: string };
+  }): Promise<ResponseBEType<CheckoutInformationType>> {
+    const query = args.params;
+    const result = await axiosMongo.get(
+      `/api/orders/getTrackingOrder/${query.code}/${query.email}`
+    );
+    return result as any;
+  },
   async createOrder(values): Promise<ResponseBEType<CheckoutInformationType>> {
     const result = await axiosMongo.post(`/api/orders/create`, values);
     return result as any;

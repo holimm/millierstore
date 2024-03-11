@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Row, Col, Flex, Dropdown, Space, MenuProps } from "antd";
+import { Button, Row, Col, Flex } from "antd";
 import {
   SearchOutlined,
   ShoppingCartOutlined,

@@ -24,6 +24,10 @@ import {
   CheckoutInformationType,
 } from "@/models/orderModel";
 import { getCreateOrderLoading } from "@/redux/selectors/orders";
+import {
+  emailConstraint,
+  fullnameConstraint,
+} from "@/helpers/constraint/userDataContraint";
 
 const ExistedAddressForm = ({
   authenAccount,
@@ -133,9 +137,7 @@ export const FormCheckout = ({
           <Form.Item<FieldProfileInformationType>
             name="name"
             label="Name"
-            rules={[
-              { required: true, message: "Please input your full name!" },
-            ]}
+            rules={fullnameConstraint}
           >
             <Input className="py-3" placeholder="Full name" size="middle" />
           </Form.Item>
@@ -144,10 +146,24 @@ export const FormCheckout = ({
           <Form.Item<FieldProfileInformationType>
             name="email"
             label="Email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={emailConstraint}
           >
-            <Input className="py-3" placeholder="Email" size="middle" />
+            <Input
+              className="py-3"
+              placeholder="Email"
+              size="middle"
+              disabled={isEmpty(authenAccount) ? false : true}
+            />
           </Form.Item>
+        </Col>
+        <Col span={24}>
+          <CustomText
+            type="paragraph"
+            extraClass="!text-black !text-neutral-500"
+          >
+            *We will send you an email to track your order. If not please check
+            your spam box.
+          </CustomText>
         </Col>
       </Row>
       <CustomText

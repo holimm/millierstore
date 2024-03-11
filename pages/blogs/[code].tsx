@@ -18,6 +18,7 @@ import { fetchDetailBlog } from "@/redux/entities/blogs/asyncThunk";
 import { getDetailBlog } from "@/redux/selectors/blogs";
 import { BlogType } from "@/models/blogModel";
 import { CustomText } from "@/components/homePage/common";
+import { WaitingLoading } from "@/helpers/renderHelpers";
 
 export default function ProductDetailsPage() {
   const dispatch = useAppDispatch();
@@ -35,15 +36,13 @@ export default function ProductDetailsPage() {
 
   return (
     <>
-      <Spin spinning={detailBlog.loading}>
-        {!isEmpty(detailBlogData) && (
-          <main className={`h-fit w-full`}>
-            <div className="h-full w-full flex justify-center items-center">
-              <div className="h-fit w-full pb-12">
-                {/* <Image
-                src={`${process.env.MONGO_BE_URL}/${detailBlogData.images.thumbnail}`}
-                preview={false}
-              /> */}
+      <main className={`h-fit w-full`}>
+        <div className="h-full w-full flex justify-center items-center">
+          <div className="h-fit w-full pb-12">
+            {isEmpty(detailBlogData) ? (
+              <WaitingLoading loading={detailBlog.loading} />
+            ) : (
+              <Spin spinning={detailBlog.loading}>
                 <div className="h-[40em] w-full relative">
                   <motion.div
                     className="h-full w-full rounded-xl aspect-[9/16] bg-cover bg-center bg-no-repeat shadow-lg"
@@ -55,22 +54,8 @@ export default function ProductDetailsPage() {
                     transition={{ ease: "easeInOut" }}
                   ></motion.div>
                   <div className="h-full w-full bg-black/20 backdrop-blur-md absolute top-0"></div>
-                  {/* <div className="h-full w-1/2 absolute top-0 right-0 bg-slate-600">
-                  <div className="h-full w-1/2 mx-auto flex justify-center items-center">
-                    <div className="h-fit w-fit p-5">
-                      <h1
-                        className="text-6xl font-sf_pro_display bg-cover bg-bottom bg-no-repeat inline-block text-transparent bg-clip-text"
-                        style={{
-                          backgroundImage: `url(${process.env.MONGO_BE_URL}/${detailBlogData.images.thumbnail})`,
-                        }}
-                      >
-                        {detailBlogData.title}
-                      </h1>
-                    </div>
-                  </div>
-                </div> */}
                 </div>
-                <div className="h-fit w-3/4 mx-auto pt-10 pb-20 relative -top-20 bg-white rounded-lg shadow-md">
+                <div className="h-fit w-3/4 mx-auto pt-10 pb-20 relative -top-80 bg-white rounded-lg shadow-md">
                   <div className="h-fit w-full px-10">
                     <Flex justify="center" align="center">
                       <Avatar
@@ -120,11 +105,11 @@ export default function ProductDetailsPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </main>
-        )}
-      </Spin>
+              </Spin>
+            )}
+          </div>
+        </div>
+      </main>
     </>
   );
 }
