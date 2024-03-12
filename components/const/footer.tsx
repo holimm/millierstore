@@ -1,17 +1,29 @@
+import Link from "next/link";
 import { ReactElement } from "react";
 
-interface ListItemModel {
+interface ListItemTitleModel {
   name: string;
 }
 
+interface ListItemModel {
+  name: string;
+  linkHref: string;
+}
+
 const PageFooter = () => {
-  function Title(props: ListItemModel) {
-    return <h1 className="text-2xl font-semibold">{props.name}</h1>;
+  function Title(props: ListItemTitleModel) {
+    return (
+      <h1 className="text-2xl font-sf_pro_text_light font-semibold">
+        {props.name}
+      </h1>
+    );
   }
   function ListItem(props: ListItemModel) {
     return (
-      <li className="mt-5 text-md font-thin cursor-pointer hover:text-neutral-800 hover:underline hover:underline-offset-4 ">
-        <h1>{props.name}</h1>
+      <li className="w-fit mt-5 text-md font-sf_pro_text_light font-thin cursor-pointer hover:text-neutral-800 hover:underline hover:underline-offset-4 ">
+        <Link href={props.linkHref}>
+          <h1>{props.name}</h1>
+        </Link>
       </li>
     );
   }
@@ -22,24 +34,24 @@ const PageFooter = () => {
         <div className="h-full w-full">
           <Title name="About Us" />
           <ul>
-            <ListItem name="About Raijin" />
-            <ListItem name="Contact Us" />
-            <ListItem name="Blog" />
-            <ListItem name="Privacy" />
+            <ListItem name="About Millier" linkHref="/about" />
+            <ListItem name="Contact Us" linkHref="/contact" />
+            <ListItem name="Blog" linkHref="/blogs" />
+            <ListItem name="Privacy" linkHref="/" />
           </ul>
         </div>
         <div className="h-full w-full">
           <Title name="Support" />
           <ul>
-            <ListItem name="Product Support" />
-            <ListItem name="Contact Support" />
-            <ListItem name="Refund Policy" />
-            <ListItem name="Warranty" />
-            <ListItem name="Shipping Information" />
+            <ListItem name="Product Support" linkHref="/" />
+            <ListItem name="Contact Support" linkHref="/" />
+            <ListItem name="Refund Policy" linkHref="/" />
+            <ListItem name="Warranty" linkHref="/" />
+            <ListItem name="Shipping Information" linkHref="/" />
           </ul>
         </div>
         <div className="h-full w-full hidden md:block">
-          <Title name="Raijin Limited" />
+          <Title name="Millier Store" />
           <ul className="flex justify-start items-center">
             {/* <ListItemSocialMedia image="../assets/icon/social_media/facebook.svg"/>
                         <ListItemSocialMedia image="../assets/icon/social_media/youtube.svg"/>
@@ -49,7 +61,7 @@ const PageFooter = () => {
         </div>
       </div>
       <div className="h-full w-11/12 mx-auto mt-10 block md:hidden">
-        <Title name="Raijin Limited" />
+        <Title name="Millier Store" />
         <ul className="flex justify-start items-center">
           {/* <ListItemSocialMedia image="../assets/icon/social_media/facebook.svg"/>
                     <ListItemSocialMedia image="../assets/icon/social_media/youtube.svg"/>
@@ -60,7 +72,7 @@ const PageFooter = () => {
       <hr className="h-full w-11/12  mx-auto my-6 border-black lg:w-10/12 md:mt-14 lg:mb-10"></hr>
       <div className="h-full w-11/12 lg:w-10/12 mx-auto pb-10">
         <p className="text-center lg:text-start">
-          Copyright © 2022 Raijin Limited - All rights reserved.
+          Copyright © 2024 Millier - All rights reserved.
         </p>
       </div>
     </div>
