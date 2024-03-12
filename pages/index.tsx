@@ -1,22 +1,11 @@
 import { VideoPlayer } from "@/components/videoPlayer";
-import { Button, Card, Image, Spin, Typography } from "antd";
 import { motion } from "framer-motion";
-import { isEmpty, omit } from "lodash";
-import {
-  CategoryCard,
-  CustomButton,
-  CustomText,
-} from "@/components/homePage/common";
-import { CiCreditCard1 } from "react-icons/ci";
-import { CiDeliveryTruck } from "react-icons/ci";
-import { BsShop } from "react-icons/bs";
-import { ReactNode, useEffect, useState } from "react";
-import { NumberToDollarFormat } from "@/helpers/commonHelpers";
+import { chunk, debounce, first, isEmpty, throttle } from "lodash";
+import { CustomButton, CustomText } from "@/components/homePage/common";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getCategory, getProducts } from "@/redux/selectors/products";
 import { fetchCategory, fetchProducts } from "@/redux/entities/products";
-import { CategoryType, ProductsType } from "@/models/productModel";
-import { RenderProductCard } from "@/components/common";
 import Iphone15ProCutout from "../assets/img/homepage/iphone15_cutout.png";
 import Iphone15ProCutoutFront from "../assets/img/homepage/iphone15_cutout_front.png";
 import Iphone15Cutout from "../assets/img/homepage/iphone15_2_cutout.png";
@@ -25,16 +14,13 @@ import Link from "next/link";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import { fetchBlogs } from "@/redux/entities/blogs/asyncThunk";
 import { getBlogs } from "@/redux/selectors/blogs";
-import { BlogType } from "@/models/blogModel";
-
-interface ProductHomepageBannerType {
-  text_1?: string;
-  text_2?: string;
-  src_1?: string;
-  src_2?: string;
-  description?: string;
-  linkHref?: string;
-}
+import { NavigateButton } from "@/components/homePage/common";
+import { HomepageNewArrival } from "@/components/homePage/newArrival";
+import { HomepageFeaturedProducts } from "@/components/homePage/featuredProducts";
+import { HomepageExploreCategory } from "@/components/homePage/exploreCategory";
+import { PickUs } from "@/components/homePage/pickUs";
+import { HomepageBlogs } from "@/components/homePage/homepageBlogs";
+import { ProductHomepageBannerType } from "@/models/homepage";
 
 const productHomepageData = [
   {
@@ -69,20 +55,28 @@ export default function Home() {
   const categoryList = useAppSelector(getCategory);
   const blogsList = useAppSelector(getBlogs);
   const productListData = productsList.data;
-  const blogListData = blogsList.data;
+  const blogListData = first(chunk(blogsList.data, 5));
+  console.log(blogListData);
 
-  const onChangeHomepageBanner = (type: string) => {
-    if (type === "prev") {
-      if (productHomepageImageIndex !== 0)
-        setProductHomepageImageIndex(productHomepageImageIndex - 1);
-      else setProductHomepageImageIndex(productHomepageData.length - 1);
-    }
-    if (type === "next") {
-      if (productHomepageImageIndex !== productHomepageData.length - 1)
-        setProductHomepageImageIndex(productHomepageImageIndex + 1);
-      else setProductHomepageImageIndex(0);
-    }
-    setProductHomepageImageIsFirst(false);
+  const debounceChangeHomepageBanner = useCallback(
+    debounce((type: "prev" | "next") => {
+      if (type === "prev") {
+        if (productHomepageImageIndex !== 0)
+          setProductHomepageImageIndex(productHomepageImageIndex - 1);
+        else setProductHomepageImageIndex(productHomepageData.length - 1);
+      }
+      if (type === "next") {
+        if (productHomepageImageIndex !== productHomepageData.length - 1)
+          setProductHomepageImageIndex(productHomepageImageIndex + 1);
+        else setProductHomepageImageIndex(0);
+      }
+      setProductHomepageImageIsFirst(false);
+    }, 200),
+    [productHomepageImageIndex]
+  );
+
+  const onChangeHomepageBanner = (type: "prev" | "next") => {
+    debounceChangeHomepageBanner(type);
   };
 
   useEffect(() => {
@@ -119,29 +113,6 @@ export default function Home() {
           <motion.span className="text-7xl text-black font-sf_pro_rounded">
             {values.label}
           </motion.span>
-        </motion.div>
-      );
-    };
-
-    const NavigateButton = ({
-      buttonIcon,
-      buttonType,
-      onChangeHomepageBanner,
-    }: {
-      buttonIcon: ReactNode;
-      buttonType: string;
-      onChangeHomepageBanner: (type: string) => void;
-    }) => {
-      return (
-        <motion.div className="h-full w-fit mx-5 flex justify-center items-center">
-          <motion.div
-            className="h-fit w-fit cursor-pointer"
-            initial={{ opacity: 0.2 }}
-            whileHover={{ opacity: 0.5 }}
-            onClick={() => onChangeHomepageBanner(buttonType)}
-          >
-            {buttonIcon}
-          </motion.div>
         </motion.div>
       );
     };
@@ -246,25 +217,6 @@ export default function Home() {
     );
   };
 
-  const renderPickUsItem = (objectText: {
-    icon: ReactNode;
-    title: string;
-    description: string;
-  }) => {
-    return (
-      <div className="h-[20em] w-full flex justify-start items-center shadow-md rounded-xl p-5 hover:scale-[1.01] transition-all">
-        <div className="h-fit w-fit">
-          {objectText.icon}
-          <CustomText type="title" level={2} topClass="mt-4">
-            {objectText.title}
-          </CustomText>
-          <CustomText type="paragraph" extraClass="!text-black !text-xl">
-            {objectText.description}
-          </CustomText>
-        </div>
-      </div>
-    );
-  };
   return (
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full relative">
@@ -282,73 +234,11 @@ export default function Home() {
       </div>
       <div className="h-fit w-full">
         <div className="h-fit w-3/4 mx-auto pt-24">
-          <div className="h-fit w-full grid grid-cols-3 gap-10 pb-20">
-            {renderPickUsItem({
-              icon: <CiCreditCard1 size={60} />,
-              title: `Pay over time, interest-free.`,
-              description: `Flexible payments, zero interest. Shop now and pay over time
-            hassle-free.`,
-            })}
-            {renderPickUsItem({
-              icon: <CiDeliveryTruck size={58} />,
-              title: `Get flexible delivery and easy pickup.`,
-              description: `Flexible delivery, convenient pickup options for seamless shopping experience.`,
-            })}
-            {renderPickUsItem({
-              icon: <BsShop size={46} />,
-              title: `Explore a shopping experience designed around you.`,
-              description: `Discover a shopping journey crafted to match your unique preferences.`,
-            })}
-          </div>
-          <Typography.Title className="text-center">
-            <span className="!font-sf_pro">Explore Categories</span>
-          </Typography.Title>
-          <Typography.Paragraph className="text-center text-lg">
-            <span className="!font-sf_pro_text_light">
-              Discover diverse categories for a personalized shopping experience
-            </span>
-          </Typography.Paragraph>
-          <Spin spinning={categoryList.loading}>
-            <div className="h-fit w-full mx-auto mt-10 grid grid-cols-3 gap-20">
-              {categoryList.data.map((item: CategoryType, index) => (
-                <CategoryCard
-                  key={index}
-                  label={item.name}
-                  src={`${process.env.MONGO_BE_URL}${item.image}`}
-                />
-              ))}
-            </div>
-          </Spin>
+          <PickUs />
+          <HomepageExploreCategory categoryList={categoryList} />
         </div>
         <div className="h-fit w-3/4 mx-auto py-20">
-          <Typography.Title className="text-center">
-            <span className="!font-sf_pro">Featured Products</span>
-          </Typography.Title>
-          <Typography.Paragraph className="text-center text-lg">
-            <span className="!font-sf_pro_text_light">
-              Discover our latest collection of high-quality products
-            </span>
-          </Typography.Paragraph>
-          <Spin spinning={productsList.loading}>
-            <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-              {!isEmpty(productListData) &&
-                productListData["iPhone"].map(
-                  (item: ProductsType, index: number) => (
-                    <div key={index}>
-                      <RenderProductCard
-                        code={item._id}
-                        name={item.name}
-                        description={item.description}
-                        price={`From ${NumberToDollarFormat(
-                          item.lowest_price
-                        )}`}
-                        srcImage={item.image}
-                      />
-                    </div>
-                  )
-                )}
-            </div>
-          </Spin>
+          <HomepageFeaturedProducts productsList={productsList} />
         </div>
         <div className="h-[20em] w-full inline-block relative">
           <div className="h-full w-full absolute">
@@ -383,104 +273,11 @@ export default function Home() {
           </div>
         </div>
         <div className="h-fit w-3/4 mx-auto pt-20 pb-10">
-          <Typography.Title className="text-center">
-            <span className="!font-sf_pro">New Arrival</span>
-          </Typography.Title>
-          <Typography.Paragraph className="text-center text-lg">
-            <span className="!font-sf_pro_text_light">
-              Introducing our latest collection
-            </span>
-          </Typography.Paragraph>
-          <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-            {!isEmpty(productListData) &&
-              productListData["iPhone"].map(
-                (item: ProductsType, index: number) => (
-                  <div key={index}>
-                    <RenderProductCard
-                      code={item._id}
-                      name={item.name}
-                      description={item.description}
-                      price={`From ${NumberToDollarFormat(item.lowest_price)}`}
-                      srcImage={item.image}
-                    />
-                  </div>
-                )
-              )}
-          </div>
+          <HomepageNewArrival productListData={productListData} />
         </div>
 
         <div className="h-fit w-3/4 mx-auto">
-          <Typography.Title className="text-center">
-            <span className="!font-sf_pro">News</span>
-          </Typography.Title>
-          <Typography.Paragraph className="text-center text-lg">
-            <span className="!font-sf_pro_text_light">
-              Stay up to date with the latest blog posts
-            </span>
-          </Typography.Paragraph>
-          <div className="h-fit w-full pt-10 pb-40 grid grid-cols-3 gap-10">
-            <Spin spinning={blogsList.loading}>
-              {!isEmpty(blogListData) &&
-                blogListData.map((item: BlogType, index: number) => (
-                  <Link href={`/blogs/${item.idTitle}`}>
-                    <Card
-                      className="shadow-md cursor-pointer"
-                      cover={
-                        <div className="pt-2 px-2">
-                          <Image
-                            src={`${process.env.MONGO_BE_URL}/${item.images.thumbnail}`}
-                            preview={false}
-                          ></Image>
-                        </div>
-                      }
-                      hoverable
-                    >
-                      <Typography.Paragraph ellipsis={{ rows: 2 }}>
-                        <span
-                          className={
-                            "!text-xl !text-black !font-bold !font-sf_pro_text_light"
-                          }
-                        >
-                          {item.title}
-                        </span>
-                      </Typography.Paragraph>
-                      <Typography.Paragraph ellipsis={{ rows: 3 }}>
-                        <span
-                          className={
-                            "!text-lg !text-black !font-sf_pro_text_light"
-                          }
-                        >
-                          {item.chapeau}
-                        </span>
-                      </Typography.Paragraph>
-                    </Card>
-                  </Link>
-                ))}
-            </Spin>
-            <Card
-              className="shadow-md"
-              cover={
-                <div className="pt-2 px-2">
-                  <Image
-                    src="https://shopdunk.com/images/thumbs/0021924_iphone-15-pro-mau-titan-trang-ngoai-doi-thuc-khong-co-su-khac-biet-so-voi-tren-anh_1600.png"
-                    preview={false}
-                  ></Image>
-                </div>
-              }
-            >
-              <Typography.Paragraph ellipsis={{ rows: 2 }}>
-                <span className={"!text-xl !text-black !font-semibold"}>
-                  Exploring the Latest Trends in Smartphone Technology
-                </span>
-              </Typography.Paragraph>
-              <Typography.Paragraph ellipsis={{ rows: 3 }}>
-                <span className={"!text-lg !text-black"}>
-                  In today's fast-paced world, smartphones have become an
-                  indispensable part of our daily lives.
-                </span>
-              </Typography.Paragraph>
-            </Card>
-          </div>
+          <HomepageBlogs blogsList={blogsList} />
         </div>
       </div>
     </main>

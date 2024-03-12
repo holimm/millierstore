@@ -67,6 +67,7 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   );
 
   useEffect(() => debounced(keyword), [keyword]);
+
   const onFinishSubmitSearch = () => {
     if (isEmpty(keyword)) {
       notificationMessage({

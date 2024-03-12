@@ -1,16 +1,20 @@
+import { motion } from "framer-motion";
+import { CustomText } from "@/components/homePage/common";
 import { BlogType } from "@/models/blogModel";
 import { fetchBlogs } from "@/redux/entities/blogs/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getBlogs } from "@/redux/selectors/blogs";
-import { Card, Image, Spin, Typography } from "antd";
-import { isEmpty } from "lodash";
+import { Card, Flex, Image, Spin, Typography } from "antd";
+import { chunk, isEmpty } from "lodash";
 import Link from "next/link";
 import { useEffect } from "react";
+import { BlogPane } from "@/modules/blogs/blogPane";
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const blogsList = useAppSelector(getBlogs);
-  const blogListData = blogsList.data;
+  const blogListData = chunk(blogsList.data, 5);
+  console.log(blogListData);
 
   useEffect(() => {
     dispatch(fetchBlogs({}));
@@ -23,38 +27,21 @@ export default function Home() {
           <Typography.Title className="text-start">
             <span className="!font-sf_pro !text-black">News</span>
           </Typography.Title>
-          <div className="h-fit w-full pt-10 pb-40 grid grid-cols-3 gap-10">
-            <Spin spinning={blogsList.loading}>
-              {!isEmpty(blogListData) &&
-                blogListData.map((item: BlogType, index: number) => (
-                  <Link href={`/blogs/${item.idTitle}`}>
-                    <Card
-                      className="shadow-md cursor-pointer"
-                      cover={
-                        <div className="pt-2 px-2">
-                          <Image
-                            src={`${process.env.MONGO_BE_URL}/${item.images.thumbnail}`}
-                            preview={false}
-                          ></Image>
-                        </div>
-                      }
-                      hoverable
-                    >
-                      <Typography.Paragraph ellipsis={{ rows: 2 }}>
-                        <span className={"!text-xl !text-black !font-semibold"}>
-                          {item.title}
-                        </span>
-                      </Typography.Paragraph>
-                      <Typography.Paragraph ellipsis={{ rows: 3 }}>
-                        <span className={"!text-lg !text-black"}>
-                          {item.chapeau}
-                        </span>
-                      </Typography.Paragraph>
-                    </Card>
-                  </Link>
-                ))}
-            </Spin>
-          </div>
+          <Spin spinning={blogsList.loading}>
+            {blogListData.map((item: BlogType[], index: number) => (
+              <>
+                <div className="h-fit w-full grid grid-cols-3 first:mt-0 mt-10 gap-10">
+                  {!isEmpty(item[0]) && <BlogPane blogItem={item[0]} />}
+                  {!isEmpty(item[1]) && <BlogPane blogItem={item[1]} />}
+                  {!isEmpty(item[2]) && <BlogPane blogItem={item[2]} />}
+                </div>
+                <div className="h-fit w-full grid grid-cols-2 mt-10 gap-10">
+                  {!isEmpty(item[3]) && <BlogPane blogItem={item[3]} />}
+                  {!isEmpty(item[4]) && <BlogPane blogItem={item[4]} />}
+                </div>
+              </>
+            ))}
+          </Spin>
         </div>
       </div>
     </main>

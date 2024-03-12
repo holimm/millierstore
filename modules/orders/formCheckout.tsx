@@ -239,7 +239,13 @@ export const FormCheckout = ({
       {currentPaymentTab === "credit-card" && (
         <PaymentTabBox>
           <CustomText type="paragraph" extraClass="!text-lg !text-black">
-            Pay by credit card
+            <span className="font-semibold">Credit Card Number:</span> 1234 5678
+            9012 3456
+            <br /> <span className="font-semibold">Cardholder Name:</span> John
+            Doe
+            <br />
+            <span className="font-semibold">Billing Address:</span> 123 Main
+            Street, Cityville, ST 12345, USA
           </CustomText>
         </PaymentTabBox>
       )}

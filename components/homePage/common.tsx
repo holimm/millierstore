@@ -91,3 +91,26 @@ export const CategoryCard = ({
     </Link>
   );
 };
+
+export const NavigateButton = ({
+  buttonIcon,
+  buttonType,
+  onChangeHomepageBanner,
+}: {
+  buttonIcon: ReactNode;
+  buttonType: string;
+  onChangeHomepageBanner: (type: string) => void;
+}) => {
+  return (
+    <motion.div className="h-full w-fit mx-5 flex justify-center items-center">
+      <motion.div
+        className="h-fit w-fit cursor-pointer"
+        initial={{ opacity: 0.2 }}
+        whileHover={{ opacity: 0.5 }}
+        onClick={() => onChangeHomepageBanner(buttonType)}
+      >
+        {buttonIcon}
+      </motion.div>
+    </motion.div>
+  );
+};
