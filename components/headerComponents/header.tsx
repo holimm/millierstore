@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Row, Col, Flex } from "antd";
 import {
+  MenuOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {
   HeaderCartDrawer,
+  HeaderMenuDrawer,
   HeaderProfileDropdown,
   HeaderSearchDrawer,
   HeaderSigninDrawer,
@@ -20,6 +22,7 @@ const HeaderNavigation: React.FC = () => {
   const [showSearchDrawer, setShowSearchDrawer] = useState<boolean>(false);
   const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
   const [showSignInDrawer, setShowSignInDrawer] = useState<boolean>(false);
+  const [showMenuDrawer, setShowMenuDrawer] = useState<boolean>(false);
 
   useEffect(() => {
     const handleStorage = (event) => {
@@ -38,6 +41,9 @@ const HeaderNavigation: React.FC = () => {
   };
   const handleShowSignInDrawer = () => {
     setShowSignInDrawer(!showSignInDrawer);
+  };
+  const handleMenuDrawer = () => {
+    setShowMenuDrawer(!showMenuDrawer);
   };
 
   const ScreenButton = ({
@@ -64,6 +70,7 @@ const HeaderNavigation: React.FC = () => {
         open={showSearchDrawer}
         onClose={handleShowSearchDrawer}
       />
+      <HeaderMenuDrawer open={showMenuDrawer} onClose={handleMenuDrawer} />
       <HeaderCartDrawer open={showCartDrawer} onClose={handleShowCartDrawer} />
       {!authentication && (
         <HeaderSigninDrawer
@@ -75,21 +82,37 @@ const HeaderNavigation: React.FC = () => {
         <div className="h-full w-3/4 mx-auto">
           <Row className="h-full w-full">
             <Col span={12}>
-              <Flex
-                className="h-full w-full"
-                gap={10}
-                justify="start"
-                align="center"
-              >
-                <h1 className="text-4xl !font-lobster text-black pr-8">
-                  Millier
-                </h1>
-                <ScreenButton linkHref="/" label="Home" />
-                <ScreenButton linkHref="/products" label="Shop" />
-                <ScreenButton linkHref="/blogs" label="Blog" />
-                <ScreenButton linkHref="/about" label="About" />
-                <ScreenButton linkHref="/contact" label="Contact" />
-              </Flex>
+              <div className="h-full w-full block lg:hidden">
+                <Flex
+                  className="h-full w-full"
+                  gap={10}
+                  justify="start"
+                  align="center"
+                >
+                  <Button
+                    type="text"
+                    onClick={handleMenuDrawer}
+                    icon={<MenuOutlined />}
+                  ></Button>
+                </Flex>
+              </div>
+              <div className="h-full w-full hidden lg:block">
+                <Flex
+                  className="h-full w-full"
+                  gap={10}
+                  justify="start"
+                  align="center"
+                >
+                  <h1 className="text-4xl !font-lobster text-black pr-8">
+                    Millier
+                  </h1>
+                  <ScreenButton linkHref="/" label="Home" />
+                  <ScreenButton linkHref="/products" label="Shop" />
+                  <ScreenButton linkHref="/blogs" label="Blog" />
+                  <ScreenButton linkHref="/about" label="About" />
+                  <ScreenButton linkHref="/contact" label="Contact" />
+                </Flex>
+              </div>
             </Col>
             <Col span={12}>
               <Flex

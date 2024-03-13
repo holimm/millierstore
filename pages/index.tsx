@@ -54,9 +54,6 @@ export default function Home() {
   const productsList = useAppSelector(getProducts);
   const categoryList = useAppSelector(getCategory);
   const blogsList = useAppSelector(getBlogs);
-  const productListData = productsList.data;
-  const blogListData = first(chunk(blogsList.data, 5));
-  console.log(blogListData);
 
   const debounceChangeHomepageBanner = useCallback(
     debounce((type: "prev" | "next") => {
@@ -110,7 +107,7 @@ export default function Home() {
           animate={{ y: 0 }}
           transition={values.transitionData}
         >
-          <motion.span className="text-7xl text-black font-sf_pro_rounded">
+          <motion.span className="text-4xl lg:text-7xl text-black font-sf_pro_rounded">
             {values.label}
           </motion.span>
         </motion.div>
@@ -122,12 +119,12 @@ export default function Home() {
         {!isEmpty(productData) && (
           <>
             <div
-              className="h-fit w-full py-20 bg-cover bg-center bg-no-repeat inline-block"
+              className="h-fit w-full pt-20 pb-10 lg:pt-20 lg:pb-20 bg-cover bg-center bg-no-repeat inline-block"
               style={{
                 backgroundImage: `url(https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
               }}
             >
-              <div className="h-[32em] w-full flex justify-center items-center overflow-x-hidden">
+              <div className="h-[20em] lg:h-[32em] w-full flex justify-center items-center overflow-x-hidden">
                 <NavigateButton
                   buttonIcon={
                     <LeftCircleOutlined
@@ -154,7 +151,7 @@ export default function Home() {
                   },
                 })}
                 <motion.img
-                  className="h-[32em] shadow-xl"
+                  className="h-[20em] lg:h-[32em] shadow-xl"
                   src={productImage}
                   initial={{ x: "100vw" }}
                   animate={{ x: 0 }}
@@ -181,7 +178,7 @@ export default function Home() {
                 />
               </div>
               <motion.div
-                className="h-fit w-2/5 mx-auto"
+                className="h-fit w-11/12 lg:w-2/5 mx-auto"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{
@@ -233,11 +230,13 @@ export default function Home() {
         ></motion.div>
       </div>
       <div className="h-fit w-full">
-        <div className="h-fit w-3/4 mx-auto pt-24">
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 lg:pt-24">
           <PickUs />
+        </div>
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 lg:pt-24">
           <HomepageExploreCategory categoryList={categoryList} />
         </div>
-        <div className="h-fit w-3/4 mx-auto py-20">
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto py-5 lg:py-20">
           <HomepageFeaturedProducts productsList={productsList} />
         </div>
         <div className="h-[20em] w-full inline-block relative">
@@ -250,11 +249,11 @@ export default function Home() {
           </div>
           <div className="h-full w-full bg-black/20 backdrop-blur-sm absolute top-0 z-10"></div>
           <div className="h-full w-full absolute top-0 z-20">
-            <div className="h-full w-full flex justify-center items-center p-20">
+            <div className="h-full w-full flex justify-center items-center p-2 lg:p-20">
               <div className="h-fit w-fit">
                 <CustomText
                   type="paragraph"
-                  extraClass="!text-3xl !font-sf_pro_rounded"
+                  extraClass="!text-xl lg:!text-3xl !font-sf_pro_rounded"
                   topClass="text-center"
                 >
                   24/7 phone support, expert assistance for seamless
@@ -262,7 +261,7 @@ export default function Home() {
                 </CustomText>
                 <CustomText
                   type="paragraph"
-                  extraClass="!text-3xl !font-sf_pro_rounded"
+                  extraClass="!text-xl lg:!text-3xl !font-sf_pro_rounded"
                   topClass="text-center"
                 >
                   Your satisfaction, our priority.
@@ -272,11 +271,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="h-fit w-3/4 mx-auto pt-20 pb-10">
-          <HomepageNewArrival productListData={productListData} />
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-20 pb-0 lg:pb-10">
+          <HomepageNewArrival productsList={productsList} />
         </div>
-
-        <div className="h-fit w-3/4 mx-auto">
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pb-10">
           <HomepageBlogs blogsList={blogsList} />
         </div>
       </div>

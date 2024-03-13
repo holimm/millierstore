@@ -101,7 +101,11 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
       onClose={props.onClose}
       closable={false}
     >
-      <Flex className="h-[1em] w-2/5 mx-auto" justify="center" align="center">
+      <Flex
+        className="h-[1em] w-11/12 lg:w-2/5 mx-auto"
+        justify="center"
+        align="center"
+      >
         <Input
           className="w-full"
           size="large"
@@ -122,7 +126,7 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
       <Spin spinning={productsList.loading}>
         {checkExist ? (
           <>
-            <div className="h-fit max-h-[50vh] w-2/5 mx-auto flex-row justify-center overflow-y-auto">
+            <div className="h-fit max-h-[50vh] w-11/12 lg:w-2/5 mx-auto flex-row justify-center overflow-y-auto">
               {productsList.data.map((item: any, index: number) => (
                 <div key={index}>
                   <Link href={`/products/${item._id}`}>
@@ -195,14 +199,14 @@ export const HeaderCartDrawer: React.FC<NavigationDrawerProps> = (props) => {
 
   return (
     <NavigationDrawer
-      width={"25vw"}
+      width={"fit-content"}
       placement="right"
       open={props.open}
       onClose={props.onClose}
       title="My Cart"
       closable
     >
-      <div className="h-full w-full text-black">
+      <div className="h-full w-[70vw] lg:w-[25vw] text-black">
         <div className="h-[70%] overflow-y-auto overflow-x-hidden">
           <List
             itemLayout="horizontal"
@@ -315,103 +319,105 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
   };
   return (
     <NavigationDrawer
-      width={"25%"}
+      width={"fit-content"}
       placement="right"
       open={props.open}
       onClose={props.onClose}
       closable={false}
     >
       <Spin spinning={userSigningIn.data || loadingGoogleLogin.data}>
-        <Flex className="h-full w-full" justify="center" align="center">
-          <Form
-            name="basic"
-            layout="vertical"
-            className="w-full mb-10"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 24 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            autoComplete="off"
-          >
-            <Typography.Title level={4}>Sign In</Typography.Title>
-            <Divider />
-            <Form.Item<FieldType>
-              name="username"
-              label="Email"
-              className="mt-2"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
+        <div className="h-full w-[60vw] lg:w-[20vw]">
+          <Flex className="h-full w-full" justify="center" align="center">
+            <Form
+              name="basic"
+              layout="vertical"
+              className="w-full mb-10"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 24 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              autoComplete="off"
             >
-              <Input className="py-3" placeholder="Email" size="middle" />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-              name="password"
-              label="Password"
-              className="mt-8"
-              rules={[
-                { required: true, message: "Please input your password!" },
-              ]}
-            >
-              <Input.Password
-                className="py-3"
-                placeholder="Password"
-                size="middle"
-              />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-              name="remember"
-              className="mt-8"
-              valuePropName="checked"
-            >
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-            <Form.Item<FieldType>>
-              <Link href={"/forget-password"}>
-                <Typography.Link className="cursor-pointer">
-                  Forgot Password?
-                </Typography.Link>
-              </Link>
-            </Form.Item>
-            <Form.Item>
-              <CustomButton
-                type="primary"
-                htmlType="submit"
-                extraClass="bg-blue-500"
+              <Typography.Title level={4}>Sign In</Typography.Title>
+              <Divider />
+              <Form.Item<FieldType>
+                name="username"
+                label="Email"
+                className="mt-2"
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                ]}
               >
-                Login
-              </CustomButton>
-            </Form.Item>
-            <Divider plain>OR</Divider>
-            <Form.Item>
-              <Link href={"/register"} onClick={() => props.onClose()}>
+                <Input className="py-3" placeholder="Email" size="middle" />
+              </Form.Item>
+
+              <Form.Item<FieldType>
+                name="password"
+                label="Password"
+                className="mt-8"
+                rules={[
+                  { required: true, message: "Please input your password!" },
+                ]}
+              >
+                <Input.Password
+                  className="py-3"
+                  placeholder="Password"
+                  size="middle"
+                />
+              </Form.Item>
+
+              <Form.Item<FieldType>
+                name="remember"
+                className="mt-8"
+                valuePropName="checked"
+              >
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+              <Form.Item<FieldType>>
+                <Link href={"/forget-password"}>
+                  <Typography.Link className="cursor-pointer">
+                    Forgot Password?
+                  </Typography.Link>
+                </Link>
+              </Form.Item>
+              <Form.Item>
+                <CustomButton
+                  type="primary"
+                  htmlType="submit"
+                  extraClass="bg-blue-500"
+                >
+                  Login
+                </CustomButton>
+              </Form.Item>
+              <Divider plain>OR</Divider>
+              <Form.Item>
+                <Link href={"/register"} onClick={() => props.onClose()}>
+                  <CustomButton
+                    type="text"
+                    extraClass="bg-blue-500 text-white"
+                    icon={<UserAddOutlined />}
+                  >
+                    Create an account
+                  </CustomButton>
+                </Link>
+              </Form.Item>
+              <GoogleOAuthProvider clientId="296248512145-i1qchoom7g7adqiff9fnpeuu597jha7b.apps.googleusercontent.com">
+                <React.StrictMode>
+                  <GoogleLoginLayout />
+                </React.StrictMode>
+              </GoogleOAuthProvider>
+              <Form.Item>
                 <CustomButton
                   type="text"
-                  extraClass="bg-blue-500 text-white"
-                  icon={<UserAddOutlined />}
+                  extraClass="bg-[#3a5997] text-white"
+                  icon={<FacebookOutlined />}
                 >
-                  Create an account
+                  Login with Facebook
                 </CustomButton>
-              </Link>
-            </Form.Item>
-            <GoogleOAuthProvider clientId="296248512145-i1qchoom7g7adqiff9fnpeuu597jha7b.apps.googleusercontent.com">
-              <React.StrictMode>
-                <GoogleLoginLayout />
-              </React.StrictMode>
-            </GoogleOAuthProvider>
-            <Form.Item>
-              <CustomButton
-                type="text"
-                extraClass="bg-[#3a5997] text-white"
-                icon={<FacebookOutlined />}
-              >
-                Login with Facebook
-              </CustomButton>
-            </Form.Item>
-          </Form>
-        </Flex>
+              </Form.Item>
+            </Form>
+          </Flex>
+        </div>
       </Spin>
     </NavigationDrawer>
   );
@@ -453,5 +459,50 @@ export const HeaderProfileDropdown = ({
     <Dropdown menu={{ items }} placement="bottomLeft">
       <Button type="text" size="large" icon={<UserOutlined />}></Button>
     </Dropdown>
+  );
+};
+
+export const HeaderMenuDrawer = (props) => {
+  const MenuText = ({
+    label,
+    linkHref,
+  }: {
+    label: string;
+    linkHref: string;
+  }) => {
+    return (
+      <Link href={linkHref}>
+        <CustomText
+          type="paragraph"
+          topClass="!first:mt-0 !mt-10"
+          extraClass="!text-black !text-lg"
+        >
+          {label}
+        </CustomText>
+      </Link>
+    );
+  };
+  return (
+    <NavigationDrawer
+      width={"fit-content"}
+      placement="left"
+      open={props.open}
+      onClose={props.onClose}
+      closable={false}
+    >
+      <Flex className="h-full w-full" justify="center" align="start">
+        <div className="h-fit w-fit">
+          <h1 className="text-4xl !font-lobster text-black pr-8">Millier</h1>
+          <Divider />
+          <div className="h-fit w-fit">
+            <MenuText label="Home" linkHref="/" />
+            <MenuText label="Shop" linkHref="/products" />
+            <MenuText label="Blog" linkHref="/blogs" />
+            <MenuText label="About" linkHref="/about" />
+            <MenuText label="Contact" linkHref="/contact" />
+          </div>
+        </div>
+      </Flex>
+    </NavigationDrawer>
   );
 };

@@ -12,6 +12,7 @@ export const BlogPane = ({ blogItem }: { blogItem: BlogType }) => {
             backgroundImage: `url(${process.env.MONGO_BE_URL}/${blogItem.images.thumbnail})`,
           }}
         >
+          <div className="h-full w-full bg-transparent hover:backdrop-blur-md absolute top-0 transition-all duration-500"></div>
           <div className="h-1/2 w-full bg-gradient-to-t from-black/80 from-[50%] via-black/50 to-transparent backdrop-blur-sm rounded-b-xl absolute bottom-0">
             <Flex className="h-full w-full px-6" justify="start" align="center">
               <div className="h-fit w-full mt-4">

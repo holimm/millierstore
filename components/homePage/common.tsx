@@ -69,14 +69,11 @@ export const CategoryCard = ({
 }) => {
   return (
     <Link href={`/${toLower(label)}`}>
-      <motion.div
-        className="h-[34em] w-full rounded-xl aspect-[9/16] bg-cover bg-center bg-no-repeat shadow-lg cursor-pointer"
+      <div
+        className="h-[28em] lg:h-[34em] w-full rounded-xl aspect-[9/16] bg-cover bg-center bg-no-repeat shadow-lg cursor-pointer"
         style={{
           backgroundImage: `url(${src})`,
-          backgroundSize: "100%",
         }}
-        whileHover={{ backgroundSize: "105%" }}
-        transition={{ ease: "easeInOut" }}
       >
         <div className="h-full w-full group hover:bg-black/40 hover:backdrop-blur-sm transition-all duration-500 rounded-xl">
           <div className="h-full w-full opacity-0 group-hover:opacity-100 transition-all duration-700">
@@ -87,7 +84,7 @@ export const CategoryCard = ({
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 };
