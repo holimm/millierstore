@@ -65,11 +65,11 @@ export default function DescriptionTabItem({
           variants={productDescriptionVariants}
         >
           {renderTitle({ title: title, topClass: "!text-center mt-10" })}
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {content.map((item: any, index: number) => (
               <div key={index} className="h-fit w-full">
                 <motion.div
-                  className="bg-black h-[35em] w-full my-10 bg-cover bg-center bg-no-repeat rounded-xl"
+                  className="bg-black h-[26em] lg:h-[35em] w-full my-10 bg-cover bg-center bg-no-repeat rounded-xl"
                   style={{
                     backgroundImage: `url(${process.env.MONGO_BE_URL}${item.image})`,
                   }}
@@ -105,7 +105,7 @@ export default function DescriptionTabItem({
           {renderTitle({ title: title, topClass: "!text-center mt-10" })}
           {content.map((item: any, index: number) => (
             <div key={index} className="h-fit w-full">
-              <motion.div className="bg-black h-fit w-full my-10 py-4 relative rounded-xl">
+              <motion.div className="bg-black h-fit w-full my-10 py-2 lg:py-4 relative rounded-xl">
                 <div className="h-fit w-full my-8">
                   <div className="h-fit w-full">
                     <CustomText
@@ -139,7 +139,7 @@ export default function DescriptionTabItem({
           variants={productDescriptionVariants}
         >
           {renderTitle({ title: title, topClass: "!text-center mt-10" })}
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {content.map((item: any, index: number) => (
               <div key={index} className="h-fit w-full">
                 <motion.div className="bg-black h-fit w-full py-4 relative rounded-xl">
@@ -249,7 +249,7 @@ export default function DescriptionTabItem({
           variants={productDescriptionVariants}
         >
           {renderTitle({ title: title, topClass: "!text-center mt-10" })}
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {content.map((item: any, index: number) => (
               <div key={index} className="h-fit w-full">
                 <motion.div className="bg-neutral-100 h-fit w-full py-4 relative rounded-xl">
@@ -323,10 +323,10 @@ export default function DescriptionTabItem({
           variants={productDescriptionVariants}
         >
           {renderTitle({ title: title, topClass: "!text-center mt-10" })}
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 mb-2 lg:mt-10 lg:mb-10">
             {content.map((item: any, index: number) => (
               <div key={index} className="h-fit w-full">
-                <motion.div className="bg-neutral-100 h-fit w-full my-10 py-4 relative rounded-xl">
+                <motion.div className="bg-neutral-100 h-fit w-full mt-4 lg:mt-0 py-4 relative rounded-xl">
                   <div className="h-fit w-full my-8">
                     <img
                       className="object-contain mx-auto"

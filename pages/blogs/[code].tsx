@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Collapse,
-  Divider,
-  Flex,
-  Image,
-  Radio,
-  RadioChangeEvent,
-  Spin,
-} from "antd";
+import { Avatar, Divider, Flex, Spin } from "antd";
 import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect } from "react";
@@ -55,8 +45,8 @@ export default function ProductDetailsPage() {
                   ></motion.div>
                   <div className="h-full w-full bg-black/20 backdrop-blur-md absolute top-0"></div>
                 </div>
-                <div className="h-fit w-3/4 mx-auto pt-10 pb-20 relative -top-80 bg-white rounded-lg shadow-md">
-                  <div className="h-fit w-full px-10">
+                <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 pb-20 relative -top-80 bg-white rounded-lg shadow-md">
+                  <div className="h-fit w-full px-4 lg:px-10">
                     <Flex justify="center" align="center">
                       <Avatar
                         className="mx-auto bg-slate-200"
@@ -89,7 +79,7 @@ export default function ProductDetailsPage() {
                         {detailBlogData.category}
                       </span>
                     </CustomText>
-                    <div className="h-fit w-3/4 mx-auto">
+                    <div className="h-fit w-11/12 lg:w-3/4 mx-auto">
                       <CustomText
                         type="paragraph"
                         topClass="!text-lg"

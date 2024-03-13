@@ -130,7 +130,7 @@ export const CategoryDescriptionTabItem = ({
                       <CustomText
                         type="paragraph"
                         extraClass="!text-black !text-xl !font-sf_pro_text_light"
-                        topClass="w-2/3 mx-auto text-center mt-10"
+                        topClass="w-2/3 mx-auto text-center lg:mt-10"
                       >
                         {renderTitle({
                           title: title,
@@ -152,7 +152,7 @@ export const CategoryDescriptionTabItem = ({
                         ></div>
                       </CustomText>
                       <img
-                        className="object-contain object-bottom mx-auto w-1/2"
+                        className="object-contain object-bottom mx-auto w/3/4 lg:w-1/2"
                         src={`${process.env.MONGO_BE_URL}${item.image}`}
                       />
                     </div>
@@ -175,12 +175,12 @@ export const CategoryDescriptionTabItem = ({
             return (
               <div className="h-fit w-full">
                 <motion.div className="bg-white h-fit w-full my-10 py-4 relative rounded-xl">
-                  <div className="h-fit w-full my-8">
-                    <div className="h-fit w-full grid grid-cols-2">
+                  <div className="h-fit w-full my-4 lg:my-8">
+                    <div className="h-fit w-full grid grid-cols-1 lg:grid-cols-2">
                       <CustomText
                         type="paragraph"
                         extraClass="!text-black !text-xl !font-sf_pro_text_light"
-                        topClass="w-2/3 mx-auto text-start mt-10"
+                        topClass="w-11/12 lg:w-2/3 mx-auto text-start lg:mt-10"
                       >
                         {renderTitle({ title: title, topClass: "!text-start" })}
                         {!isEmpty(item.semiTitle) && (
@@ -198,7 +198,7 @@ export const CategoryDescriptionTabItem = ({
                           }}
                         ></div>
                       </CustomText>
-                      <div className="h-full w-full flex justify-center items-end">
+                      <div className="h-full w-9/12 mx-auto mt-2 lg:mt-0 lg:w-full flex justify-center items-end">
                         <img
                           className="object-contain object-bottom mx-auto"
                           src={`${process.env.MONGO_BE_URL}${item.image}`}
@@ -259,7 +259,7 @@ export const CategoryDescriptionTabItem = ({
           variants={productDescriptionVariants}
         >
           {renderTitle({ title: title, topClass: "!text-center" })}
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {content.map((item: any) => {
               return (
                 <div className="h-fit w-full">

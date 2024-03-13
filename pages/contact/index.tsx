@@ -1,9 +1,7 @@
-import { CustomText } from "@/components/homePage/common";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Divider, Form, Input, Spin, Typography } from "antd";
 import { isEmpty } from "lodash";
-import Link from "next/link";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { ContactFormType } from "@/models/contactModel";
 import { createContactNode } from "@/redux/entities/contact/asyncThunk";
 import {
@@ -31,7 +29,7 @@ export default function Home() {
   return (
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full py-12 bg-gradient-to-r from-neutral-200 to-neutral-100">
-        <div className="h-fit w-1/2 mx-auto py-20 bg-white rounded-lg shadow-lg px-10">
+        <div className="h-fit w-11/12 lg:w-1/2 mx-auto px-5 lg:px-10 py-10 lg:py-20 bg-white rounded-lg shadow-lg">
           <Spin spinning={loadingCreateContact.data}>
             <div className="h-fit w-full">
               <Typography.Title className="text-center">

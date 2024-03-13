@@ -169,7 +169,7 @@ export const FormCheckout = ({
       <CustomText
         type="paragraph"
         extraClass="!text-black !font-semibold"
-        topClass="!text-xl"
+        topClass="!text-xl !mt-3"
       >
         Delivery Information
       </CustomText>
@@ -207,7 +207,7 @@ export const FormCheckout = ({
       <CustomText
         type="paragraph"
         extraClass="!text-black !font-semibold"
-        topClass="!text-xl"
+        topClass="!text-xl !mt-5"
       >
         Choose payment method
       </CustomText>

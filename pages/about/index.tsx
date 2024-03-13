@@ -1,6 +1,6 @@
 import { CustomText } from "@/components/homePage/common";
 import { motion } from "framer-motion";
-import { Card, Divider, Flex, Typography } from "antd";
+import { Card, Carousel, Divider, Flex, Typography } from "antd";
 import { isEmpty } from "lodash";
 import { ReactNode } from "react";
 
@@ -26,14 +26,32 @@ export default function Home() {
       </CustomText>
     );
   };
+
+  const OurMissionCard = ({
+    label,
+    content,
+  }: {
+    label: string;
+    content: string;
+  }) => {
+    return (
+      <Card className="border-0 lg:border-2" hoverable>
+        <AboutUsText topClass="!font-bold">{label}</AboutUsText>
+        <AboutUsText>{content}</AboutUsText>
+      </Card>
+    );
+  };
+
   return (
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full py-12 bg-gradient-to-r from-neutral-200 to-neutral-100">
-        <div className="h-fit w-3/4 mx-auto py-20 bg-white rounded-lg shadow-lg px-10">
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto py-20 bg-white rounded-lg shadow-lg px-10">
           <div className="h-fit w-full">
             <Typography.Title className="text-center">
-              <span className="!font-sf_pro !text-black">
-                Millier - by a thousand
+              <span className="!font-sf_pro !text-black">Millier</span>
+              <br />
+              <span className="!text-3xl !font-sf_pro !text-neutral-500">
+                BY A THOUSAND
               </span>
             </Typography.Title>
             <AboutUsText topClass="!text-center">
@@ -50,9 +68,9 @@ export default function Home() {
             </AboutUsText>
           </div>
           <Divider className="my-10" />
-          <div className="h-fit w-full grid grid-cols-3 relative">
+          <div className="h-fit w-full lg:grid lg:grid-cols-3 relative">
             <motion.div
-              className="h-auto w-full bg-cover bg-center bg-no-repeat rounded-xl"
+              className="h-[20em] lg:h-auto w-full bg-cover bg-center bg-no-repeat rounded-xl"
               style={{
                 backgroundImage: `url(https://images.pexels.com/photos/6044829/pexels-photo-6044829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)`,
                 backgroundSize: "100%",
@@ -64,8 +82,12 @@ export default function Home() {
               src="https://images.pexels.com/photos/7652184/pexels-photo-7652184.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               preview={false}
             /> */}
-            <Flex className="h-fit col-span-2" justify="center" align="center">
-              <div className="h-fit w-full pl-10">
+            <Flex
+              className="h-fit lg:col-span-2"
+              justify="center"
+              align="center"
+            >
+              <div className="h-fit w-full mt-10 lg:mt-0 lg:pl-10">
                 <Typography.Title className="text-start">
                   <span className="!font-sf_pro !text-black">About Us</span>
                 </Typography.Title>
@@ -102,9 +124,22 @@ export default function Home() {
             </Flex>
           </div>
           <Divider className="my-10" />
-          <div className="h-fit w-full grid grid-cols-3 relative">
-            <Flex className="h-fit col-span-2" justify="center" align="center">
-              <div className="h-fit w-full pr-10">
+          <div className="h-fit w-full lg:grid lg:grid-cols-3 relative">
+            <motion.div
+              className="h-[20em] w-full bg-cover bg-center bg-no-repeat rounded-xl block lg:hidden"
+              style={{
+                backgroundImage: `url(https://images.pexels.com/photos/4065885/pexels-photo-4065885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)`,
+                backgroundSize: "100%",
+              }}
+              whileHover={{ backgroundSize: "105%" }}
+              transition={{ ease: "easeInOut" }}
+            ></motion.div>
+            <Flex
+              className="h-fit lg:col-span-2"
+              justify="center"
+              align="center"
+            >
+              <div className="h-fit w-full mt-10 lg:mt-0 lg:pr-10">
                 <Typography.Title className="text-start">
                   <span className="!font-sf_pro !text-black">Our Story</span>
                 </Typography.Title>
@@ -143,7 +178,7 @@ export default function Home() {
               </div>
             </Flex>
             <motion.div
-              className="h-auto w-full bg-cover bg-center bg-no-repeat rounded-xl"
+              className="h-auto w-full bg-cover bg-center bg-no-repeat rounded-xl hidden lg:block"
               style={{
                 backgroundImage: `url(https://images.pexels.com/photos/4065885/pexels-photo-4065885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)`,
                 backgroundSize: "100%",
@@ -167,37 +202,59 @@ export default function Home() {
             <AboutUsText>
               Our mission is anchored in three core principles:
             </AboutUsText>
-            <div className="h-fit w-full mt-6 grid grid-cols-3 gap-5">
-              <Card hoverable>
-                <AboutUsText topClass="!font-bold">Innovation</AboutUsText>
-                <AboutUsText>
-                  We are committed to staying at the forefront of technological
+            <div className="block lg:hidden mt-6">
+              <Carousel draggable>
+                <OurMissionCard
+                  label="Innovation"
+                  content="We are committed to staying at the forefront of technological
                   advancements, continuously seeking out new ideas and solutions
                   to meet the evolving needs of our customers. By embracing
                   innovation, we empower our customers to stay ahead of the
-                  curve and unlock new opportunities for growth and success.
-                </AboutUsText>
-              </Card>
-              <Card hoverable>
-                <AboutUsText topClass="!font-bold">Quality</AboutUsText>
-                <AboutUsText>
-                  We believe in offering only the highest quality products and
+                  curve and unlock new opportunities for growth and success."
+                />
+                <OurMissionCard
+                  label="Quality"
+                  content="We believe in offering only the highest quality products and
                   services to our customers. From smartphones and laptops to
                   accessories and support, we ensure that every aspect of our
-                  business meets the highest standards of excellence.
-                </AboutUsText>
-              </Card>
-              <Card hoverable>
-                <AboutUsText topClass="!font-bold">Empowerment</AboutUsText>
-                <AboutUsText>
-                  Our ultimate goal is to empower our customers to achieve their
+                  business meets the highest standards of excellence."
+                />
+                <OurMissionCard
+                  label="Empowerment"
+                  content="Our ultimate goal is to empower our customers to achieve their
                   full potential. Whether it's providing the tools they need to
                   work more efficiently, stay connected with loved ones, or
                   pursue their passions, we are dedicated to enabling
-                  individuals and businesses to thrive in an increasingly
-                  digital world.
-                </AboutUsText>
-              </Card>
+                  individuals and businesses to thrive in an increasingly"
+                />
+              </Carousel>
+            </div>
+            <div className="hidden lg:block">
+              <div className="h-fit w-full mt-6 grid grid-cols-3 gap-5">
+                <OurMissionCard
+                  label="Innovation"
+                  content="We are committed to staying at the forefront of technological
+                  advancements, continuously seeking out new ideas and solutions
+                  to meet the evolving needs of our customers. By embracing
+                  innovation, we empower our customers to stay ahead of the
+                  curve and unlock new opportunities for growth and success."
+                />
+                <OurMissionCard
+                  label="Quality"
+                  content="We believe in offering only the highest quality products and
+                  services to our customers. From smartphones and laptops to
+                  accessories and support, we ensure that every aspect of our
+                  business meets the highest standards of excellence."
+                />
+                <OurMissionCard
+                  label="Empowerment"
+                  content="Our ultimate goal is to empower our customers to achieve their
+                  full potential. Whether it's providing the tools they need to
+                  work more efficiently, stay connected with loved ones, or
+                  pursue their passions, we are dedicated to enabling
+                  individuals and businesses to thrive in an increasingly"
+                />
+              </div>
             </div>
           </div>
         </div>

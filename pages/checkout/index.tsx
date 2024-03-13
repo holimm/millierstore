@@ -12,7 +12,6 @@ import { FormCheckout } from "@/modules/orders/formCheckout";
 import { useAuthen } from "@/hooks/useAuthen";
 import { CheckoutCart } from "@/modules/orders/checkoutCart";
 import { CheckoutInformationType } from "@/models/orderModel";
-import { getCreateOrderLoading } from "@/redux/selectors/orders";
 import { createOrder } from "@/redux/entities/orders/asyncThunk";
 import dayjs from "dayjs";
 import { CustomText } from "@/components/homePage/common";
@@ -121,7 +120,7 @@ export default function Home() {
       </Modal>
       <main className={`h-fit w-full`}>
         <div className="h-fit w-full">
-          <div className="h-fit w-3/4 mx-auto py-20">
+          <div className="h-fit w-11/12 lg:w-3/4 mx-auto py-10 lg:py-20">
             <Form
               form={form}
               name="basic"
@@ -145,7 +144,7 @@ export default function Home() {
               }}
             >
               <Row gutter={20}>
-                <Col span={16}>
+                <Col xs={24} lg={16}>
                   <FormCheckout
                     formHook={form}
                     authenAccount={authenAccount && authenAccount}
@@ -155,8 +154,10 @@ export default function Home() {
                     setCurrentPaymentTab={setCurrentPaymentTab}
                   />
                 </Col>
-                <Col span={8}>
-                  <CheckoutCart cartList={cartList} />
+                <Col xs={24} lg={8}>
+                  <div className="hidden lg:block">
+                    <CheckoutCart cartList={cartList} />
+                  </div>
                 </Col>
               </Row>
             </Form>

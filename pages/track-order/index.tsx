@@ -39,7 +39,7 @@ export default function TrackOrderPage() {
       {orderByCode.loading === "success" && !isEmpty(orderByCodeData) && (
         <main className={`h-fit w-full`}>
           <div className="h-full w-full flex justify-center items-center">
-            <div className="h-fit w-3/4 mx-auto">
+            <div className="h-fit w-11/12 lg:w-3/4 mx-auto">
               <Spin spinning={orderByCode.loading === "success" ? false : true}>
                 <DetailOrderContent currentOrderDetail={orderByCodeData} />
               </Spin>

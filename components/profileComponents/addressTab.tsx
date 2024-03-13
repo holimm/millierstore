@@ -177,7 +177,7 @@ export const AddressTab = ({ authenAccount }: { authenAccount: UserType }) => {
         <Row gutter={16}>
           {!isEmpty(authenAccount.address) ? (
             authenAccount.address.map((item: UserAddressType, key: number) => (
-              <Col className="mb-5" span={8} key={key}>
+              <Col className="mb-5" xs={24} lg={8} key={key}>
                 <AddressCard item={item} index={key} />
               </Col>
             ))

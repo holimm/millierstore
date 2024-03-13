@@ -1,23 +1,10 @@
-import { Button, Card, Empty, Image, Spin, Typography } from "antd";
-import { motion } from "framer-motion";
-import { isEmpty, omit } from "lodash";
-import { CustomText } from "@/components/homePage/common";
 import { useEffect, useState } from "react";
-import { NumberToDollarFormat } from "@/helpers/commonHelpers";
-import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { fetchCategory, fetchProducts } from "@/redux/entities/products";
-import { getCategory, getProducts } from "@/redux/selectors/products";
-import { CategoryType, ProductsType } from "@/models/productModel";
-import {
-  CategoryDescriptionTabItem,
-  RenderProductCard,
-  renderTitle,
-} from "@/components/common";
-import { productDescriptionVariants } from "@/models/productDetailModel";
-import DescriptionTabItem from "@/components/productDetailComponents/descriptionTab";
+import { fetchProducts } from "@/redux/entities/products";
+import { getProducts } from "@/redux/selectors/products";
+import { CategoryDescriptionTabItem, renderTitle } from "@/components/common";
 import { CategoryProducts } from "@/components/products/categoryProducts";
-import { VideoPlayer, VideoPlayerYoutube } from "@/components/videoPlayer";
+import { VideoPlayerYoutube } from "@/components/videoPlayer";
 
 interface ParamsSeriesType {
   category?: string;
@@ -45,7 +32,7 @@ export default function Home() {
   return (
     <main className={`h-fit w-full`}>
       <div className="h-fit w-full">
-        <div className="h-fit w-3/4 mx-auto pt-10 pb-20 text-3xl">
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 pb-20 text-3xl">
           <VideoPlayerYoutube
             extraClass="rounded-xl"
             urlVideo={"https://www.youtube.com/embed/EcGXCJm3XMA"}
@@ -66,13 +53,17 @@ export default function Home() {
                 key: "iPhone 14",
                 label: "iPhone 14 Series",
               },
+              {
+                key: "iPhone 13",
+                label: "iPhone 13 Series",
+              },
             ]}
             onChangeProductSeries={onChangeProductSeries}
             exploreMore={false}
           />
           {renderTitle({
             title: "What makes an iPhone an iPhone?",
-            topClass: "!text-center mt-20",
+            topClass: "!text-center mt-2 lg:mt-20",
           })}
           <div className="h-fit w-full mt-10">
             <CategoryDescriptionTabItem
@@ -116,7 +107,7 @@ export default function Home() {
           </div>
         </div>
         <div className="h-fit w-full bg-neutral-100">
-          <div className="h-fit w-3/4 mx-auto pt-16 pb-20">
+          <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-16 pb-20">
             {renderTitle({
               title: "There are still many adorable items.",
               topClass: "!text-center",

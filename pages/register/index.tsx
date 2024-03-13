@@ -1,6 +1,5 @@
 import { CustomButton } from "@/components/common";
 import { CustomText } from "@/components/homePage/common";
-import { generateUUIDToken } from "@/helpers/commonHelpers";
 import {
   confirmPasswordConstraint,
   emailConstraint,
@@ -12,10 +11,7 @@ import {
 import { RegisterAccountType } from "@/models/userModel";
 import { createUserAccount } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  getUserCreateAccountLoading,
-  getUserCreateAccountSendEmailLoading,
-} from "@/redux/selectors/user";
+import { getUserCreateAccountSendEmailLoading } from "@/redux/selectors/user";
 import {
   CloseOutlined,
   ExceptionOutlined,
@@ -33,7 +29,6 @@ import {
   Result,
   Row,
   Spin,
-  Typography,
 } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -100,7 +95,7 @@ const RegisterAccount = () => {
       </Modal>
       <div className="h-fit w-full pt-16 pb-24 bg-gradient-to-r from-zinc-100 to-neutral-100">
         <Flex justify="center" align="center">
-          <div className="h-fit w-[50vw] p-10 bg-white shadow-lg rounded-xl">
+          <div className="h-fit w-11/12 lg:w-[50%] px-5 py-10 lg:px-10 lg:py-10 bg-white shadow-lg rounded-xl">
             <Spin spinning={loadingCreateAccountSendEmail.data}>
               <CustomText
                 type="paragraph"
@@ -221,7 +216,7 @@ const RegisterAccount = () => {
               </Form>
               <Divider plain>Already have an account?</Divider>
               <Row className="mt-8" gutter={16}>
-                <Col span={12}>
+                <Col xs={24} lg={12}>
                   <div
                     onClick={() =>
                       window.dispatchEvent(new Event("open_signin_drawer"))
@@ -236,8 +231,8 @@ const RegisterAccount = () => {
                     </CustomButton>
                   </div>
                 </Col>
-                <Col span={12}>
-                  <div>
+                <Col xs={24} lg={12}>
+                  <div className="mt-6 lg:mt-0">
                     <Link href={"/forget-password"}>
                       <CustomButton type="default" icon={<ExceptionOutlined />}>
                         Forgot password?

@@ -43,14 +43,16 @@ export const DetailOrderModal = ({
 }) => {
   return (
     <Modal
-      width={"60vw"}
+      width={"fit-content"}
       open={openDetailOrderModal}
       onOk={() => setOpenDetailOrderModal(false)}
       onCancel={() => setOpenDetailOrderModal(false)}
       footer={false}
       centered
     >
-      <DetailOrderContent currentOrderDetail={currentOrderDetail} />
+      <div className="h-fit w-full lg:w-[60vw]">
+        <DetailOrderContent currentOrderDetail={currentOrderDetail} />
+      </div>
     </Modal>
   );
 };
@@ -71,7 +73,7 @@ export const DetailOrderContent = ({
   const loadingCancelOrder = useAppSelector(getCancelOrderLoading);
 
   const renderInformationColumn = (data: { label: string; value: string }) => (
-    <Col span={8}>
+    <Col xs={24} lg={8}>
       <div className="h-fit w-full my-2 mx-auto md:w-fit">
         <h1>{data.label}</h1>
         <b>{data.value}</b>
@@ -104,10 +106,7 @@ export const DetailOrderContent = ({
       </Card>
       <Row className="mt-5" gutter={12}>
         <Col span={12}>
-          <Button
-            className="h-10 w-full text-black !bg-neutral-600 rounded-md"
-            size="large"
-          >
+          <Button className="h-10 w-full text-black rounded-md" size="large">
             Assign Order
           </Button>
         </Col>
@@ -122,7 +121,7 @@ export const DetailOrderContent = ({
             cancelText="No"
           >
             <Button
-              className="h-10 w-full text-black !bg-neutral-600 rounded-md"
+              className="h-10 w-full text-black rounded-md"
               size="large"
               disabled={timelineOrderDataLast.id !== "dateOrder"}
             >
@@ -132,7 +131,7 @@ export const DetailOrderContent = ({
         </Col>
       </Row>
       <Row className="mt-5" gutter={16}>
-        <Col span={12}>
+        <Col xs={24} lg={12}>
           <CustomText
             type="paragraph"
             extraClass="!text-black !font-semibold"
@@ -175,11 +174,11 @@ export const DetailOrderContent = ({
             bordered
           />
         </Col>
-        <Col span={12}>
+        <Col xs={24} lg={12}>
           <CustomText
             type="paragraph"
             extraClass="!text-black !font-semibold"
-            topClass="!text-xl"
+            topClass="!text-xl !mt-6 !lg:mt-0"
           >
             Products
           </CustomText>

@@ -69,7 +69,7 @@ export default function ProductMain({
 
   return (
     <Row gutter={30}>
-      <Col span={18}>
+      <Col xs={24} lg={18}>
         <div className="!sticky top-28">
           <Spin spinning={productDetail.loading}>
             <CustomText
@@ -89,7 +89,7 @@ export default function ProductMain({
                       animate={{ opacity: 1 }}
                     >
                       <Flex
-                        className="max-h-[70vh]"
+                        className="lg:max-h-[70vh]"
                         justify="center"
                         align="center"
                       >
@@ -109,10 +109,10 @@ export default function ProductMain({
           </Spin>
         </div>
       </Col>
-      <Col span={6}>
+      <Col xs={24} lg={6}>
         <Flex className="h-full w-full" justify="center" align="center">
           <div className="h-fit w-fit">
-            <div className="my-12">
+            <div className="my-8 lg:my-12">
               <CustomText
                 type="paragraph"
                 extraClass="!text-black !text-3xl font-semibold"
@@ -141,7 +141,7 @@ export default function ProductMain({
               </Spin>
             </div>
             {!isEmpty(productDetailData.storage) && (
-              <div className="my-14">
+              <div className="my-8 lg:my-14">
                 <CustomText
                   type="paragraph"
                   extraClass="!text-black !text-3xl font-semibold"
@@ -206,7 +206,7 @@ export default function ProductMain({
             )}
 
             {!isEmpty(productDetailData.memory) && (
-              <div className="my-14">
+              <div className="my-8 lg:my-14">
                 <CustomText
                   type="paragraph"
                   extraClass="!text-black !text-3xl font-semibold"
@@ -254,7 +254,7 @@ export default function ProductMain({
               </div>
             )}
 
-            <div className="my-14">
+            <div className="mt-8 mb-0 lg:my-14">
               <Collapse
                 className="w-full !p-0"
                 collapsible="header"

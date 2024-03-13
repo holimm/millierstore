@@ -1,6 +1,6 @@
 import { ProductDetailType } from "@/models/productDetailModel";
 import { ProductsType } from "@/models/productModel";
-import { Button, Empty, Spin, Tabs, Typography } from "antd";
+import { Button, Carousel, Empty, Spin, Tabs, Typography } from "antd";
 import { isEmpty, toLower } from "lodash";
 import { RenderProductCard } from "../common";
 import { NumberToDollarFormat } from "@/helpers/commonHelpers";
@@ -25,7 +25,7 @@ export const CategoryProducts = ({
   const productListData = productsList.data;
   const checkExist = !isEmpty(productListData[title]);
   return (
-    <div className="mt-20 first:my-0">
+    <div className="mt-10 lg:mt-20 first:my-0">
       <Typography.Title className="text-center">
         <span className="!font-sf_pro">{title}</span>
       </Typography.Title>
@@ -39,20 +39,43 @@ export const CategoryProducts = ({
       <Spin spinning={productsList.loading}>
         {checkExist && (
           <>
-            <div className="h-full w-full pb-6 grid grid-cols-4 gap-10">
-              {productListData[title].map(
-                (item: ProductsType, index: number) => (
-                  <div key={index}>
-                    <RenderProductCard
-                      code={item._id}
-                      name={item.name}
-                      description={item.description}
-                      price={`From ${NumberToDollarFormat(item.lowest_price)}`}
-                      srcImage={item.image}
-                    />
-                  </div>
-                )
-              )}
+            <div className="block lg:hidden">
+              <Carousel draggable>
+                {productListData[title].map(
+                  (item: ProductsType, index: number) => (
+                    <div key={index}>
+                      <RenderProductCard
+                        code={item._id}
+                        name={item.name}
+                        description={item.description}
+                        price={`From ${NumberToDollarFormat(
+                          item.lowest_price
+                        )}`}
+                        srcImage={item.image}
+                      />
+                    </div>
+                  )
+                )}
+              </Carousel>
+            </div>
+            <div className="hidden lg:block">
+              <div className="h-full w-full pb-6 grid grid-cols-4 gap-10">
+                {productListData[title].map(
+                  (item: ProductsType, index: number) => (
+                    <div key={index}>
+                      <RenderProductCard
+                        code={item._id}
+                        name={item.name}
+                        description={item.description}
+                        price={`From ${NumberToDollarFormat(
+                          item.lowest_price
+                        )}`}
+                        srcImage={item.image}
+                      />
+                    </div>
+                  )
+                )}
+              </div>
             </div>
             {exploreMore && (
               <div className="h-fit w-full flex justify-center">

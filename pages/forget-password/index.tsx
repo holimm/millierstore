@@ -1,48 +1,19 @@
 import { CustomButton } from "@/components/common";
 import { CustomText } from "@/components/homePage/common";
-import { generateUUIDToken } from "@/helpers/commonHelpers";
-import {
-  confirmPasswordConstraint,
-  emailConstraint,
-  fullnameConstraint,
-  passwordConstraint,
-  phoneConstraint,
-  usernameConstraint,
-} from "@/helpers/constraint/userDataContraint";
+import { emailConstraint } from "@/helpers/constraint/userDataContraint";
 import {
   ForgotPasswordAccountType,
   RegisterAccountType,
 } from "@/models/userModel";
-import {
-  createUserAccount,
-  sendEmailResetPassword,
-} from "@/redux/entities/users/asyncThunk";
+import { sendEmailResetPassword } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  getUserCreateAccountLoading,
-  getUserCreateAccountSendEmailLoading,
-  getUserResetPasswordSendEmailLoading,
-} from "@/redux/selectors/user";
+import { getUserResetPasswordSendEmailLoading } from "@/redux/selectors/user";
 import {
   CloseOutlined,
-  ExceptionOutlined,
   UserAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Divider,
-  Flex,
-  Form,
-  Input,
-  Modal,
-  Result,
-  Row,
-  Spin,
-  Typography,
-} from "antd";
-import Link from "next/link";
+import { Button, Divider, Flex, Form, Input, Modal, Result, Spin } from "antd";
 import { useEffect, useState } from "react";
 
 const ForgotPassword = () => {
@@ -107,7 +78,7 @@ const ForgotPassword = () => {
       </Modal>
       <div className="h-fit w-full pt-16 pb-24 bg-gradient-to-r from-zinc-100 to-neutral-100">
         <Flex justify="center" align="center">
-          <div className="h-fit w-[30vw] p-10 bg-white shadow-lg rounded-xl">
+          <div className="h-fit w-11/12 lg:w-[30%] p-10 bg-white shadow-lg rounded-xl">
             <Spin spinning={loadingResetPasswordSendEmail.data}>
               <CustomText
                 type="paragraph"

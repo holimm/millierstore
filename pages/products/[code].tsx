@@ -91,7 +91,7 @@ export default function ProductDetailsPage() {
   return (
     <main className={`h-fit w-full`}>
       <div className="h-full w-full flex justify-center items-center">
-        <div className="h-fit w-3/4 pt-12 py-16">
+        <div className="h-fit w-11/12 lg:w-3/4 pt-8 lg:pt-12 py-10 lg:py-16">
           <ProductMain
             productDetail={productDetail}
             checkProductExist={checkProductExist}
@@ -105,7 +105,7 @@ export default function ProductDetailsPage() {
             onChangeProductMemory={onChangeProductMemory}
           />
 
-          <div className="h-fit w-3/4 mx-auto my-20">
+          <div className="h-fit w-full lg:w-3/4 mx-auto my-8 lg:my-20">
             <Radio.Group
               className="flex justify-center"
               size="large"

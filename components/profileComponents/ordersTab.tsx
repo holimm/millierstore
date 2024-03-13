@@ -47,9 +47,9 @@ export const OrdersTab = ({ authenAccount }: { authenAccount: UserType }) => {
           {!isEmpty(accountOrders.data) ? (
             accountOrders.data.map(
               (item: CheckoutInformationType, index: number) => (
-                <Col span={8} key={index}>
+                <Col xs={24} lg={8} key={index}>
                   <Card
-                    className="shadow hover:border-1 hover:border-blue-400 transition-all duration-500 cursor-pointer"
+                    className="mt-4 lg:mt-0 shadow hover:border-1 hover:border-blue-400 transition-all duration-500 cursor-pointer"
                     onClick={() => handleOpenDetailOrderModal(item)}
                   >
                     <CustomText type="paragraph" extraClass="!text-black">

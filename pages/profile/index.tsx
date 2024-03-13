@@ -2,22 +2,16 @@ import AuthGate from "@/components/authGate";
 import { AddressTab } from "@/components/profileComponents/addressTab";
 import { OrdersTab } from "@/components/profileComponents/ordersTab";
 import { ProfileTab } from "@/components/profileComponents/profileTab";
-import { useAuthen } from "@/hooks/useAuthen";
 import { UserType } from "@/models/userModel";
-import { useAppSelector } from "@/redux/hooks";
-import {
-  getUserDeleteAddressLoading,
-  getUserUpdateAddressLoading,
-} from "@/redux/selectors/user";
 import {
   BookOutlined,
   CreditCardOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, MenuProps } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-const { Content, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const itemMenu: MenuProps["items"] = [
   {
@@ -39,7 +33,6 @@ const itemMenu: MenuProps["items"] = [
 
 export default function Profile() {
   const [currentTab, setCurrentTab] = useState<string>("profileTab");
-  // const authenAccount = useAuthen();
 
   const onClickMenu: MenuProps["onClick"] = (e) => {
     setCurrentTab(e.key);
@@ -48,11 +41,22 @@ export default function Profile() {
   return (
     <AuthGate>
       {(authenAccount: UserType) => (
-        <div className="h-full w-full px-20 pt-16 pb-20 flex justify-center items-center bg-neutral-100">
+        <div className="h-full w-full px-0 lg:px-20 pt-4 lg:pt-16 pb-10 lg:pb-20 flex justify-center items-center bg-neutral-100">
           <Layout className="h-full w-full">
+            <Header className="!px-0 block lg:hidden">
+              <Menu
+                theme="light"
+                className="h-full w-full"
+                mode="horizontal"
+                defaultSelectedKeys={["profileTab"]}
+                defaultOpenKeys={["profileTab"]}
+                onClick={onClickMenu}
+                items={itemMenu}
+              />
+            </Header>
             <Content>
-              <Layout className="p-5 bg-white rounded-xl shadow-md">
-                <Sider className="bg-white" width={200}>
+              <Layout className="py-3 lg:px-5 lg:py-5 bg-white lg:rounded-xl shadow-md">
+                <Sider className="bg-white hidden lg:block" width={200}>
                   <Menu
                     className="h-full"
                     mode="inline"
@@ -62,7 +66,7 @@ export default function Profile() {
                     items={itemMenu}
                   />
                 </Sider>
-                <Content className="p-10 min-h-[40em]">
+                <Content className="px-4 pt-0 pb-10 lg:px-10 lg:py-10 min-h-[40em]">
                   {currentTab === "profileTab" && (
                     <ProfileTab
                       authenAccount={authenAccount && authenAccount}
