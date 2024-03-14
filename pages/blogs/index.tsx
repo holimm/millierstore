@@ -28,7 +28,7 @@ export default function Home() {
             {blogListData.map((item: BlogType[], index: number) => (
               <>
                 <div className="block lg:hidden">
-                  <div className="h-fit w-full grid grid-cols-1 lg:first:mt-0 mt-10 gap-10">
+                  <div className="h-fit w-full grid grid-cols-1 mt-10 gap-10">
                     {!isEmpty(item[0]) && <BlogPane blogItem={item[0]} />}
                     {!isEmpty(item[1]) && <BlogPane blogItem={item[1]} />}
                     {!isEmpty(item[2]) && <BlogPane blogItem={item[2]} />}
@@ -37,7 +37,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="hidden lg:block">
-                  <div className="h-fit w-full grid grid-cols-3 first:mt-0 mt-10 gap-10">
+                  <div className="h-fit w-full grid grid-cols-3 mt-10 gap-10">
                     {!isEmpty(item[0]) && <BlogPane blogItem={item[0]} />}
                     {!isEmpty(item[1]) && <BlogPane blogItem={item[1]} />}
                     {!isEmpty(item[2]) && <BlogPane blogItem={item[2]} />}

@@ -39,42 +39,44 @@ const ForgotPassword = () => {
   return (
     <>
       <Modal
-        width={"50vw"}
+        width={"fit-content"}
         open={openSentEmailModal}
         cancelButtonProps={{ className: "hidden" }}
         onCancel={() => setOpenSentEmailModal(false)}
         centered
       >
-        <Result
-          status="success"
-          title={
-            <CustomText
-              type="paragraph"
-              extraClass="!text-black !text-3xl !font-semibold"
-            >
-              Email Verification Sent
-            </CustomText>
-          }
-          subTitle={
-            <CustomText
-              type="paragraph"
-              extraClass="!text-neutral-500 !text-lg"
-            >
-              An email verification email has been successfully sent to your
-              email address.
-            </CustomText>
-          }
-          extra={[
-            <Button
-              icon={<CloseOutlined />}
-              onClick={() => setOpenSentEmailModal(false)}
-              size="middle"
-              key="buy"
-            >
-              Close
-            </Button>,
-          ]}
-        />
+        <div className="w-11/12 mx-auto lg:w-[50vw]">
+          <Result
+            status="success"
+            title={
+              <CustomText
+                type="paragraph"
+                extraClass="!text-black !text-3xl !font-semibold"
+              >
+                Email Verification Sent
+              </CustomText>
+            }
+            subTitle={
+              <CustomText
+                type="paragraph"
+                extraClass="!text-neutral-500 !text-lg"
+              >
+                An email verification email has been successfully sent to your
+                email address.
+              </CustomText>
+            }
+            extra={[
+              <Button
+                icon={<CloseOutlined />}
+                onClick={() => setOpenSentEmailModal(false)}
+                size="middle"
+                key="buy"
+              >
+                Close
+              </Button>,
+            ]}
+          />
+        </div>
       </Modal>
       <div className="h-fit w-full pt-16 pb-24 bg-gradient-to-r from-zinc-100 to-neutral-100">
         <Flex justify="center" align="center">

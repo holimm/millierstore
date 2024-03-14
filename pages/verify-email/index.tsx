@@ -1,8 +1,5 @@
 import { CustomText } from "@/components/homePage/common";
-import {
-  createUserAccount,
-  verifyUserAccount,
-} from "@/redux/entities/users/asyncThunk";
+import { verifyUserAccount } from "@/redux/entities/users/asyncThunk";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUserCreateAccountLoading } from "@/redux/selectors/user";
 import { DoubleLeftOutlined } from "@ant-design/icons";
@@ -10,7 +7,7 @@ import { Button, Flex, Result, Spin } from "antd";
 import { debounce, isEmpty } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 const VerifyEmail = () => {
   const dispatch = useAppDispatch();
@@ -34,7 +31,7 @@ const VerifyEmail = () => {
   return (
     <div className="h-screen w-full shadow-md bg-gradient-to-r from-stone-500 via-neutral-500 to-zinc-500">
       <Flex className="h-full w-full" justify="center" align="center">
-        <div className="h-fit w-[60vw] bg-white p-10 rounded-xl">
+        <div className="h-fit w-11/12 lg:w-[60vw] bg-white p-0 lg:p-10 rounded-xl">
           {isEmpty(token) ? (
             <Result
               status="warning"

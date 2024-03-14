@@ -82,41 +82,43 @@ export default function Home() {
   return (
     <>
       <Modal
-        width={"50vw"}
+        width={"fit-content"}
         open={openSentEmailModal}
         cancelButtonProps={{ className: "hidden" }}
         onCancel={() => setOpenSentEmailModal(false)}
         centered
       >
-        <Result
-          status="success"
-          title={
-            <CustomText
-              type="paragraph"
-              extraClass="!text-black !text-3xl !font-semibold"
-            >
-              Order placed successfully
-            </CustomText>
-          }
-          subTitle={
-            <CustomText
-              type="paragraph"
-              extraClass="!text-neutral-500 !text-lg"
-            >
-              You have successfully placed your order!
-            </CustomText>
-          }
-          extra={[
-            <Button
-              icon={<CloseOutlined />}
-              onClick={() => setOpenSentEmailModal(false)}
-              size="middle"
-              key="buy"
-            >
-              Close
-            </Button>,
-          ]}
-        />
+        <div className="w-11/12 mx-auto lg:w-[50vw]">
+          <Result
+            status="success"
+            title={
+              <CustomText
+                type="paragraph"
+                extraClass="!text-black !text-3xl !font-semibold"
+              >
+                Order placed successfully
+              </CustomText>
+            }
+            subTitle={
+              <CustomText
+                type="paragraph"
+                extraClass="!text-neutral-500 !text-lg"
+              >
+                You have successfully placed your order!
+              </CustomText>
+            }
+            extra={[
+              <Button
+                icon={<CloseOutlined />}
+                onClick={() => setOpenSentEmailModal(false)}
+                size="middle"
+                key="buy"
+              >
+                Close
+              </Button>,
+            ]}
+          />
+        </div>
       </Modal>
       <main className={`h-fit w-full`}>
         <div className="h-fit w-full">
