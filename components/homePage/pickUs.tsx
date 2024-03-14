@@ -36,18 +36,18 @@ export const PickUs = () => {
       <div className="h-fit w-full block lg:hidden pb-0 lg:pb-20">
         <Carousel draggable autoplay>
           {renderPickUsItem({
-            icon: <CiCreditCard1 size={60} />,
+            icon: <CiCreditCard1 color="#000000" size={60} />,
             title: `Pay over time, interest-free.`,
             description: `Flexible payments, zero interest. Shop now and pay over time
             hassle-free.`,
           })}
           {renderPickUsItem({
-            icon: <CiDeliveryTruck size={58} />,
+            icon: <CiDeliveryTruck color="#000000" size={58} />,
             title: `Get flexible delivery and easy pickup.`,
             description: `Flexible delivery, convenient pickup options for seamless shopping experience.`,
           })}
           {renderPickUsItem({
-            icon: <BsShop size={46} />,
+            icon: <BsShop color="#000000" size={46} />,
             title: `Explore a shopping experience designed around you.`,
             description: `Discover a shopping journey crafted to match your unique preferences.`,
           })}
@@ -56,18 +56,18 @@ export const PickUs = () => {
       <div className="h-fit w-full hidden lg:block">
         <div className="h-fit w-full grid grid-cols-3 gap-10 pb-20">
           {renderPickUsItem({
-            icon: <CiCreditCard1 size={60} />,
+            icon: <CiCreditCard1 color="#000000" size={60} />,
             title: `Pay over time, interest-free.`,
             description: `Flexible payments, zero interest. Shop now and pay over time
             hassle-free.`,
           })}
           {renderPickUsItem({
-            icon: <CiDeliveryTruck size={58} />,
+            icon: <CiDeliveryTruck color="#000000" size={58} />,
             title: `Get flexible delivery and easy pickup.`,
             description: `Flexible delivery, convenient pickup options for seamless shopping experience.`,
           })}
           {renderPickUsItem({
-            icon: <BsShop size={46} />,
+            icon: <BsShop color="#000000" size={46} />,
             title: `Explore a shopping experience designed around you.`,
             description: `Discover a shopping journey crafted to match your unique preferences.`,
           })}
