@@ -29,8 +29,13 @@ export default function Home() {
           {isEmpty(categoryList.data) ? (
             <WaitingLoading loading={categoryList.loading} />
           ) : (
-            categoryList.data.map((item: CategoryType) => (
-              <CategoryProducts title={item.name} productsList={productsList} />
+            categoryList.data.map((item: CategoryType, index: number) => (
+              <div key={index}>
+                <CategoryProducts
+                  title={item.name}
+                  productsList={productsList}
+                />
+              </div>
             ))
           )}
         </div>

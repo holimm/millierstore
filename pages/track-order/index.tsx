@@ -64,7 +64,7 @@ export default function TrackOrderPage() {
                 type="paragraph"
                 extraClass="!text-neutral-500 !text-lg"
               >
-                We're sorry, but there was an error processing your order.
+                We&apos;re sorry, but there was an error processing your order.
                 Please try again later or contact support for assistance.
               </CustomText>
             }

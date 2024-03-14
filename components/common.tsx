@@ -125,9 +125,9 @@ export const CategoryDescriptionTabItem = ({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {content.map((item: any) => {
+          {content.map((item: any, index: number) => {
             return (
-              <div className="h-fit w-full">
+              <div className="h-fit w-full" key={index}>
                 <motion.div className="bg-neutral-100 h-fit w-full my-10 pt-4 relative rounded-xl">
                   <div className="h-fit w-full my-8">
                     <div className="h-fit w-full">
@@ -175,9 +175,9 @@ export const CategoryDescriptionTabItem = ({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {content.map((item: any) => {
+          {content.map((item: any, index: number) => {
             return (
-              <div className="h-fit w-full">
+              <div className="h-fit w-full" key={index}>
                 <motion.div className="bg-white h-fit w-full my-10 py-4 relative rounded-xl">
                   <div className="h-fit w-full my-4 lg:my-8">
                     <div className="h-fit w-full grid grid-cols-1 lg:grid-cols-2">
@@ -224,9 +224,9 @@ export const CategoryDescriptionTabItem = ({
           whileInView="onscreen"
           variants={productDescriptionVariants}
         >
-          {content.map((item: any) => {
+          {content.map((item: any, index: number) => {
             return (
-              <div className="h-fit w-full">
+              <div className="h-fit w-full" key={index}>
                 <motion.div className="bg-[#FAFAFA] h-fit w-full my-10 py-4 relative rounded-xl">
                   <div className="h-fit w-full my-4 lg:my-8">
                     <div className="h-fit w-full grid grid-cols-1 lg:grid-cols-2">
@@ -274,9 +274,9 @@ export const CategoryDescriptionTabItem = ({
           variants={productDescriptionVariants}
         >
           {renderTitle({ title: title, topClass: "!text-start" })}
-          {content.map((item: any) => {
+          {content.map((item: any, index: number) => {
             return (
-              <div className="h-fit w-full">
+              <div className="h-fit w-full" key={index}>
                 <motion.div className="bg-neutral-100 h-fit w-full my-10 py-4 relative rounded-xl">
                   <div className="h-fit w-full my-8">
                     <div className="h-fit w-full">
@@ -313,9 +313,9 @@ export const CategoryDescriptionTabItem = ({
         >
           {renderTitle({ title: title, topClass: "!text-center" })}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {content.map((item: any) => {
+            {content.map((item: any, index: number) => {
               return (
-                <div className="h-fit w-full">
+                <div className="h-fit w-full" key={index}>
                   <motion.div className="bg-neutral-100 h-fit w-full py-4 relative rounded-xl">
                     <div className="h-fit w-full my-8">
                       <img

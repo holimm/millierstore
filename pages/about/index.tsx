@@ -101,24 +101,25 @@ export default function Home() {
                 <AboutUsText>
                   At Millier, we believe in providing our customers with the
                   best in technology, ensuring that every product we offer is of
-                  the highest quality and reliability. Whether you're looking
-                  for the newest smartphone with groundbreaking features or a
-                  sleek, powerful laptop for work or play, we have you covered.
+                  the highest quality and reliability. Whether you&apos;re
+                  looking for the newest smartphone with groundbreaking features
+                  or a sleek, powerful laptop for work or play, we have you
+                  covered.
                 </AboutUsText>
                 <AboutUsText>
-                  Our commitment to excellence extends beyond our products; it's
-                  ingrained in every aspect of our business. From our
+                  Our commitment to excellence extends beyond our products;
+                  it&apos;s ingrained in every aspect of our business. From our
                   knowledgeable and friendly staff to our seamless online
                   shopping experience, we strive to make your journey with us as
                   smooth and enjoyable as possible.
                 </AboutUsText>
                 <AboutUsText>
-                  With a focus on customer satisfaction and innovation, we're
-                  constantly evolving to bring you the latest advancements in
-                  technology. Whether you're a tech enthusiast, a professional,
-                  or someone in between, you can trust Millier to provide you
-                  with the tools you need to stay connected, productive, and
-                  entertained.
+                  With a focus on customer satisfaction and innovation,
+                  we&apos;re constantly evolving to bring you the latest
+                  advancements in technology. Whether you&apos;re a tech
+                  enthusiast, a professional, or someone in between, you can
+                  trust Millier to provide you with the tools you need to stay
+                  connected, productive, and entertained.
                 </AboutUsText>
               </div>
             </Flex>
@@ -155,25 +156,25 @@ export default function Home() {
                   to curate a selection of the finest smartphones, laptops, and
                   accessories, carefully handpicked to meet the diverse needs of
                   our customers. We believe that everyone deserves access to the
-                  latest technology, and we're committed to making that a
+                  latest technology, and we&apos;re committed to making that a
                   reality for all.
                 </AboutUsText>
                 <AboutUsText>
                   As our company grew, so did our commitment to our customers.
                   We listened to your feedback, adapted to your changing needs,
                   and continually strived to exceed your expectations. Today,
-                  Millier is not just a destination for tech enthusiasts; it's a
-                  trusted partner for individuals and businesses alike,
-                  providing the tools they need to thrive in an ever-evolving
-                  digital world.
+                  Millier is not just a destination for tech enthusiasts;
+                  it&apos;s a trusted partner for individuals and businesses
+                  alike, providing the tools they need to thrive in an
+                  ever-evolving digital world.
                 </AboutUsText>
                 <AboutUsText>
-                  But our story doesn't end here. We're constantly looking
-                  ahead, exploring new opportunities, and pushing the boundaries
-                  of what's possible. As we continue to innovate and grow, we
-                  remain steadfast in our commitment to delivering exceptional
-                  products and experiences that inspire and empower our
-                  customers.
+                  But our story doesn&apos;t end here. We&apos;re constantly
+                  looking ahead, exploring new opportunities, and pushing the
+                  boundaries of what&apos;s possible. As we continue to innovate
+                  and grow, we remain steadfast in our commitment to delivering
+                  exceptional products and experiences that inspire and empower
+                  our customers.
                 </AboutUsText>
               </div>
             </Flex>

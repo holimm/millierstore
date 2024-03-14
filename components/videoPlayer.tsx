@@ -19,7 +19,7 @@ export const VideoPlayer = ({
         autoPlay
       >
         <source src={urlVideo} type="video/mp4" />
-        Your browser doesn't support HTML5 video tag.
+        Your browser doesn&apos;t support HTML5 video tag.
       </video>
     </>
   );
