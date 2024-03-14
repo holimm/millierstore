@@ -11,7 +11,7 @@ interface ParamsSeriesType {
   name?: string;
 }
 
-export default function Home() {
+export default function CategoryIphone() {
   const dispatch = useAppDispatch();
   const productsList = useAppSelector(getProducts);
   const [paramsSeries, setParamsSeries] = useState<ParamsSeriesType>({
@@ -26,8 +26,6 @@ export default function Home() {
     if (key === "All") setParamsSeries({ category: "iPhone" });
     else setParamsSeries({ category: "iPhone", name: key });
   };
-
-  console.log(productsList);
 
   return (
     <main className={`h-fit w-full`}>

@@ -27,7 +27,7 @@ export const HomepageFeaturedProducts = ({
       <Spin spinning={productsList.loading}>
         <div className="h-fit w-full block lg:hidden my-10">
           <Carousel draggable>
-            {!isEmpty(productListData) &&
+            {!isEmpty(productListData["iPhone"]) &&
               productListData["iPhone"].map(
                 (item: ProductsType, index: number) => (
                   <div key={index}>
@@ -45,7 +45,7 @@ export const HomepageFeaturedProducts = ({
         </div>
         <div className="h-fit w-full hidden lg:block">
           <div className="h-full w-full py-10 grid grid-cols-4 gap-10">
-            {!isEmpty(productListData) &&
+            {!isEmpty(productListData["iPhone"]) &&
               productListData["iPhone"].map(
                 (item: ProductsType, index: number) => (
                   <div key={index}>
