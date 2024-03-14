@@ -233,7 +233,7 @@ export default function Home() {
         <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 lg:pt-24">
           <PickUs />
         </div>
-        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 lg:pt-24">
+        <div className="h-fit w-11/12 lg:w-3/4 mx-auto pt-10 lg:pt-0">
           <HomepageExploreCategory categoryList={categoryList} />
         </div>
         <div className="h-fit w-11/12 lg:w-3/4 mx-auto py-5 lg:py-20">
