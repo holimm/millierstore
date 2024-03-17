@@ -406,7 +406,7 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
                   <GoogleLoginLayout />
                 </React.StrictMode>
               </GoogleOAuthProvider>
-              <Form.Item>
+              {/* <Form.Item>
                 <CustomButton
                   type="text"
                   extraClass="bg-[#3a5997] text-white"
@@ -414,7 +414,7 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
                 >
                   Login with Facebook
                 </CustomButton>
-              </Form.Item>
+              </Form.Item> */}
             </Form>
           </Flex>
         </div>
