@@ -1,40 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Millier Store 🎶
 
-## Getting Started
+## ❓ What's this app about
+Millier Store is an e-commerce website that sells mobile phones, laptops, and accessories. With inspiration from the official Apple website, I aimed to create a responsive and user-friendly design.
+## Preview - [Live Site](https://millierstore.vercel.app/)
+![Screenshot 2024-03-17 234637](https://github.com/holimm/millierstore/assets/95845053/a62a9b2f-d855-4173-a8bd-274573d7f0b6)
+![Screenshot 2024-03-17 234702](https://github.com/holimm/millierstore/assets/95845053/c69031ca-843a-49cb-9dcf-ed7478fe9634)
+![Screenshot 2024-03-17 234731](https://github.com/holimm/millierstore/assets/95845053/b4923a1f-89eb-4176-adbd-b4af6d4aef20)
+![Screenshot 2024-03-17 234759](https://github.com/holimm/millierstore/assets/95845053/bb5c00c5-3019-44f1-a780-ee07032d0520)
+![Screenshot 2024-03-17 234833](https://github.com/holimm/millierstore/assets/95845053/9658c49e-af84-4b88-9045-b5dbdbd81bdd)
+![Screenshot 2024-03-17 234852](https://github.com/holimm/millierstore/assets/95845053/733bf307-5ee9-41d0-81a3-b56a339e90b4)
+![Screenshot 2024-03-17 234915](https://github.com/holimm/millierstore/assets/95845053/f6c6e8a2-2afe-4d61-9e8a-3b22cb8ac9b0)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🔑 Features
+<li>Fully sync cart across browser tabs.</li>
+<li>Mobile responsive.</li>
+<li>Google sign in.</li>
+<li>Send verification emails.</li>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Tools
+<li><a href="https://reactjs.org/">ReactJS</a></li>
+<li><a href="https://nextjs.org/">NextJS</a></li>
+<li><a href="https://www.typescriptlang.org/">Typescript</a></li>
+<li><a href="https://ant.design/">Ant Design</a></li>
+<li><a href="https://tailwindcss.com/">Tailwind CSS</a></li>
+<li><a href="https://redux.js.org/">Redux</a></li>
+<li><a href="https://www.framer.com/motion/">Framer Motion</a></li>
+<li><a href="https://lodash.com/">Lodash</a></li>
+<li><a href="https://www.npmjs.com/package/@react-oauth/google">React OAuth Google</a></li>
+<br>
+Live: https://millierstore.vercel.app/
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
