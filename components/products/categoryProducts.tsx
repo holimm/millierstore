@@ -78,7 +78,7 @@ export const CategoryProducts = ({
               </div>
             </div>
             {exploreMore && (
-              <div className="h-fit w-full flex justify-center">
+              <div className="h-fit w-full flex justify-center pb-12">
                 <Link href={`/${toLower(title)}`}>
                   <Button type="default" size="large">
                     <span className="font-sf_pro_text_light">Explore more</span>
