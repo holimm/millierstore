@@ -135,7 +135,10 @@ export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
                 <div key={index}>
                   <Link href={`/products/${item._id}`}>
                     <div className="h-fit w-full flex gap-8">
-                      <Image src={item.image} height={"6em"} />
+                      <Image
+                        src={`${process.env.MONGO_BE_URL}${item.image}`}
+                        height={"6em"}
+                      />
                       <div className="h-full w-fit">
                         <CustomText
                           type="paragraph"
