@@ -37,7 +37,10 @@ export const RenderProductCard: React.FC<ProductCardType> = (props) => {
       className="bg-white !p-0 !border-none cursor-pointer"
       cover={
         <div className="pl-3 pr-3 pt-5">
-          <Image src={props.srcImage} preview={false} />
+          <Image
+            src={`${process.env.MONGO_BE_URL}${props.srcImage}`}
+            preview={false}
+          />
         </div>
       }
     >
