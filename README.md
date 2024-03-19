@@ -43,7 +43,7 @@ Millier Store is an e-commerce website that sells mobile phones, laptops, and ac
 <li><a href="https://lodash.com/">Lodash</a></li>
 <li><a href="https://www.npmjs.com/package/@react-oauth/google">React OAuth Google</a></li>
 <br>
-## 📷 Assets
+##  📷 Assets
 <li><a href="https://unsplash.com/photos/white-textile-in-close-up-photography-yekIZ4ltv1o">White textile in close up photography</a></li>
 <li><a href="https://www.pexels.com/video/digital-clock-screensaver-5087427/">Digital clock screensaver</a></li>
 <li><a href="https://www.pexels.com/photo/wireless-keyboard-and-airpods-case-next-to-glasses-5364936/">Wireless keyboard and airpods</a></li>
