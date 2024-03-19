@@ -51,6 +51,10 @@ import { CustomText } from "../homePage/common";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleLoginLayout from "../googleLogin";
 import { getLoginGoogleLoading } from "@/redux/selectors/googleLogin";
+import {
+  passwordConstraint,
+  usernameConstraint,
+} from "@/helpers/constraint/userDataContraint";
 
 export const HeaderSearchDrawer: React.FC<NavigationDrawerProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -342,22 +346,18 @@ export const HeaderSigninDrawer: React.FC<NavigationDrawerProps> = (props) => {
               <Divider />
               <Form.Item<FieldType>
                 name="username"
-                label="Email"
+                label="Username"
                 className="mt-2"
-                rules={[
-                  { required: true, message: "Please input your username!" },
-                ]}
+                rules={usernameConstraint}
               >
-                <Input className="py-3" placeholder="Email" size="middle" />
+                <Input className="py-3" placeholder="Username" size="middle" />
               </Form.Item>
 
               <Form.Item<FieldType>
                 name="password"
                 label="Password"
                 className="mt-8"
-                rules={[
-                  { required: true, message: "Please input your password!" },
-                ]}
+                rules={passwordConstraint}
               >
                 <Input.Password
                   className="py-3"

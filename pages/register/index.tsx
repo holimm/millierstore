@@ -125,7 +125,7 @@ const RegisterAccount = () => {
                     >
                       <Input
                         className="py-3"
-                        placeholder="Email"
+                        placeholder="Fullname"
                         size="middle"
                       />
                     </Form.Item>
@@ -139,7 +139,7 @@ const RegisterAccount = () => {
                     >
                       <Input
                         className="py-3"
-                        placeholder="Email"
+                        placeholder="Username"
                         size="middle"
                       />
                     </Form.Item>
@@ -169,7 +169,7 @@ const RegisterAccount = () => {
                     >
                       <Input
                         className="py-3"
-                        placeholder="Email"
+                        placeholder="Phone number"
                         size="middle"
                       />
                     </Form.Item>
@@ -199,7 +199,7 @@ const RegisterAccount = () => {
                     >
                       <Input.Password
                         className="py-3"
-                        placeholder="Password"
+                        placeholder="Confirm Password"
                         size="middle"
                       />
                     </Form.Item>
