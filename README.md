@@ -43,6 +43,15 @@ Millier Store is an e-commerce website that sells mobile phones, laptops, and ac
 <li><a href="https://lodash.com/">Lodash</a></li>
 <li><a href="https://www.npmjs.com/package/@react-oauth/google">React OAuth Google</a></li>
 <br>
+## 📷 Assets
+<li><a href="https://unsplash.com/photos/white-textile-in-close-up-photography-yekIZ4ltv1o">White textile in close up photography</a></li>
+<li><a href="https://www.pexels.com/video/digital-clock-screensaver-5087427/">Digital clock screensaver</a></li>
+<li><a href="https://www.pexels.com/photo/wireless-keyboard-and-airpods-case-next-to-glasses-5364936/">Wireless keyboard and airpods</a></li>
+<li><a href="https://www.pexels.com/photo/black-android-smartphone-on-white-table-5083491/">Black smartphone on white table</a></li>
+<li><a href="https://www.pexels.com/photo/macbook-mockup-on-white-table-8532637/">Macbook on white table</a></li>
+<li><a href="https://www.pexels.com/photo/person-holding-white-tablet-computer-4065885/">Person holding white tablet</a></li>
+<li><a href="https://www.pexels.com/photo/modern-workspace-with-computer-and-smartphone-on-table-6044829/">Modern workspace with computer and smartphone</a></li>
+<br>
 Live: https://millierstore.vercel.app/
 
 
