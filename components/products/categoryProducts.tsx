@@ -1,10 +1,18 @@
 import { ProductDetailType } from "@/models/productDetailModel";
 import { ProductsType } from "@/models/productModel";
-import { Button, Carousel, Empty, Spin, Tabs, Typography } from "antd";
+import { Button, Carousel, Empty, Grid, Spin, Tabs, Typography } from "antd";
 import { isEmpty, toLower } from "lodash";
 import { RenderProductCard } from "../common";
-import { NumberToDollarFormat } from "@/helpers/commonHelpers";
+import {
+  NumberToDollarFormat,
+  getTotalCarouselSlide,
+} from "@/helpers/commonHelpers";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import { CarouselRef } from "antd/es/carousel";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+
+const { useBreakpoint } = Grid;
 
 export const CategoryProducts = ({
   title,
@@ -22,8 +30,22 @@ export const CategoryProducts = ({
   onChangeProductSeries?: (activeKey: string) => void;
   exploreMore?: boolean;
 }) => {
-  const productListData = productsList.data;
-  const checkExist = !isEmpty(productListData[title]);
+  const carouselRef = useRef<CarouselRef>();
+  const screenSize = useBreakpoint();
+  const carouselSlideToShow = getTotalCarouselSlide(screenSize);
+  const [currentCarouselSlide, setCurrentCarouselSlide] = useState<number>(0);
+  const productListData: ProductsType[] = productsList.data[title];
+  const checkProductsExist = !isEmpty(productListData);
+  const checkDisableButton = () => {
+    if (checkProductsExist) {
+      if (carouselSlideToShow > productListData.length) return true;
+      if (carouselSlideToShow === productListData.length) return true;
+      if (currentCarouselSlide === productListData.length - carouselSlideToShow)
+        return true;
+    }
+  };
+  console.log(title, ": ", productListData);
+
   return (
     <div className="mt-10 lg:mt-20 first:my-0">
       <Typography.Title className="text-center">
@@ -37,45 +59,52 @@ export const CategoryProducts = ({
         />
       )}
       <Spin spinning={productsList.loading}>
-        {checkExist && (
+        {checkProductsExist && (
           <>
-            <div className="block lg:hidden">
-              <Carousel draggable>
-                {productListData[title].map(
-                  (item: ProductsType, index: number) => (
-                    <div key={index}>
-                      <RenderProductCard
-                        code={item._id}
-                        name={item.name}
-                        description={item.description}
-                        price={`From ${NumberToDollarFormat(
-                          item.lowest_price
-                        )}`}
-                        srcImage={item.image}
-                      />
-                    </div>
-                  )
-                )}
-              </Carousel>
-            </div>
-            <div className="hidden lg:block">
-              <div className="h-full w-full pb-6 grid grid-cols-4 gap-10">
-                {productListData[title].map(
-                  (item: ProductsType, index: number) => (
-                    <div key={index}>
-                      <RenderProductCard
-                        code={item._id}
-                        name={item.name}
-                        description={item.description}
-                        price={`From ${NumberToDollarFormat(
-                          item.lowest_price
-                        )}`}
-                        srcImage={item.image}
-                      />
-                    </div>
-                  )
-                )}
-              </div>
+            <Carousel
+              ref={carouselRef}
+              slidesToShow={carouselSlideToShow}
+              afterChange={(currentSlide: number) =>
+                setCurrentCarouselSlide(currentSlide)
+              }
+              infinite={false}
+              waitForAnimate
+            >
+              {productListData.map((item: ProductsType, index: number) => (
+                <>
+                  <div key={index}>
+                    <RenderProductCard
+                      code={item._id}
+                      name={item.name}
+                      description={item.description}
+                      price={`From ${NumberToDollarFormat(item.lowest_price)}`}
+                      srcImage={item.image}
+                    />
+                  </div>
+                </>
+              ))}
+            </Carousel>
+            <div className="flex gap-5 justify-end h-fit w-full">
+              <Button
+                type="text"
+                size="large"
+                onClick={() => {
+                  carouselRef.current.prev();
+                }}
+                disabled={
+                  currentCarouselSlide === 0 || currentCarouselSlide < 0
+                }
+                icon={<LeftOutlined />}
+              ></Button>
+              <Button
+                type="text"
+                size="large"
+                onClick={() => {
+                  carouselRef.current.next();
+                }}
+                disabled={checkDisableButton()}
+                icon={<RightOutlined />}
+              ></Button>
             </div>
             {exploreMore && (
               <div className="h-fit w-full flex justify-center pb-12">
@@ -88,7 +117,7 @@ export const CategoryProducts = ({
             )}
           </>
         )}
-        {!checkExist && <Empty className="mt-20" />}
+        {!checkProductsExist && <Empty className="mt-20" />}
       </Spin>
     </div>
   );

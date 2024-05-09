@@ -1,14 +1,11 @@
-import { Button, Card, Image } from "antd";
+import { Button, Card, Flex, Image } from "antd";
 import { motion } from "framer-motion";
 import { isEmpty } from "lodash";
 import { DescriptionItemModel, SigninButtonProps } from "@/models/navModel";
 import { CustomText } from "./homePage/common";
 import Link from "next/link";
 import { ProductCardType } from "@/models/common";
-import {
-  productDescriptionImageVariants,
-  productDescriptionVariants,
-} from "@/models/productDetailModel";
+import { productDescriptionVariants } from "@/models/productDetailModel";
 import { NumberToDollarFormat } from "@/helpers/commonHelpers";
 import { useState } from "react";
 import { PlusCircleOutlined } from "@ant-design/icons";
@@ -33,48 +30,52 @@ export const CustomButton: React.FC<SigninButtonProps> = ({
 
 export const RenderProductCard: React.FC<ProductCardType> = (props) => {
   return (
-    <Card
-      className="bg-white !p-0 !border-none cursor-pointer"
-      cover={
-        <div className="pl-3 pr-3 pt-5">
-          <Image
-            src={`${process.env.MONGO_BE_URL}${props.srcImage}`}
-            preview={false}
-          />
-        </div>
-      }
-    >
-      <div className="h-fit w-full pb-6">
-        <CustomText
-          type="paragraph"
-          extraClass="!text-xl !text-black !font-bold"
-          topClass="!text-center"
+    <div className="hover:scale-105 transition-all duration-200">
+      <Link href={`/products/${props.code}`}>
+        <Card
+          className="bg-white !p-0 !border-none cursor-pointer"
+          cover={
+            <div className="pl-3 pr-3 pt-5">
+              <Flex justify="center">
+                <Image
+                  src={`${process.env.MONGO_BE_URL}${props.srcImage}`}
+                  preview={false}
+                />
+              </Flex>
+            </div>
+          }
         >
-          {props.name}
-        </CustomText>
-        <CustomText
-          type="paragraph"
-          extraClass="!text-lg !text-black !font-sf_pro_text_light"
-          topClass="!text-center"
-        >
-          {props.description}
-        </CustomText>
-        <CustomText
-          type="paragraph"
-          extraClass="!text-lg !text-black !font-sf_pro_text_light"
-          topClass="!text-center mt-10"
-        >
-          {props.price}
-        </CustomText>
-        <div className="h-full w-full flex justify-center items-center mt-4">
-          <Link href={`/products/${props.code}`}>
-            <Button>
-              <span className="!font-sf_pro_text_light">Order now</span>
-            </Button>
-          </Link>
-        </div>
-      </div>
-    </Card>
+          <div className="h-fit w-full pb-6">
+            <CustomText
+              type="paragraph"
+              extraClass="!text-xl !text-black !font-bold"
+              topClass="!text-center"
+            >
+              {props.name}
+            </CustomText>
+            <CustomText
+              type="paragraph"
+              extraClass="!text-lg !text-black !font-sf_pro_text_light"
+              topClass="!text-center"
+            >
+              {props.description}
+            </CustomText>
+            <CustomText
+              type="paragraph"
+              extraClass="!text-lg !text-black !font-sf_pro_text_light"
+              topClass="!text-center mt-10"
+            >
+              {props.price}
+            </CustomText>
+            <div className="h-full w-full flex justify-center items-center mt-4">
+              <Button>
+                <span className="!font-sf_pro_text_light">Order now</span>
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </Link>
+    </div>
   );
 };
 

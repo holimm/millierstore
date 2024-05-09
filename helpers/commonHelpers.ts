@@ -1,5 +1,5 @@
 import { CartType } from "@/models/cartModel";
-import { message, notification } from "antd";
+import { Breakpoint, message, notification } from "antd";
 import { NotificationPlacement } from "antd/es/notification/interface";
 
 export function NumberToDollarFormat(number: number | undefined) {
@@ -52,4 +52,14 @@ export const generateUUIDToken = () => {
       v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+};
+
+export const getTotalCarouselSlide = (
+  screenSize: Partial<Record<Breakpoint, boolean>>
+) => {
+  if (screenSize.xl) return 4;
+  if (screenSize.lg) return 3;
+  if (screenSize.md) return 3;
+  if (screenSize.sm) return 2;
+  if (screenSize.xs) return 2;
 };
